@@ -79,6 +79,21 @@ export default function WishListPage() {
       </div>
     );
   }
+  const handleRemove = async (itemId: number) => {
+  try {
+    const response = await fetch('/api/wish', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: user?.id, item_id: itemId }),
+    });
+
+    if (!response.ok) throw new Error('Failed to delete');
+
+    setWishlist(prev => prev.filter(item => item.item_id !== itemId));
+  } catch (err) {
+    console.error('Removal error:', err);
+  }
+};
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -102,7 +117,7 @@ export default function WishListPage() {
                   </p>
                 </div>
                 <p className="font-bold">Item ID: {item.item_id}</p>
-                <button className='bg-red-400 hover:bg-red-600 text-white'>remove</button>
+                <button className='bg-red-400 hover:bg-red-600 text-white' onClick={()=>handleRemove(item.item_id)}>remove</button>
               </div>
             </div>
           ))}

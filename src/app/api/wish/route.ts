@@ -51,3 +51,25 @@ export async function GET(req: Request) {
         );
     }
 }
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { user_id, item_id } = await req.json();
+
+    if (!user_id || !item_id) {
+      return NextResponse.json({ error: 'Invalid delete payload' }, { status: 400 });
+    }
+
+    const pool = getPool();
+    const res = await pool.query(
+      'DELETE FROM wishtable WHERE user_id = ? AND item_id = ?',
+      [user_id, item_id]
+    );
+
+    console.log('Deleted item res:', res);
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (error) {
+    console.error('Error deleting item:', error);
+    return NextResponse.json({ error: 'Failed to delete item' }, { status: 500 });
+  }
+}
