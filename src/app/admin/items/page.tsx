@@ -62,7 +62,12 @@ export default function AdminItemListPage() {
   return (
     <div>
       <h1>Hello {user?.name || 'user'}!</h1>
-      <button className='mb-4 bg-green-600 hover:bg-green-800 text-white' onClick={() => router.push('/admin/items/new')}>Add New Item</button>
+      <div className='flex'>
+        <button className='mb-4 ml-4 bg-green-600 hover:bg-green-800 text-white rounded' onClick={() => router.push('/admin/items/new')}>Add New Item</button>
+        <button className='mb-4 ml-4 bg-purple-300 hover:bg-purple-400 text-white rounded' onClick={()=>router.push('/admin/orders-list')}>Orders List</button>
+        <button className='mb-4 ml-4 bg-orange-400 hover:bg-orange-500 text-black rounded' onClick={()=>router.push('/admin/chart')}>Bar Chart</button>
+        <button className='mb-4 ml-4 bg-pink-400 hover:bg-pink-500 text-white rounded' onClick={()=>router.push('/admin/pie')}>Pie Chart</button>
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {currentItems.map(item => (
           <div

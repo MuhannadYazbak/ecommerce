@@ -16,7 +16,7 @@ export default function Navbar() {
   return (
     <nav className="bg-gray-800 text-white px-6 py-3 flex justify-between items-center">
       <div className="flex items-center space-x-3">
-        <img src="/images/logo.png" alt="Logo" className="h-8 w-8" />
+        <img src="/images/logo.png" alt="Logo" className="h-12 w-12" />
         <h1 className="text-xl font-semibold">TechMart</h1>
       </div>
       <div className="flex items-center space-x-10 bg-blue-300">

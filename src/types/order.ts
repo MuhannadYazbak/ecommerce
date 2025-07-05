@@ -1,8 +1,16 @@
+export interface OrderItem {
+  id: number;
+  name: string;
+  quantity: number;
+  price: number; // optional if available
+  photo: string;
+}
+
 export interface Order {
   order_id: number;
   user_id: number;
   total_amount: number;
-  items_json: string;
-  created_at: string; // or Date if you parse it
+  items_json: OrderItem[]; // change from string to array
+  created_at: string;
   status: 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
-};
+}

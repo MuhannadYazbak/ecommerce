@@ -10,7 +10,7 @@ export const sendCheckoutNotification = async (checkoutDetails: any) => {
     html: `
       <h2>New Checkout Completed</h2>
       <p><strong>Buyer:</strong> ${checkoutDetails.name}</p>
-      <p><strong>Total:</strong> $${checkoutDetails.total}</p>
+      <p><strong>Total:</strong> ₪${checkoutDetails.total}</p>
       <p><strong>Items:</strong></p>
       <ul>
         ${checkoutDetails.items

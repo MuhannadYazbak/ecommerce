@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation';
-import { Order } from '@/types/order';
+import { Order, OrderItem } from '@/types/order';
 import { CartItem } from '@/types/cartItem';
 
 export default function OrderHistoryPage() {
@@ -77,7 +77,7 @@ export default function OrderHistoryPage() {
               </div>
 
               <ul className="divide-y">
-                {JSON.parse(order.items_json).map((item: CartItem) => (
+                {order.items_json.map((item: OrderItem) => (
                   <li key={item.id} className="py-2 flex justify-between">
                     <div className="flex items-center gap-3">
                       {item.photo && (
