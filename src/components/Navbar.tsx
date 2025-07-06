@@ -19,15 +19,16 @@ export default function Navbar() {
         <img src="/images/logo.png" alt="Logo" className="h-12 w-12" />
         <h1 className="text-xl font-semibold">TechMart</h1>
       </div>
-      <div className="flex items-center space-x-10 bg-blue-300">
-              <CartIcon />
-              </div>
+      
       {user ? (
         <div className="flex items-center space-x-4">
           <span>Hello, {user.name}</span>
           <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded">
             Logout
           </button>
+          <div className="flex items-center space-x-15 bg-blue-300">
+              <CartIcon />
+              </div>
         </div>
       ) : (
         <span className="text-sm text-gray-300 italic">Please log in</span>

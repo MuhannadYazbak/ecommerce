@@ -100,7 +100,15 @@ export default function WishListPage() {
       <h1 className="text-2xl font-bold mb-6">Your Wishlist</h1>
       
       {wishlist.length === 0 ? (
+        <div className='relative'>
         <p>Your wishlist is empty.</p>
+        <button 
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+            onClick={() => router.back()}
+          >
+            Back
+          </button>
+        </div>
       ) : (
         <div className="space-y-6">
           {wishlist.map((item) => (
