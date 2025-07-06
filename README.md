@@ -34,3 +34,21 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+---------------------------------------------------------------------------------------------------------------------------
+## 🧪 Fake Payment API
+
+This project includes a mocked payment API powered by [Mockoon](https://mockoon.com).  
+You’ll find the environment JSON and setup guide in [`/public/fake-payment-api`](public/fake-payment-api).
+
+To simulate payment calls:
+1. Import `mockoon-payment-env.json` into Mockoon.
+2. Start the server locally (e.g. on port 3001).
+3. Frontend calls `http://localhost:3001/pay` to simulate a payment process.
+
+---------------------------------------------------------------------------------------------------------------------------
+
+## 🗄️ Database Setup
+
+To initialize the MySQL schema:
+1. Import `db/ecommerce.sql` into your MySQL server.
