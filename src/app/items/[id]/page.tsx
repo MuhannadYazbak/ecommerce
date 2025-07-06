@@ -57,6 +57,21 @@ export default function ItemDetailPage() {
       console.error('🔥 API call failed:', err);
     }
   };
+  const handleRemove = async (itemId: number) => {
+  try {
+    const response = await fetch('/api/wish', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: user?.id, item_id: itemId }),
+    });
+
+    if (!response.ok) throw new Error('Failed to delete');
+
+    //setWishlist(prev => prev.filter(item => item.item_id !== itemId));
+  } catch (err) {
+    console.error('Removal error:', err);
+  }
+};
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -71,6 +86,7 @@ export default function ItemDetailPage() {
       try {
         const data = await res.json();
         setItem(data);
+        handleRemove(data.id);
       } catch (e) {
         console.error('Error parsing JSON:', e);
       }
@@ -78,6 +94,7 @@ export default function ItemDetailPage() {
 
     if (id) fetchItem();
   }, [id]);
+  
 
   if (!item) return <p>Loading item...</p>;
 
