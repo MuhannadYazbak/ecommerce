@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { Item } from '@/types/item';
 import { useAuth } from '@/context/AuthContext';
 import Pagination from '@/components/Pagination';
+import Image from 'next/image';
 
 export default function AdminItemListPage() {
   const { user } = useAuth();
@@ -69,13 +70,16 @@ export default function AdminItemListPage() {
         <button className='mb-4 ml-4 bg-pink-400 hover:bg-pink-500 text-white rounded' onClick={()=>router.push('/admin/pie')}>Pie Chart</button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {currentItems.map(item => (
+        {currentItems.map((item,index) => (
           <div
-            key={item.id}
+            key={`${item.id}-${index}`}
             className="border rounded-lg shadow-md p-4 bg-white hover:shadow-xl transition"
           >
             <div className="aspect-[16/9] overflow-hidden">
-              <img
+              <Image
+                width={300}
+                height={300}
+                loading='lazy'
                 src={item.photo}
                 alt={item.name}
                 className="w-full h-60 object-contain bg-white p-2 rounded"

@@ -4,8 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { Item } from '@/types/item';
 import Pagination from '@/components/Pagination';
-import { PaginationProps } from '@/types/paginationProps';
-import { Wishlist } from '@/types/wish';
+import  Image from 'next/image';
 
 type SortOption = 'id' | 'price-low-high' | 'price-high-low' | 'name-a-z' | 'name-z-a';
 export default function HomePage() {
@@ -128,13 +127,16 @@ export default function HomePage() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {currentItems.map(item => (
+        {currentItems.map((item,index) => (
           <div
-            key={item.id}
+            key={`${item.id}-${index}`}
             className="border rounded-lg shadow-md p-4 bg-white hover:shadow-xl transition"
           >
             <div className="aspect-[16/9] overflow-hidden">
-              <img
+              <Image
+                width={300}
+                height={200}
+                loading='lazy'
                 src={item.photo}
                 alt={item.name}
                 className="w-full h-60 object-contain bg-white p-2 rounded"

@@ -14,11 +14,6 @@ export default function Home() {
   const parsed = json.flatMap((entry: any) => entry.items_json);
   setTop5(parsed.slice(0,5));
 };
-  // const fetchTop5 = async () => {
-  //   const res = await fetch('/api/top5');
-  //   console.log('res of top5 fetch ', res);
-  //   setTop5(await res.json());
-  // }
   useEffect (()=>{
     console.log('top5: ',top5);
     fetchTop5();
