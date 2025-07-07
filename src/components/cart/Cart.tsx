@@ -34,18 +34,20 @@ export default function Cart() {
 
     return (
         <main className="p-6 max-w-3xl mx-auto">
-            <h1 className="text-3xl font-bold text-blue-600 mb-4">Your Cart</h1>
+            <header id='cart-heading' aria-labelledby='cart-heading'>
+                <h1 className="text-3xl font-bold text-blue-600 mb-4">Your Cart</h1>
+            </header>
 
             {cartItems.length === 0 ? (
                 <section>
                     <p>Your cart is currently empty.</p>
-                    <button className='mt-10 bg-blue-500 text-white rounded hover:bg-blue-700' onClick={() => router.push('/home')}>Back</button>
+                    <button className='bg-silver text-blue-600 rounded hover:bg-gray-300' onClick={() => router.back()}>Back</button>
                 </section>
             ) : (
                 <>
-                    <ul className="space-y-4">
+                    <section role='list' className="space-y-4">
                         {cartItems.map(((item,index) => (
-                            <li key={`${item.id}-${index}`} className="border p-4 rounded shadow flex justify-between items-center">
+                            <li key={`${item.id}-${index}`} role='listitem' className="border p-4 rounded shadow flex justify-between items-center">
                                 <input
                                     type="checkbox"
                                     checked={selectedItems.includes(item.id)}
@@ -54,20 +56,20 @@ export default function Cart() {
                                 <article>
                                     <h2 className="text-lg font-semibold">{item.name}</h2>
                                     <p>Quantity: {item.quantity}</p>
-                                    <p>Price: ${item.price.toFixed(2)}</p>
+                                    <p>Price: {item.price.toFixed(2)}₪</p>
                                 </article>
                                 <button
                                     onClick={() => removeFromCart(item.id)}
-                                    className="text-red-500 hover:underline"
+                                    className="text-red-500 hover:underline transition-all duration-300 ease-in-out hover:shadow-md"
                                 >
                                     Remove
                                 </button>
                             </li>
                         )))}
-                    </ul>
+                    </section>
 
                     <section className="mt-6 text-right">
-                        <p className="text-xl font-semibold">Total: ${total.toFixed(2)}</p>
+                        <p className="text-xl font-semibold">Total: {total.toFixed(2)}₪</p>
                         <button className='bg-blue-500 hover:bg-blue-600 text-white rounded mr-3' disabled={selectedItems.length === 0} onClick={() => handleCheckout()}>
                             Checkout Selected
                         </button>         

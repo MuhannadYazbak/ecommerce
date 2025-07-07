@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
+import BackButton from '@/components/ui/BackButton';
 import { sendCheckoutNotification } from '@/utils/mail';
 
 export default function CheckoutPage() {
@@ -147,6 +148,9 @@ export default function CheckoutPage() {
         >
           Pay Now
         </button>
+        <footer>
+          <BackButton />
+        </footer>
       </form>
     </div>
   );
