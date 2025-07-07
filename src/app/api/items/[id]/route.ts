@@ -49,66 +49,6 @@ export async function DELETE(
   }
 }
 
-// export async function PUT(
-//   request: NextRequest,
-//   context: { params: { id: string } }
-// ) {
-//   const itemId = Number(context.params.id);
-
-//   if (isNaN(itemId)) {
-//     return NextResponse.json({ error: 'Invalid parameters' }, { status: 400 });
-//   }
-
-//   try {
-//     const pool = getPool();
-//     const [result] = await pool.query(
-//       'update  itemtable set price = 100 WHERE id = ?',
-//       [itemId]
-//     );
-
-//     if ((result as any).affectedRows === 0) {
-//       console.warn(`🧨 No item found to delete for item_id=${itemId}`);
-//       return NextResponse.json({ message: 'No item found to delete' }, { status: 404 });
-//     }
-
-//     return NextResponse.json({ message: 'Item removed' });
-//   } catch (err) {
-//     console.error('💥 Delete error:', err);
-//     return NextResponse.json({ error: 'Server error' }, { status: 500 });
-//   }
-// }
-
-// import { NextRequest, NextResponse } from 'next/server'
-// import { getPool } from '@/utils/db'
-
-// export async function GET(
-//   request: NextRequest,
-//   { params }: { params: { id: string } }
-// ) {
-//   const itemId = Number(params.id)
-//   if (isNaN(itemId)) {
-//     return NextResponse.json({ error: 'Invalid item ID' }, { status: 400 })
-//   }
-
-//   try {
-//     const pool = getPool()
-//     const [rows] = await pool.query(
-//       'SELECT item_id AS id, name, description, price, photo FROM itemtable WHERE item_id = ?',
-//       [itemId]
-//     )
-
-//     const results = rows as any[]
-//     if (results.length === 0) {
-//       return NextResponse.json({ error: 'Not found' }, { status: 404 })
-//     }
-
-//     return NextResponse.json(results[0])
-//   } catch (err) {
-//     console.error('Fetch item error:', err)
-//     return NextResponse.json({ error: 'Server error' }, { status: 500 })
-//   }
-// }
-
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -149,30 +89,3 @@ export async function PUT(
     return NextResponse.json({ error: 'Server error' }, { status: 500 })
   }
 }
-
-// export async function DELETE(
-//   request: NextRequest,
-//   { params }: { params: { id: string } }
-// ) {
-//   const itemId = Number(params.id)
-//   if (isNaN(itemId)) {
-//     return NextResponse.json({ error: 'Invalid item ID' }, { status: 400 })
-//   }
-
-//   try {
-//     const pool = getPool()
-//     const [result] = await pool.query(
-//       'DELETE FROM itemtable WHERE item_id = ?',
-//       [itemId]
-//     )
-
-//     if ((result as any).affectedRows === 0) {
-//       return NextResponse.json({ error: 'Not found' }, { status: 404 })
-//     }
-
-//     return NextResponse.json({ message: 'Item deleted' })
-//   } catch (err) {
-//     console.error('Delete item error:', err)
-//     return NextResponse.json({ error: 'Server error' }, { status: 500 })
-//   }
-// }
