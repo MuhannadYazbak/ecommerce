@@ -129,7 +129,7 @@ export default function LoggedInHome() {
             {currentItems.length > 0 ? (
                 <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {currentItems.map((item, index) => (
-                        <article key={`${item.id}-${index}`} className="...">
+                        <article key={`${item.id}-${index}`} className="border rounded-lg shadow-md p-4 bg-white hover:shadow-xl transition-transform hover:scale-105">
                             <div className="aspect-[16/9] overflow-hidden">
                                 <Image
                                     width={300}
@@ -161,6 +161,7 @@ export default function LoggedInHome() {
             )}
 
             {totalPages > 1 && (
+                <div className='mt-8 flex justify-center'>
                 <Pagination
                     currentPage={currentPage}
                     totalPages={totalPages}
@@ -168,10 +169,10 @@ export default function LoggedInHome() {
                         setCurrentPage(page);
                         window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="mt-8"
                 />
+                </div>
             )}
-            <footer className='w-full content-center'>
+            <footer className='flex w-full justify-center mt-4'>
                 <button
                     className='bg-blue-400 hover:bg-blue-600 text-white rounded'
                     onClick={() => router.back()}

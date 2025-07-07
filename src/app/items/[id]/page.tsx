@@ -1,133 +1,34 @@
-'use client';
+import type { Metadata } from 'next';
+import ItemView from '@/components/itemview/ItemById';
 
-import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { Item } from '@/types/item';
-import { useCart } from '@/context/CartContext';
-import { useAuth } from '@/context/AuthContext';
+type Params = { params: { id: string } };
 
-export default function ItemDetailPage() {
-  const { id } = useParams();
-  const { user } = useAuth();
-  const [item, setItem] = useState<Item | null>(null);
-  const [quantity, setQuantity] = useState(1);
-  const router = useRouter();
-  const { addToCart } = useCart();
-
-  const handleAddToCart = async () => {
-    if (!item) return;
-
-    const payload = {
-      user_id: user?.id,
-      item_id: item.id,
-      name: item.name,
-      price: item.price,
-      photo: item.photo,
-      quantity,
-    };
-
-    try {
-      const res = await fetch('/api/cart', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await res.json();
-      if (res.ok) {
-        console.log('✅ Item added to cart (server):', result);
-
-        // 🧠 Update client-side cart context
-        addToCart({
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          quantity,
-          photo: item.photo,
-        });
-
-        // Optional: feedback
-        // e.g. toast.success("Item added to cart!")
-      } else {
-        console.error('❌ Error adding to cart:', result.error);
-      }
-    } catch (err) {
-      console.error('🔥 API call failed:', err);
-    }
-  };
-  const handleRemove = async (itemId: number) => {
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
   try {
-    const response = await fetch('/api/wish', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_id: user?.id, item_id: itemId }),
-    });
+    const res = await fetch(`http://localhost:3000/api/items/${params.id}`);
+    const item = await res.json();
+    console.log('Metadata response: ', item);
 
-    if (!response.ok) throw new Error('Failed to delete');
+    // Check for error in response
+    const hasError = item?.error;
+    const name = !hasError && item.name ? item.name : `Item #${params.id}`;
+    const description = !hasError && item.description
+      ? item.description
+      : `Explore item #${params.id} at TechMart.`;
 
-    //setWishlist(prev => prev.filter(item => item.item_id !== itemId));
-  } catch (err) {
-    console.error('Removal error:', err);
-  }
-};
-
-  useEffect(() => {
-    const fetchItem = async () => {
-      const res = await fetch(`/api/items/${id}`);
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error('Failed to fetch item:', res.status, errorText);
-        return;
-      }
-
-      try {
-        const data = await res.json();
-        setItem(data);
-        handleRemove(data.id);
-      } catch (e) {
-        console.error('Error parsing JSON:', e);
-      }
+    return {
+      title: `TechMart | ${name}`,
+      description: description,
     };
+  } catch (err) {
+    console.error("Failed to fetch item metadata:", err);
+    return {
+      title: `TechMart | Item Not Found`,
+      description: `Sorry, this item doesn't seem to exist. Please check back later.`,
+    };
+  }
+}
 
-    if (id) fetchItem();
-  }, [id]);
-  
-
-  if (!item) return <p>Loading item...</p>;
-
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">{item.name}</h1>
-      <img src={item.photo} alt={item.name} className="w-80 my-4" />
-      <p>{item.description}</p>
-      <p className="text-blue-600 font-bold text-xl mt-2">${item.price}</p>
-      <div className="flex items-center gap-4 mt-4">
-        <button
-          onClick={() => setQuantity(q => Math.max(1, q - 1))}
-          className="px-3 py-1 bg-gray-300 rounded"
-        >
-          –
-        </button>
-        <span>{quantity}</span>
-        <button
-          onClick={() => setQuantity(q => q + 1)}
-          className="px-3 py-1 bg-gray-300 rounded"
-        >
-          +
-        </button>
-      </div>
-
-      <button
-        onClick={handleAddToCart}
-        className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded"
-      >
-        Add to Cart
-      </button>
-      <div>
-        <button style={{ color: 'blue', backgroundColor: 'silver', margin: '10px' }} onClick={() => router.back()}>Back</button></div>
-    </div>
-  );
+export default function ItemPage({ params }: Params) {
+  return <ItemView itemId={params.id} />;
 }
