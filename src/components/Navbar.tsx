@@ -21,12 +21,12 @@ export default function Navbar() {
       </div>
       
       {user ? (
-        <div className="flex items-center space-x-4">
+        <div className="flex justify-center space-x-5">
           <span>Hello, {user.name}</span>
           <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded">
             Logout
           </button>
-          <div className="flex items-center space-x-15 bg-blue-300">
+          <div className="flex justify-center space-x-15 bg-blue-100">
               <CartIcon />
               </div>
         </div>

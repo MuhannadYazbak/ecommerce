@@ -12,6 +12,7 @@ export default function LoggedInHome() {
     const router = useRouter();
     const { user, ready } = useAuth();
     const [items, setItems] = useState<Item[]>([]);
+    const [quantity, setQuantity] = useState(1);
     const [sortOption, setSortOption] = useState<SortOption>('id');
     const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
@@ -121,7 +122,7 @@ export default function LoggedInHome() {
                             </svg>
                         </div>
                     </div>
-                    <nav aria-label="User actions" className="flex gap-4">
+                    <nav aria-label="User actions" className="flex gap-4" role='cart&wish'>
                         <button className='bg-yellow-500 hover:bg-yellow-600 text-white rounded ml-4' onClick={() => router.push('/orders')}>Orders History</button>
                         <button className='bg-green-300 hover:bg-green-500 text-black rounded ml-4' onClick={() => router.push('/wish')}>Wishlist</button>
                     </nav>
@@ -143,15 +144,17 @@ export default function LoggedInHome() {
 
                             </div>
                             <h2 className="text-xl font-semibold">{item.name}</h2>
-                            <p className="text-gray-600 mb-2">{item.description}</p>
+                            {/* <p className="text-gray-600 mb-2">{item.description}</p> */}
                             <p className="text-blue-600 font-bold text-lg">₪{item.price}</p>
-                            <button
-                                onClick={() => handleViewItem(item.id)}
-                                className="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded"
-                            >
-                                View Details
-                            </button>
-                            <button className='ml-4 bg-gray-400 hover:bg-gray-500 text-red px-3 py-1 rounded' onClick={() => addWish(item)}>Wish List</button>
+                            <nav className='flex flex-row h-auto w-full'>
+                                <button
+                                    onClick={() => handleViewItem(item.id)}
+                                    className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded"
+                                >
+                                    View Details
+                                </button>
+                                <button className='ml-4 bg-gray-400 hover:bg-gray-500 text-red px-3 py-1 rounded' onClick={() => addWish(item)}>Wish List</button>
+                            </nav>
                         </article>
                     ))}
                 </section>
@@ -163,14 +166,14 @@ export default function LoggedInHome() {
 
             {totalPages > 1 && (
                 <div className='mt-8 flex justify-center'>
-                <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={(page: SetStateAction<number>) => {
-                        setCurrentPage(page);
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                />
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={(page: SetStateAction<number>) => {
+                            setCurrentPage(page);
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                    />
                 </div>
             )}
             <footer className='flex w-full justify-center mt-4'>

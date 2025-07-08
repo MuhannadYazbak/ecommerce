@@ -107,25 +107,25 @@ export default function ItemView({ itemId }: Props) {
                 </header>
 
                 <figure className="my-4">
-                    <img src={item.photo} alt={`Photo of ${item.name}`} className="w-80" />
+                    <img src={item.photo} alt={`Photo of ${item.name}`} className="w-80 hover:scale-110" />
                     <figcaption className="text-sm text-gray-500 mt-1">Image of {item.name}</figcaption>
                 </figure>
 
-                <section aria-label="Description">
-                    <p className="mb-2">{item.description}</p>
-                    <p className="text-blue-600 font-bold text-xl">₪{item.price}</p>
+                <section aria-label="Description" className='relative'>
+                    <p className="mb-2 font-italic">{item.description}</p>
+                    <p className="text-blue-600 font-bold text-xl">{item.price}₪</p>
                 </section>
 
-                <section aria-label="Purchase Options" className="mt-4">
+                <section aria-label="Purchase Options" className="mt-4 flex">
                     <div className="flex items-center gap-4">
-                        <button onClick={() => setQuantity(q => Math.max(1, q - 1))} className="px-3 py-1 bg-gray-300 rounded">–</button>
+                        <button onClick={() => setQuantity(q => Math.max(1, q - 1))} className="px-3 py-1 bg-gray-300 hover:bg-gray-400 rounded">–</button>
                         <span>{quantity}</span>
-                        <button onClick={() => setQuantity(q => q + 1)} className="px-3 py-1 bg-gray-300 rounded">+</button>
+                        <button onClick={() => setQuantity(q => q + 1)} className="px-3 py-1 bg-gray-300 hover:bg-gray-400 rounded">+</button>
                     </div>
 
                     <button
                         onClick={handleAddToCart}
-                        className="mt-4 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded"
+                        className="px-3 py-1 ml-4 bg-green-600 hover:bg-green-700 text-white rounded"
                     >
                         Add to Cart
                     </button>
