@@ -92,7 +92,7 @@ export default function LoggedInHome() {
         <main className='p-6' >
 
             <header className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-red-600 mb-4 text-center">
+                <h1 className="text-3xl font-bold mb-4 text-center">
                     Welcome to Your TechMart Dashboard
                 </h1>
                 <section className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
