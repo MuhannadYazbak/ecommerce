@@ -2,13 +2,14 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
+import BackButton from '@/components/ui/BackButton';
 
 const ItemsPieChart = dynamic(() => import('@/components/PieChart'), { ssr: false });
 
-export default function ChartPage() {
+export default function AdminPieChart() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date().getDate.toString());
   const router = useRouter();
 
   useEffect(() => {
@@ -20,12 +21,16 @@ export default function ChartPage() {
   }, [selectedDate]);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">🥧 Purchased Items Breakdown</h1>
-      <button className='bg-blue-400 hover:bg-blue-500 text-white rounded mr-10' onClick={()=>router.back()}>Back</button>
+    <main className="container p-6">
+      <header className='flex w-full justify-center'>
+        <h1 className="text-2xl font-semibold mb-4">🥧 Purchased Items Breakdown</h1>
+      </header>
+      <nav className='flex flex-row space-x-4'>
+      <BackButton />
       <input type='date' className='border -[3pt] border-solid border-black' value={selectedDate} onChange={(e)=>setSelectedDate(e.target.value)}/>
       <h2>showing pie for ${selectedDate}</h2>
+      </nav>
       {loading ? <p>Loading chart...</p> : <ItemsPieChart data={data} />}
-    </div>
+    </main>
   );
 }

@@ -1,28 +1,31 @@
-'use client';
-import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
-import type { ChartData } from '@/components/BarChart'
+import AdminBarChart from "@/components/admin/AdminBarChart";
 
+export const metadata = {
+  title: "TechMart Admin | Bar Chart",
+  description: "TechMart admin's bar chart, number of checked out orders per date",
+  keywords: [
+    "admin dashboard",
+    "TechMart inventory",
+    "bar chart",
+    "ecommerce analytics",
+    "admin panel",
+    "store management"
+  ],
+  robots: {
+    index: false, // prevent search engines from indexing admin page
+    follow: false
+  },
+  openGraph: {
+    title: "TechMart Admin | Bar Chart",
+    description: "Analyze checkout pattern by bar chart",
+    url: "https://techmart.com/admin/chart",
+    siteName: "TechMart",
+  },
+  alternates: {
+    canonical: "https://techmart.com/admin/chart"
+  }
+};
 
-const OrderBarChart = dynamic(() => import('@/components/BarChart'));
-
-export default function ChartPage() {
-  const [data, setData] = useState<ChartData[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch('/api/admin/chart') // ← Replace with your actual chart API route
-      .then((res) => res.json())
-      .then((data) => setData(data))
-      .catch((err) => console.error('Chart data fetch failed:', err))
-      .finally(() => setLoading(false));
-  }, []);
-
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">📊 Orders Overview</h1>
-      {loading ? <p>Loading chart...</p> : <OrderBarChart data={data} />}
-    </div>
-  );
+export default function AdminBarChartPage(){
+  return <AdminBarChart />
 }
