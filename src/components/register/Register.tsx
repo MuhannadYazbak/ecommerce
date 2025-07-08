@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { SlimUser } from '@/types/user';
+import BackButton from '../ui/BackButton';
 
 export default function Register() {
   const router = useRouter();
@@ -55,7 +56,7 @@ export default function Register() {
         </Form>
       </section>
       <footer className="mt-4">
-        <button onClick={() => router.back()} className="text-blue-500 underline hover:text-blue-700">Back</button>
+        <BackButton />
       </footer>
     </main>
   );

@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Item } from '@/types/item';
 import Pagination from '@/components/Pagination';
 import Image from 'next/image';
+import BackButton from '../ui/BackButton';
 
 type SortOption = 'id' | 'price-low-high' | 'price-high-low' | 'name-a-z' | 'name-z-a';
 export default function LoggedInHome() {
@@ -173,12 +174,7 @@ export default function LoggedInHome() {
                 </div>
             )}
             <footer className='flex w-full justify-center mt-4'>
-                <button
-                    className='bg-blue-400 hover:bg-blue-600 text-white rounded'
-                    onClick={() => router.back()}
-                >
-                    Back
-                </button>
+                <BackButton />
             </footer>
         </main>
     );

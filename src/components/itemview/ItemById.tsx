@@ -5,6 +5,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { Item } from '@/types/item';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
+import BackButton from '../ui/BackButton';
+
 type Props = {
     itemId: string;
 };
@@ -17,6 +19,22 @@ export default function ItemView({ itemId }: Props) {
     const [quantity, setQuantity] = useState(1);
     const router = useRouter();
     const { addToCart } = useCart();
+
+    const handleRemove = async (itemId: number) => {
+        try {
+            const response = await fetch('/api/wish', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: user?.id, item_id: itemId }),
+            });
+
+            if (!response.ok) throw new Error('Failed to delete');
+
+            //setWishlist(prev => prev.filter(item => item.item_id !== itemId));
+        } catch (err) {
+            console.error('Removal error:', err);
+        }
+    };
 
     const handleAddToCart = async () => {
         if (!item) return;
@@ -49,6 +67,7 @@ export default function ItemView({ itemId }: Props) {
                     quantity,
                     photo: item.photo,
                 });
+                handleRemove(item.id);
             } else {
                 console.error('❌ Error adding to cart:', result.error);
             }
@@ -113,12 +132,7 @@ export default function ItemView({ itemId }: Props) {
                 </section>
 
                 <footer className="mt-6">
-                    <button
-                        className="px-4 py-2 bg-silver text-blue-600 hover:bg-gray-300 rounded"
-                        onClick={() => router.back()}
-                    >
-                        Back
-                    </button>
+                    <BackButton />
                 </footer>
             </article>
         </main>

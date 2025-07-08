@@ -3,8 +3,9 @@
 import { Form, Button, Input } from 'antd';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { User, SlimUser } from '@/types/user';
+import { User } from '@/types/user';
 import { useAuth } from '@/context/AuthContext';
+import BackButton from '../ui/BackButton';
 
 type LoginUser = Pick<User, 'email' | 'password'>;
 export default function Login() {
@@ -63,7 +64,7 @@ export default function Login() {
                     </Form>
                 </section>
             <footer className='flex content-center justify-center align-middle'>
-                <button className='text-blue-500 underline hover:text-blue-700' onClick={() => router.back()}>Back</button>
+                <BackButton />
             </footer>
         </main>
     );

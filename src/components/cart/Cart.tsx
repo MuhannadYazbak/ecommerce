@@ -4,6 +4,7 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import BackButton from '../ui/BackButton';
 
 export default function Cart() {
     const { cartItems, removeFromCart, clearCart } = useCart();
@@ -75,7 +76,7 @@ export default function Cart() {
                         </button>         
                     </section>
                     <footer className='w-full justify-center'>
-                        <button className='bg-silver text-blue-600 rounded hover:bg-gray-300' onClick={() => router.back()}>Back</button>
+                       <BackButton />
                     </footer>
 
                 </>
