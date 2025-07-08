@@ -17,6 +17,7 @@ export const sendCheckoutNotification = async (checkoutDetails: any) => {
           .map((item: any) => `<li>${item.name} x ${item.quantity}</li>`)
           .join('')}
       </ul>
+      <p>at:${checkoutDetails.date}</p>
     `,
   })
 }

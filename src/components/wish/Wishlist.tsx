@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { Wishlist } from '@/types/wish';
 import BackButton from '@/components/ui/BackButton';
+import TrashIcon from '../ui/TrashIcon';
 
 export default function WishList() {
   const { user, ready } = useAuth();
@@ -125,7 +126,7 @@ export default function WishList() {
                 </div>
                 <p className="font-bold">Item ID: {item.item_id}</p>
                 <button className='bg-green-400 hover:bg-green-600 text-white rounded mr-4' onClick={()=>router.push(`/items/${item.item_id}`)}>View/Purchase</button>
-                <button className='bg-red-400 hover:bg-red-600 text-white' onClick={()=>handleRemove(item.item_id)}>remove</button>
+                <button className='bg-red-400 hover:bg-red-600 text-white' onClick={()=>handleRemove(item.item_id)}>remove <TrashIcon /></button>
               </div>
             </article>
           ))}

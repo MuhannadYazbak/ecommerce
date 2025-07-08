@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import BackButton from '../ui/BackButton';
+import TrashIcon from '../ui/TrashIcon';
 
 export default function Cart() {
     const { cartItems, removeFromCart, clearCart } = useCart();
@@ -63,7 +64,7 @@ export default function Cart() {
                                     onClick={() => removeFromCart(item.id)}
                                     className="text-red-500 hover:underline transition-all duration-300 ease-in-out hover:shadow-md"
                                 >
-                                    Remove
+                                    Remove <TrashIcon />
                                 </button>
                             </li>
                         )))}

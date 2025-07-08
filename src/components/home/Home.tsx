@@ -6,6 +6,8 @@ import { Item } from '@/types/item';
 import Pagination from '@/components/Pagination';
 import Image from 'next/image';
 import BackButton from '../ui/BackButton';
+import WishIcon from '../ui/WishIcon';
+import DetailsIcon from '../ui/DetailsIcon';
 
 type SortOption = 'id' | 'price-low-high' | 'price-high-low' | 'name-a-z' | 'name-z-a';
 export default function LoggedInHome() {
@@ -151,9 +153,9 @@ export default function LoggedInHome() {
                                     onClick={() => handleViewItem(item.id)}
                                     className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded"
                                 >
-                                    View Details
+                                    View Details<DetailsIcon />
                                 </button>
-                                <button className='ml-4 bg-gray-400 hover:bg-gray-500 text-red px-3 py-1 rounded' onClick={() => addWish(item)}>Wish List</button>
+                                <button className='ml-4 bg-gray-400 hover:bg-gray-500 text-red px-3 py-1 rounded' onClick={() => addWish(item)}>Wish <WishIcon /></button>
                             </nav>
                         </article>
                     ))}

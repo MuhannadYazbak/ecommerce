@@ -74,6 +74,7 @@ export default function Checkout() {
     name: user.name,
     total: itemsToCheckout.reduce((sum, item) => sum + item.price * item.quantity, 0),
     items: itemsToCheckout,
+    date: new Date()
   }),
 }); console.log('res2 = ',res2);
     } catch (err) {
@@ -148,9 +149,9 @@ export default function Checkout() {
         </button>
         </form>
         </section>
-        <footer className='flex w-full justify-center'>
+        <nav className='flex w-full justify-center' aria-label='Go Back' role='back'>
           <BackButton />
-        </footer>
+        </nav>
       
     </main>
   );
