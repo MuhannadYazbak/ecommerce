@@ -96,7 +96,7 @@ export default function OrderHistory() {
                       })}
                     </p>
                   </div>
-                  <p className="font-bold">${order.total_amount.toFixed(2)}</p>
+                  <p className="font-bold">{order.total_amount.toFixed(2)}₪</p>
                 </header>
 
                 <ul className="divide-y divide-gray-200">
@@ -112,7 +112,7 @@ export default function OrderHistory() {
                         )}
                         <span>{item.name} <span className="text-gray-500">(x{item.quantity})</span></span>
                       </div>
-                      <span>${(item.price * item.quantity).toFixed(2)}</span>
+                      <span>{(item.price * item.quantity).toFixed(2)}₪</span>
                     </li>
                   ))}
                 </ul>

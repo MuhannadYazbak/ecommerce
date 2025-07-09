@@ -6,7 +6,7 @@ import { getPool } from '@/utils/db'
 export async function POST(req: NextRequest) {
 
   try {
-    const { userId, name, total, items, date } = await req.json();
+    const { userId, name, total, items, date, addressId } = await req.json();
 
     if (!userId || !Array.isArray(items) || items.length === 0) {
       return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
@@ -14,8 +14,8 @@ export async function POST(req: NextRequest) {
 
     const pool = getPool()
     const res = await pool.query(
-      'INSERT INTO ordertable (user_id, total_amount, items_json) VALUES (?, ?, ?)',
-      [userId, total, JSON.stringify(items)]
+      'INSERT INTO ordertable (user_id, total_amount, items_json, address_id) VALUES (?, ?, ?, ?)',
+      [userId, total, JSON.stringify(items), addressId]
     )
     console.log('Insert order res: ', res);
     try {

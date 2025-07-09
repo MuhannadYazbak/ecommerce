@@ -3,6 +3,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { AuthContextType } from '@/types/authContextType'; 
 import { User, SlimUser } from '@/types/user';
+import { useRouter } from 'next/navigation';
 
 
 
@@ -11,6 +12,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<SlimUser | null>(null);
   const [ready,setReady] = useState(false);
+  const router = useRouter();
   useEffect(() => {
   const token = localStorage.getItem('token');
   const storedUser = localStorage.getItem('user');
@@ -34,6 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     localStorage.clear();
     setUser(null);
+    router.push('/');
   };
 
   return (

@@ -3,6 +3,11 @@ import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export const sendCheckoutNotification = async (checkoutDetails: any) => {
+  const orderDate = new Date(checkoutDetails.date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      });
   await resend.emails.send({
     from: 'Tech-Mart <onboarding@resend.dev>',
     to: ['yazbakm@gmail.com'],
@@ -17,7 +22,7 @@ export const sendCheckoutNotification = async (checkoutDetails: any) => {
           .map((item: any) => `<li>${item.name} x ${item.quantity}</li>`)
           .join('')}
       </ul>
-      <p>at:${checkoutDetails.date}</p>
+      <p>at:<strong>${orderDate}</strong></p>
     `,
   })
 }

@@ -13,4 +13,5 @@ export interface Order {
   items_json: OrderItem[]; // change from string to array
   created_at: string;
   status: 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
+  address_id: number | null;
 }
