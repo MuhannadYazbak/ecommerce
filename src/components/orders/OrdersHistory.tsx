@@ -88,6 +88,7 @@ export default function OrderHistory() {
                 <header className="flex justify-between items-start mb-2">
                   <div>
                     <h3 className="font-medium">Order #{order.order_id}</h3>
+                    <h3 className="font-medium">Status {order.status}</h3>
                     <p className="text-sm text-gray-500">
                       {new Date(order.created_at).toLocaleDateString('en-US', {
                         year: 'numeric',

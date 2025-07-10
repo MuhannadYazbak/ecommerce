@@ -12,10 +12,6 @@ export async function GET(request: Request) {
     );
 
     return NextResponse.json(rows);
-    // .map(order => ({
-    //   ...order,
-    //   items_json: JSON.stringify(order.items_json),
-    // })));
   } catch (error) {
     console.error('Database error:', error);
     return NextResponse.json({ message: 'Failed to fetch orders' }, { status: 500 });

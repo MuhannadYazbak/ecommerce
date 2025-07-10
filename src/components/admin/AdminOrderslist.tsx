@@ -31,12 +31,12 @@ export default function AdminOrderslist() {
             </header>
 
             {loading ? (
-                <p>Loading orders...</p>
+                <p className="animate-pulse text-gray-500">Loading orders...</p>
             ) : (
                 <section className="overflow-x-auto">
                     <table className="min-w-full table-auto border border-gray-200 rounded-md">
                         <thead className="bg-gray-100">
-                            <tr>
+                            <tr >
                                 <th className="px-4 py-2 text-left">Order ID</th>
                                 <th className="px-4 py-2 text-left">User ID</th>
                                 <th className="px-4 py-2 text-left">Total Amount</th>
@@ -47,7 +47,7 @@ export default function AdminOrderslist() {
                         </thead>
                         <tbody>
                             {orders.map(order => (
-                                <tr key={order.order_id} className="border-t border-gray-200 hover:bg-gray-50">
+                                <tr key={order.order_id} className="border-t border-gray-200 hover:bg-gray-50" onClick={()=>router.push(`/admin/orders/${order.order_id}`)}>
                                     <td className="px-4 py-2">{order.order_id}</td>
                                     <td className="px-4 py-2">{order.user_id}</td>
                                     <td className="px-4 py-2">${order.total_amount}</td>
