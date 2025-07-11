@@ -11,7 +11,7 @@ export default function OrderEdit() {
     const [order, setOrder] = useState<Order>();
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
-    const { user} = useAuth();
+    const { user } = useAuth();
     const [form, setForm] = useState({
         order_id: null as number | null,
         user_id: 0,
@@ -21,7 +21,7 @@ export default function OrderEdit() {
         status: '',
         address_id: null as number | null
     });
-    const [updates,setUpdates] = useState<UpdateItem[]>([]);
+    const [updates, setUpdates] = useState<UpdateItem[]>([]);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setForm(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
@@ -47,12 +47,13 @@ export default function OrderEdit() {
             //router.push('/admin/items')
             console.log(`order ${form.order_id} submitted with values ${form.status}`);
             fetch('/api/admin/ship', {
-  method: 'PUT',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(updates)
-});
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updates)
+            });
+            router.back();
         } catch (err: any) {
             console.error(err)
             alert(err.message)
@@ -84,14 +85,14 @@ export default function OrderEdit() {
         load()
     }, []);
     useEffect(() => {
-  if (form.items_json && Array.isArray(form.items_json)) {
-    const parsedUpdates: UpdateItem[] = form.items_json.map((item: any) => ({
-      id: item.id,
-      shipped: item.quantity || 0, // adjust logic depending on your structure
-    }));
-    setUpdates(parsedUpdates);
-  }
-}, [form.items_json]);
+        if (form.items_json && Array.isArray(form.items_json)) {
+            const parsedUpdates: UpdateItem[] = form.items_json.map((item: any) => ({
+                id: item.id,
+                shipped: item.quantity || 0, // adjust logic depending on your structure
+            }));
+            setUpdates(parsedUpdates);
+        }
+    }, [form.items_json]);
 
 
     return (
