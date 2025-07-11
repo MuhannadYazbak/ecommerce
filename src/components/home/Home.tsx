@@ -8,6 +8,7 @@ import Image from 'next/image';
 import BackButton from '../ui/BackButton';
 import WishIcon from '../ui/WishIcon';
 import DetailsIcon from '../ui/DetailsIcon';
+import SoldOut from '../ui/SoldOut';
 
 type SortOption = 'id' | 'price-low-high' | 'price-high-low' | 'name-a-z' | 'name-z-a';
 export default function LoggedInHome() {
@@ -20,7 +21,7 @@ export default function LoggedInHome() {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(6); // Adjust this number as needed
     const filteredAndSortedItems = [...items]
-        .filter(item =>
+        .filter(item => 
             item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             item.description.toLowerCase().includes(searchQuery.toLowerCase())
         )
@@ -134,6 +135,7 @@ export default function LoggedInHome() {
                 <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {currentItems.map((item, index) => (
                         <article key={`${item.id}-${index}`} className="border rounded-lg shadow-md p-4 bg-white hover:shadow-xl transition-transform hover:scale-105">
+                            {item.quantity === 0 ? <SoldOut /> : ''}
                             <div className="aspect-[16/9] overflow-hidden">
                                 <Image
                                     width={300}

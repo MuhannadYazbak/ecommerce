@@ -59,13 +59,14 @@ export async function PUT(
   }
 
   const body = await request.json()
-  const { name, description, price, photo } = body
+  const { name, description, price, photo, quantity } = body
 
   if (
     typeof name !== 'string' ||
     typeof description !== 'string' ||
     typeof price !== 'number' ||
-    typeof photo !== 'string'
+    typeof photo !== 'string' ||
+    typeof quantity !== 'number'
   ) {
     return NextResponse.json({ error: 'Bad request' }, { status: 400 })
   }
@@ -74,9 +75,9 @@ export async function PUT(
     const pool = getPool()
     const [result] = await pool.query(
       `UPDATE itemtable 
-         SET name = ?, description = ?, price = ?, photo = ?
+         SET name = ?, description = ?, price = ?, photo = ?, quantity = ?
        WHERE id = ?`,
-      [name, description, price, photo, itemId]
+      [name, description, price, photo, quantity, itemId]
     )
 
     if ((result as any).affectedRows === 0) {

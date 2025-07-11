@@ -17,7 +17,9 @@ export default function AdminEditItem() {
     description:'',
     price:      '',
     photo:      '',
+    quantity: ''
   })
+  
 
   // 1) Redirect non-admins away
   useEffect(() => {
@@ -38,6 +40,7 @@ export default function AdminEditItem() {
           description: data.description,
           price: data.price.toString(),
           photo: data.photo,
+          quantity: data.quantity.toString()
         })
       } catch (err) {
         console.error(err)
@@ -65,6 +68,7 @@ export default function AdminEditItem() {
           description: form.description,
           price:       Number(form.price),
           photo:       form.photo,
+          quantity:    Number(form.quantity)
         }),
       })
       if (!res.ok) {
@@ -125,6 +129,17 @@ export default function AdminEditItem() {
           <input
             name="photo"
             value={form.photo}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+          />
+        </div>
+        <div id='quantity'>
+          <label className="block font-medium">Quantity</label>
+          <input
+            name="quantity"
+            type="number"
+            step="1"
+            value={form.quantity}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
           />

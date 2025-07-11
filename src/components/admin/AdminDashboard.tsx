@@ -9,6 +9,7 @@ import Image from 'next/image';
 import TrashIcon from '@/components/ui/TrashIcon';
 import DetailsIcon from '@/components/ui/DetailsIcon';
 import BackButton from '@/components/ui/BackButton';
+import SoldOut from '../ui/SoldOut';
 
 export default function AdminDashboard() {
   const { user } = useAuth();
@@ -78,8 +79,9 @@ export default function AdminDashboard() {
         {currentItems.map((item,index) => (
           <article
             key={`${item.id}-${index}`}
-            className="border rounded-lg shadow-md p-4 bg-white hover:shadow-xl transition-transform hover:scale-105"
+            className={item.quantity > 0 ? "border rounded-lg shadow-md p-4 bg-white hover:shadow-xl transition-transform hover:scale-105" : "border rounded-lg shadow-md p-4 bg-gray-400 hover:shadow-xl"}
           >
+            {item.quantity === 0 ? <SoldOut /> : ''}
             <figcaption className="aspect-[16/9] overflow-hidden">
               <Image
                 width={300}
@@ -93,7 +95,8 @@ export default function AdminDashboard() {
             </figcaption>
             <h2 className="text-xl font-semibold">{item.name}</h2>
             <p className="text-gray-600 mb-2">{item.description}</p>
-            <p className="text-blue-600 font-bold text-lg">₪{item.price}</p>
+            <p className="text-blue-600 font-bold text-lg">{item.price}₪</p>
+            <p className='font-italic text-lg'>Quantity: {item.quantity}</p>
             <button
               onClick={() => ItemDelete(item.id)}
               className="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded"
