@@ -6,3 +6,8 @@ export interface Item {
   photo: string;
   quantity: number;
 }
+
+export interface UpdateItem {
+  id: number;
+  shipped: number;
+}

@@ -62,13 +62,10 @@ export async function PUT(
     }
 
     try {
-      //TODO : fetch get with sql join between usertable and ordertable and replace the params
       const res = await fetch(`http://localhost:3000/api/admin/join/${orderId}`, {
   method: 'GET',
 });
 const data = await res.json();
-
-      //console.log('Sending to shipping email: ', data);
       const { fullname, email, status, items_json, total_amount, created_at} = data;
       await sendOrderShippedtNotification({ orderId,fullname, email, status, items_json, total_amount, created_at });
       console.log('✅ Email sent');

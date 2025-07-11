@@ -1,7 +1,7 @@
 //import "./globals.css";
 export default function SoldOut() {
     return (
-        <svg width="3em" height="3em" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" className="justify-center w-full">
+        <svg width="3em" height="3em" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="red" className="justify-center w-full">
 
 
             <g id="sold-out">

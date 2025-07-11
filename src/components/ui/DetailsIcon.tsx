@@ -8,7 +8,7 @@ export default function DetailsIcon() {
             <path d="M9,18H27a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z">
             </path><path d="M9,22H19a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Z">
             </path>
-            <rect x="0" y="0" width="36" height="36" fill-opacity="0" />
+            <rect x="0" y="0" width="36" height="36" fillOpacity="0" />
         </svg>
     )
 }
