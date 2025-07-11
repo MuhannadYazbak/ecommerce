@@ -1,6 +1,6 @@
 'use client';
 
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, DatePicker } from 'antd';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
@@ -38,7 +38,7 @@ export default function Register() {
         <h1 id="register-heading" className="text-3xl font-bold text-blue-600 text-center mb-6">Create Your TechMart Account</h1>
 
         <Form onFinish={onFinish} layout="vertical">
-          <Form.Item name="name" label="Name" rules={[{ required: true }]}>
+          <Form.Item name="fullname" label="Name" rules={[{ required: true }]}>
             <Input autoComplete="name" />
           </Form.Item>
           <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email' }]}>
@@ -46,6 +46,9 @@ export default function Register() {
           </Form.Item>
           <Form.Item name="password" label="Password" rules={[{ required: true }]}>
             <Input.Password autoComplete="new-password" />
+          </Form.Item>
+          <Form.Item name="dateOfBirth" label="Date of Birth" rules={[{required: true}]}>
+            <DatePicker />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" loading={loading} className="w-full">

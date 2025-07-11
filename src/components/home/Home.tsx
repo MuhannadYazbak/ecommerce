@@ -93,12 +93,13 @@ export default function LoggedInHome() {
         }
     };
     return (
-        <main className='p-6' >
+        <main className='container max-w-xl mx-auto' >
 
-            <header className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold mb-4 text-center">
+            <header className="flex justify-start items-center mb-6">
+                <h1 className="md:text-3xl font-bold mb-4 text-center">
                     Welcome to Your TechMart Dashboard
                 </h1>
+            </header>
                 <section className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                     <input
                         type="text"
@@ -130,7 +131,6 @@ export default function LoggedInHome() {
                         <button className='bg-green-300 hover:bg-green-500 text-black rounded ml-4' onClick={() => router.push('/wish')}>Wishlist</button>
                     </nav>
                 </section>
-            </header>
             {currentItems.length > 0 ? (
                 <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {currentItems.map((item, index) => (

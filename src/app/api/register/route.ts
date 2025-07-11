@@ -11,13 +11,17 @@ export async function POST(req: Request) {
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
+        //parsing the date into YYYY-mm-dd
+        const date = new Date(dateOfBirth).toISOString().split('T')[0];
+        
+
         // Database connection (make sure env variables are set)
         const pool =  getPool();
 
         // Insert into the database
         await pool.query(
             `INSERT INTO usertable (fullname, email, dateOfBirth, password) VALUES (?, ?, ?, ?)`,
-            [fullname, email, dateOfBirth, hashedPassword]
+            [fullname, email, date, hashedPassword]
         );
 
         //pool.end();
