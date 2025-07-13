@@ -46,13 +46,14 @@ export default function OrderEdit() {
             }
             //router.push('/admin/items')
             console.log(`order ${form.order_id} submitted with values ${form.status}`);
-            fetch('/api/admin/ship', {
+            const ship = await fetch('/api/admin/ship', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(updates)
             });
+            console.log('Shipping email.... ', ship);
             router.back();
         } catch (err: any) {
             console.error(err)

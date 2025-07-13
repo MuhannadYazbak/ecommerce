@@ -1,0 +1,32 @@
+@startuml
+start
+:User clicks Cart Icon;
+:Load Cart Items;
+
+if (Cart is Empty?) then (Yes)
+    :Show "Your cart is empty";
+    :Display Back Button;
+    if (Click Back?) then (Yes)
+        :Redirect to Home Page;
+    endif
+else (No)
+    :Display Cart Items with Checkboxes;
+    :Show "Back" and "Checkout" Buttons;
+    
+    repeat
+        if (User selects items?) then (Yes)
+            if (Clicks "Checkout Selected"?) then (Yes)
+                :Proceed to Checkout Page;
+                stop
+            endif
+        endif
+        
+        if (Clicks "Back"?) then (Yes)
+            :Redirect to Home Page;
+            stop
+        endif
+    repeat while (User observes items?) is (No)
+endif
+
+stop
+@enduml

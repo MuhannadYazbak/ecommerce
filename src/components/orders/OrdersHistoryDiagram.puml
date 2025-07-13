@@ -1,0 +1,20 @@
+@startuml
+start
+:Orders List Page;
+if (Order Status == 'Processing'?) then (Yes)
+  if (User clicks "Cancel"?) then (Yes)
+    :Confirm Cancellation?;
+    if (Confirmed) then (Yes)
+      :Order Cancelled;
+    else (No)
+      :Return to Orders List;
+    endif
+  else (No)
+    :View History or Back;
+  endif
+else (No)
+  :Cancel disabled\n(Status not "Processing");
+  :View History or Back;
+endif
+stop
+@enduml

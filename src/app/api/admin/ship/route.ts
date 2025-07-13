@@ -36,7 +36,8 @@ export async function PUT(req: NextRequest) {
       { message: 'Transaction failed', error: error.message },
       { status: 500 }
     );
-  } finally {
-    connection.end();
-  }
+}
+//   } finally {
+//     connection.end();
+//   }
 }
