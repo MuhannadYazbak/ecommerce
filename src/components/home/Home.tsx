@@ -136,14 +136,14 @@ export default function LoggedInHome() {
                     {currentItems.map((item, index) => (
                         <article key={`${item.id}-${index}`} className="border rounded-lg shadow-md p-4 bg-white hover:shadow-xl transition-transform hover:scale-105">
                             {item.quantity === 0 ? <SoldOut /> : ''}
-                            <div className="aspect-[16/9] overflow-hidden">
+                            <div className="flex aspect-[16/9] overflow-hidden">
                                 <Image
                                     width={300}
                                     height={200}
                                     loading='lazy'
                                     src={item.photo}
                                     alt={item.name}
-                                    className="w-full h-60 object-contain bg-white p-2 rounded"
+                                    className="w-full object-contain bg-white p-2 rounded"
                                 />
 
                             </div>

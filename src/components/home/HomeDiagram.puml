@@ -1,0 +1,34 @@
+@startuml
+start
+:User at Home Page;
+
+repeat
+    :Display Items with:\n- Add to Wishlist buttons\n- View buttons\n- Search/Sort options\n- Cart/Wishlist/Orders icons;
+
+    if (Action?) then (View Item)
+        :Click "View" on item;
+        :Redirect to Item Page;
+        stop
+    elseif (Search/Sort) then (Yes)
+        :Enter search query or select sort;
+        :Update displayed items;
+    elseif (Add to Wishlist) then (Yes)
+        :Add item to Wishlist;
+        :Show confirmation;
+    elseif (Click Cart Icon) then (Yes)
+        :Redirect to Cart Page;
+        stop
+    elseif (Click Wishlist) then (Yes)
+        :Redirect to Wishlist Page;
+        stop
+    elseif (Click Orders) then (Yes)
+        :Redirect to Orders History;
+        stop
+    elseif (Click Logout) then (Yes)
+        :Logout user;
+        :Redirect to Landing Page;
+        stop
+    endif
+repeat while (Continue Browsing?) is (Yes)
+stop
+@enduml

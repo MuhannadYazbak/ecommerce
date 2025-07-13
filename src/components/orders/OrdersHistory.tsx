@@ -58,9 +58,9 @@ export default function OrderHistory() {
 
   return (
     <main className="container mx-auto px-4 py-8">
-      <header className="text-center mb-6" id='orders-heading' aria-label='orders-heading'>
+      <div className="text-center mb-6" id='orders-heading' aria-label='orders-heading'>
         <h1 className="text-3xl font-bold" id="orders-heading">Your Orders</h1>
-      </header>
+      </div>
 
       {orders.length === 0 ? (
         <section aria-label="no-orders-heading">
@@ -84,8 +84,8 @@ export default function OrderHistory() {
             }
 
             return (
-              <article key={order.order_id} className="border rounded-lg p-4 shadow-sm" aria-label={`Order ${order.order_id}`}>
-                <header className="flex justify-between items-start mb-2">
+              <article key={order.order_id} className="flex-1 border rounded-lg p-4 shadow-sm" aria-label={`Order ${order.order_id}`}>
+                <header className="flex w-auto justify-between items-start mb-2">
                   <div>
                     <h3 className="font-medium">Order #{order.order_id}</h3>
                     <h3 className="font-medium">Status {order.status}</h3>
@@ -98,6 +98,7 @@ export default function OrderHistory() {
                     </p>
                   </div>
                   <p className="font-bold">{order.total_amount.toFixed(2)}₪</p>
+                  
                 </header>
 
                 <ul className="divide-y divide-gray-200">
@@ -114,6 +115,7 @@ export default function OrderHistory() {
                         <span>{item.name} <span className="text-gray-500">(x{item.quantity})</span></span>
                       </div>
                       <span>{(item.price * item.quantity).toFixed(2)}₪</span>
+                      
                     </li>
                   ))}
                 </ul>
