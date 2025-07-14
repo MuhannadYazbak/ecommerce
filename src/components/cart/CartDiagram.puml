@@ -1,4 +1,4 @@
-@startuml
+@startuml CartDiagram
 start
 :User clicks Cart Icon;
 :Load Cart Items;

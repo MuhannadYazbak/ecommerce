@@ -1,0 +1,31 @@
+@startuml AdminOrderEditDiagram
+start
+#lightgreen:Admin Order Edit Page;
+
+repeat :Order Edit;
+  
+  fork
+    #lightblue:if (Admin Updates\nOrder Status?) then (yes)
+      #Lightyellow:Status Updated;
+    endif
+  fork again
+    #lightblue:if (Admin Clicks Back?) then (yes)
+      #lightgreen:Redirect to Previous Page;
+      stop
+    endif
+  end fork
+
+repeat while (No Update)
+
+#LightBlue:Admin Clicks Update;
+  repeat
+  #LightYellow:System Attempts Update;
+  #lightyellow:if (Updated Successfully?) then (yes)
+    #LightGreen:Redirect to\nOrders List;
+    stop
+  else (no)
+    #red:Show\n"Creation Failed"\nAlert;
+    end
+  endif
+repeat while (Retry?)
+@enduml

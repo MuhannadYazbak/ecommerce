@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import { Item } from '@/types/item'
 import BackButton from '@/components/ui/BackButton'
+import { error } from 'console'
 
 export default function AdminEditItem() {
   const { user } = useAuth()
@@ -72,8 +73,10 @@ export default function AdminEditItem() {
         }),
       })
       if (!res.ok) {
-        const body = await res.json()
+        const body = await res.json();
+        alert(`Update failed ${body.error}`);
         throw new Error(body.error || 'Update failed')
+        
       }
       router.push('/admin/items')
     } catch (err: any) {

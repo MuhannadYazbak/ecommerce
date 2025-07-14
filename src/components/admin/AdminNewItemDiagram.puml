@@ -1,0 +1,33 @@
+@startuml AdminNewItemDiagram
+start
+:Admin Add New Item Page;
+
+repeat 
+  :Edit Item;
+  
+  fork
+    if (Admin Changes a field?) then (yes)
+      :Updated field;
+    endif
+  fork again
+    if (Admin Clicks Back?) then (yes)
+      :Redirect to Previous Page;
+      stop
+    endif
+  end fork
+
+repeat while (Not Created)
+
+if (Admin Clicks Create Item?) then (yes)
+  repeat
+  :System Attempts Create;
+  if (Added Successful?) then (yes)
+    :Redirect to Admin Dashboard;
+    stop
+  else (no)
+    :Show "Creation Failed" Alert;
+    end
+  endif
+repeat while (Retry?)
+endif
+@enduml
