@@ -1,0 +1,27 @@
+@startuml AdminPieChatDiagram
+start
+#lightgreen:Admin Pie Chart Page;
+#lightyellow:if(Loading Data) then(fail)
+    #red:Loading failed;
+    end
+else(success)
+    repeat :View Char;
+    fork
+    #lightblue:if(Slice Clicked) then(yes)
+        #lightyellow:Show tooltip;
+        endif
+    fork again
+    #lightblue:if(Date Chosed) then(success)
+        #lightyellow:Load New\nPie Char;
+    else(No Data)
+        #lightyellow:Alert No Orders\n at chosen date;
+    endif
+    fork again
+    #lightblue:Admin Clicks Back;
+        #lightgreen:Redirect to previous page;
+        stop
+
+end fork
+repeat while(Keep viewing)
+stop
+@enduml
