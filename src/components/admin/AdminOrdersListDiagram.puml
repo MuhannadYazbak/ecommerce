@@ -1,0 +1,22 @@
+@startuml AdminOrdersListDiagram
+start
+#lightgreen:Admin Orders ListPage;
+#lightyellow:if(Loading Data) then(fail)
+    #red:Loading failed;
+    end
+else(success)
+    repeat :View List;
+    fork
+    #lightblue:if(Order Clicked) then(yes)
+        #lightyellow:Redirect to\nOrder Edit\nPage;
+        stop
+        endif
+    fork again
+    #lightblue:Admin Clicks Back;
+        #lightgreen:Redirect to previous page;
+        stop
+
+end fork
+repeat while(Keep viewing)
+stop
+@enduml
