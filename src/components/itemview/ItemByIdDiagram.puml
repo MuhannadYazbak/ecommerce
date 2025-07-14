@@ -1,25 +1,28 @@
-@startuml
+@startuml ItemByIdDiagram
 start
-:User clicks on Item;
-:Load Item Details;
-
-:Display Item Page with:\n- Item info (image, price, etc.)\n- Quantity selector (+/-)\n- "Add to Cart" button\n- "Back" button;
+:Item Page;
+:Display Item Information;
 
 repeat
-    if (User action?) then (Adjust Quantity)
-        :Click + or -;
-        :Update quantity display;
-    elseif (Click "Add to Cart") then (Yes)
+    fork
+        if (User Adjust quantity?) then (yes)
+            :Click + or -;
+            :Update quantity display;
+        endif
+    fork again
+        if (Click "Add to Cart") then (Yes)
         :Add (Item × Quantity) to Cart;
         if (Item in Wishlist?) then (Yes)
             :Remove from Wishlist;
             :Update Wishlist;
         endif
         :Show "Added to Cart" confirmation;
-    elseif (Click "Back") then (Yes)
+        endif
+    fork again
+        if (Click "Back") then (Yes)
         :Redirect to Previous Page;
         stop
-    endif
+        endif
+    end fork
 repeat while (User continues interacting?) is (Yes)
-stop
 @enduml

@@ -1,4 +1,4 @@
-@startuml
+@startuml OrdersHistoryDiagram
 start
 :Orders List Page;
 if (Order Status == 'Processing'?) then (Yes)
