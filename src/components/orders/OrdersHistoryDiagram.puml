@@ -1,20 +1,26 @@
 @startuml OrdersHistoryDiagram
 start
-:Orders List Page;
-if (Order Status == 'Processing'?) then (Yes)
-  if (User clicks "Cancel"?) then (Yes)
-    :Confirm Cancellation?;
-    if (Confirmed) then (Yes)
-      :Order Cancelled;
+#lightgreen:Orders List Page;
+repeat :View Orders;
+fork
+#lightyellow:if (Order Status) then(Processing)
+  #lightblue:if(User clicks Cancel) then(Yes)
+    #lightyellow:Confirm Cancellation?;
+    #lightblue:if (Confirmed) then (Yes)
+      #lightyellow:Order Cancelled;
     else (No)
-      :Return to Orders List;
+      #lightgreen:Return to Orders List;
+      stop
     endif
-  else (No)
-    :View History or Back;
   endif
-else (No)
-  :Cancel disabled\n(Status not "Processing");
-  :View History or Back;
+else (Not Processing)
+  #lightyellow:Cancel disabled\n(Status not "Processing");
 endif
-stop
+fork again
+#lightblue:if(Clicked Back) then(yes)
+  #lightgreen:Redirect to\nPrevious Page;
+  stop
+endif
+end fork
+repeat while(still viewing) is(yes)
 @enduml

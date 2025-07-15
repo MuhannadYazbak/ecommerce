@@ -1,0 +1,46 @@
+@startuml AdminDashboardDiagram
+start
+#lightgreen:Admin Dashboard;
+
+repeat 
+  :View Dashboard;
+  
+  fork
+    #lightblue:if (Item Remove clicked?) then (yes)
+      #lightyellow:Item Removed;
+      #lightyellow:Items updated;
+    endif
+  fork again
+    #lightblue:if (Item View Clicked?) then (yes)
+      #lightgreen:Redirect to\nItem Edit Page;
+      stop
+    endif
+  fork again
+    #lightblue:if (Add New Item Clicked?) then (yes)
+      #lightgreen:Redirect to\nAdd New Item Page;
+      stop
+    endif
+  fork again
+    #lightblue:if (Orders List Clicked?) then (yes)
+      #lightgreen:Redirect to\nOrder List Page;
+      stop
+    endif
+  fork again
+    #lightblue:if (Bar Chart Clicked?) then (yes)
+      #lightgreen:Redirect to\nBar Chart Page;
+      stop
+    endif
+  fork again
+    #lightblue:if (Pie Chart Clicked?) then (yes)
+      #lightgreen:Redirect to\nPie Chart Page;
+      stop
+    endif
+  end fork
+
+  #lightblue:if (Logout?) then (yes)
+    #lightyellow:System: Logout;
+    #lightgreen:Redirect to\nLanding Page;
+    stop
+  endif
+repeat while (Logged-In?)
+@enduml

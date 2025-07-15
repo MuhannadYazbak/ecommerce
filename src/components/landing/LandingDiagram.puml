@@ -1,0 +1,18 @@
+@startuml LandingDiagram
+start
+#lightgreen:landing page;
+repeat :View top 5 items;
+fork
+#lightblue:if (User clicks login) then (yes)
+    #lightgreen:User Redirect to Login page;
+    stop
+endif
+fork again
+#lightblue:if(User clicks Register) then(yes)
+    #lightgreen:User Redirected to Reigster page;
+    stop
+endif
+end fork
+repeat while(User login or Register) is (no)
+kill
+@enduml

@@ -1,32 +1,33 @@
 @startuml CartDiagram
 start
-:User clicks Cart Icon;
-:Load Cart Items;
+#lightgreen:User clicks Cart Icon;
+#lightyellow:Load Cart Items;
 
-if (Cart is Empty?) then (Yes)
-    :Show "Your cart is empty";
-    :Display Back Button;
-    if (Click Back?) then (Yes)
-        :Redirect to Home Page;
+#lightyellow:if (Cart is Empty?) then (Yes)
+    #lightyellow:Show "Your cart is empty";
+    #lightyellow:Display Back Button;
+    #lightblue:if (Click Back?) then (Yes)
+        #lightgreen:Redirect to Home Page;
+        stop
     endif
 else (No)
-    :Display Cart Items with Checkboxes;
-    :Show "Back" and "Checkout" Buttons;
-    
-    repeat
-        if (User selects items?) then (Yes)
-            if (Clicks "Checkout Selected"?) then (Yes)
-                :Proceed to Checkout Page;
+    #lightyellow:Display Cart Items with Checkboxes;
+    #lightyellow:Show "Back" and "Checkout" Buttons;
+    endif
+    repeat :View Cart;
+        fork
+        #lightblue:if (User selects items?) then (Yes)
+            #lightblue:if (Clicks "Checkout Selected"?) then (Yes)
+                #lightgreen:Proceed to Checkout Page;
                 stop
             endif
         endif
-        
-        if (Clicks "Back"?) then (Yes)
-            :Redirect to Home Page;
+        fork again
+        #lightblue:if (Clicks "Back"?) then (Yes)
+            #lightgreen:Redirect to Home Page;
             stop
         endif
-    repeat while (User observes items?) is (No)
-endif
+        end fork
+    repeat while (User observes items?) is (yes)
 
-stop
 @enduml

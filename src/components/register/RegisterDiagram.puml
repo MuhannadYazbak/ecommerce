@@ -1,34 +1,24 @@
 @startuml RegisterDiagram
-skinparam backgroundColor #ffffff
-skinparam activity {
-    backgroundColor<<user>> #00bfffff
-    backgroundColor<<system>> #f0f05aff
-    BorderColor black
-    FontColor black
-}
-
 start
-
-repeat
-  
-  :User: Reigster Page;
-  :User: Create Credentials;
-
-  if (User clicks Back?) then (yes)
-    :System: Redirect to Landing Page;
+#lightgreen:Reigster Page;
+repeat :Create Credentials;
+fork
+  #lightblue:if (User clicks Back?) then (yes)
+    #lightgreen:Redirect to\nPrevious Page;
     stop
   endif
-
-  if (User submits credentials?) then (yes)
-    :System: System checks Auth;
-    if (Auth Successful?) then (yes)
-      :System: Redirect to Home Page;
+fork again
+  #lightblue:if (User submits credentials?) then (yes)
+    #lightyellow:System checks Auth;
+    #lightyellow:if (Auth Successful?) then (yes)
+      #lightgreen:System: Redirect to\nHome Page;
       stop
     else
-      :System: Auth Failed - Show error;
-      stop
+      #orange:Auth Failed - Show error;
+      
     endif
   endif
+  end fork
 repeat while (not submitted)
 
 @enduml

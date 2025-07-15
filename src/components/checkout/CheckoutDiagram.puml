@@ -1,0 +1,36 @@
+@startuml CheckoutDiagram
+start
+
+#lightgreen:Checkout Page;
+
+repeat
+    fork
+    #lightblue:if (Clicks Back?) then (yes)
+        #lightgreen:Redirect to Previous Page;
+        stop
+    endif
+    fork again
+    #lightblue:Fill Payment Details;
+    
+    #lightblue:if (Click "Use My Location"?) then (yes)
+        #lightyellow:Auto-fill Address Details;
+    else (no)
+        #lightblue:Manually Fills Address Details;
+    endif
+    
+    #lightblue:Clicks Submit; 
+    #lightyellow:if (Payment Processed?) then (yes)
+        #lightyellow:Show "Payment Successful";
+        #lightgreen:Redirect to Home Page;
+        stop
+    else (no)
+        #lightyellow:if (Location Access Denied?) then (yes)
+            #orange:Show "Enable Location Services";
+        elseif (Payment Declined?) then (yes)
+            #red:Show "Payment Failed";
+            end
+        endif
+    endif
+    end fork
+repeat while (Retry?) 
+@enduml

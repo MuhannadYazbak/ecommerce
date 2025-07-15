@@ -1,21 +1,25 @@
 @startuml AdminBarChatDiagram
 start
 #lightgreen:Admin Bar Chart Page;
-#lightyellow:if(Loading Data) then(fail)
-    #red:Loading failed;
-    end
-else(success)
+#lightyellow:if(Fetching Data) then(fail)
+#red:Fetching Chart\nData Failed;
+end
+else(Success)
+endif
+#lightyellow:Loading;
     repeat :View Char;
     fork
-    #lightblue:if(Bar Clicked) then(yes)
-        #lightyellow:Show tooltip;
+        #lightblue:if(Bar Clicked) then(yes)
+            #lightyellow:Show tooltip;
+        
         endif
     fork again
-    #lightblue:if(Admin Clicks Back) then(yes)
-        #lightgreen:Redirect to previous page;
-        stop
-    endif
-end fork
-repeat while(Keep viewing)
-stop
+        #lightblue:if(Admin Clicks Back) then(yes)
+            #lightgreen:Redirect to previous page;
+            stop
+        endif
+    end fork
+repeat while(Keep viewing) is (yes)
+
 @enduml
+

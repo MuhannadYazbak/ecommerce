@@ -1,0 +1,31 @@
+@startuml WishListDiagram
+start
+#lightgreen:Wishlist Page;
+#lightyellow:Load Wishlist Items;
+repeat :View WishList;
+fork
+#lightblue:if(Clicked Back) then(yes)
+    #lightgreen:Redirect to\nPrevious Page;
+    stop
+endif
+fork again
+#lightyellow:if (Wishlist is Empty?) then (Yes)
+    #lightyellow:Looks like you're not wishing\nfor anything yet.\nStart browsing and\nadd your favorites!";
+else (No)
+    #lightyellow:Display Wishlist Items with:\n- Remove Button\n- View/Purchase Button;
+    
+        fork
+        #lightblue:if (Clicks "Remove"?) then (Yes)
+            #lightyellow:Remove Item from Wishlist;
+            #lightyellow:Update Wishlist Display;
+            endif
+        fork again
+        #lightblue:if (Clicks "View/Purchase"?) then (Yes)
+            #lightgreen:Redirect to Item Page;
+            stop
+        endif
+        end fork
+endif
+end fork
+repeat while(Still viewing) is (yes)
+@enduml

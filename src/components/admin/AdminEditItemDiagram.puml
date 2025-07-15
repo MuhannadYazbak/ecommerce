@@ -1,0 +1,33 @@
+@startuml AdminEditItemDiagram
+start
+#lightgreen:Admin Item Edit Page;
+#lightyellow:System Loads Item Details;
+
+repeat :Edit Item;
+
+fork
+  #lightblue:if (Admin Changes a field?) then (yes)
+  #lightyellow:Updated field;
+  endif
+fork again
+  #lightblue:if (Admin Clicks Back?) then (yes)
+  #lightgreen:Redirect to Previous Page;
+  stop
+  endif
+end fork
+
+repeat while (No Update?)
+
+#lightblue:Admin Clicks Update;
+  repeat :System Attempts Update;
+    #lightyellow:if (Update Successful?) then (yes)
+    #lightgreen:Redirect to Admin Dashboard;
+    stop
+else (no)
+  #red:Show "Update Failed" Alert;
+  end
+  endif
+'endif
+repeat while (Retry Update?) is (yes)
+'endif
+@enduml

@@ -1,26 +1,26 @@
 @startuml ItemByIdDiagram
 start
-:Item Page;
-:Display Item Information;
+#lightgreen:Item Page;
+#lightyellow:Display Item Information;
 
 repeat
     fork
-        if (User Adjust quantity?) then (yes)
-            :Click + or -;
-            :Update quantity display;
+        #lightblue:if (User Adjust quantity?) then (yes)
+            #lightblue:Click + or -;
+            #lightyellow:Update quantity display;
         endif
     fork again
-        if (Click "Add to Cart") then (Yes)
-        :Add (Item × Quantity) to Cart;
-        if (Item in Wishlist?) then (Yes)
-            :Remove from Wishlist;
-            :Update Wishlist;
+        #lightblue:if (Click "Add to Cart") then (Yes)
+        #lightyellow:Add (Item × Quantity) to Cart;
+        #lightyellow:if (Item in Wishlist?) then (Yes)
+            #lightyellow:Remove from Wishlist;
+            #lightyellow:Update Wishlist;
         endif
-        :Show "Added to Cart" confirmation;
+        #lightyellow:Show "Added to Cart" confirmation;
         endif
     fork again
-        if (Click "Back") then (Yes)
-        :Redirect to Previous Page;
+        #lightblue:if (Click "Back") then (Yes)
+        #lightgreen:Redirect to Previous Page;
         stop
         endif
     end fork

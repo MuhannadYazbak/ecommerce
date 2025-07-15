@@ -1,14 +1,17 @@
 @startuml AdminPieChatDiagram
 start
 #lightgreen:Admin Pie Chart Page;
-#lightyellow:if(Loading Data) then(fail)
-    #red:Loading failed;
-    end
-else(success)
+#lightyellow:if(Fetching Data) then(fail)
+#red:Fetching Chart\nData Failed;
+end
+else(Success)
+endif
+#lightyellow:Loading;
     repeat :View Char;
     fork
-    #lightblue:if(Slice Clicked) then(yes)
-        #lightyellow:Show tooltip;
+        #lightblue:if(Slice Clicked) then(yes)
+            #lightyellow:Show tooltip;
+        
         endif
     fork again
     #lightblue:if(Date Chosed) then(success)
@@ -17,11 +20,13 @@ else(success)
         #lightyellow:Alert No Orders\n at chosen date;
     endif
     fork again
-    #lightblue:Admin Clicks Back;
-        #lightgreen:Redirect to previous page;
-        stop
+        #lightblue:if(Admin Clicks Back) then(yes)
+            #lightgreen:Redirect to previous page;
+            stop
+        endif
+    end fork
+repeat while(Keep viewing) is (yes)
 
-end fork
-repeat while(Keep viewing)
-stop
 @enduml
+
+

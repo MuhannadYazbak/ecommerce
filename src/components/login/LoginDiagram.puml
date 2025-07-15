@@ -1,39 +1,28 @@
-@startuml
-skinparam backgroundColor #ffffff
-skinparam activity {
-    backgroundColor<<user>> #00bfffff
-    backgroundColor<<system>> #f0f05aff
-    BorderColor black
-    FontColor black
-}
-
+@startuml LoginDiagram
 start
-
-repeat
-  
-  :User: Login Page;
-  :User: Enter Email and Password;
-
-  if (User clicks Back?) then (yes)
-    :System: Redirect to Landing Page;
+#lightgreen:Login Page;
+repeat :Enters Email and Password;
+  fork
+  #lightblue:if (User clicks Back?) then (yes)
+    #lightgreen: Redirect to\nPrevious Page;
     stop
   endif
-
-  if (User submits credentials?) then (yes)
-    :System: System checks Auth;
-    if (Auth Successful?) then (yes)
-      if (Role is User?) then (yes)
-        :System: Redirect to Home Page;
+  fork again
+  #lightblue:if (User submits credentials?) then (yes)
+    #lightyellow:System checks Auth;
+    #lightyellow:if (Auth Successful?) then (yes)
+      #lightyellow:if (Role?) then (user)
+        #lightgreen:System: Redirect to Home Page;
         stop
-      else
-        :System: Redirect to Admin Dashboard;
+      else(admin)
+        #lightgreen:System: Redirect to Admin Dashboard;
         stop
       endif
     else
-      :System: Auth Failed - Show error;
-      stop
+      #orange:Auth Failed - Show error;
     endif
   endif
+  end fork
 repeat while (not submitted)
 
 @enduml

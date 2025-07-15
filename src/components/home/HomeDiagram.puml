@@ -1,34 +1,46 @@
-@startuml
+@startuml HomeDiagram
 start
-:User at Home Page;
+#lightgreen:User's Home Page;
 
 repeat
-    :Display Items with:\n- Add to Wishlist buttons\n- View buttons\n- Search/Sort options\n- Cart/Wishlist/Orders icons;
-
-    if (Action?) then (View Item)
-        :Click "View" on item;
-        :Redirect to Item Page;
-        stop
-    elseif (Search/Sort) then (Yes)
-        :Enter search query or select sort;
-        :Update displayed items;
-    elseif (Add to Wishlist) then (Yes)
-        :Add item to Wishlist;
-        :Show confirmation;
-    elseif (Click Cart Icon) then (Yes)
-        :Redirect to Cart Page;
-        stop
-    elseif (Click Wishlist) then (Yes)
-        :Redirect to Wishlist Page;
-        stop
-    elseif (Click Orders) then (Yes)
-        :Redirect to Orders History;
-        stop
-    elseif (Click Logout) then (Yes)
-        :Logout user;
-        :Redirect to Landing Page;
+    #lightyellow:Display Items with:\n- Add to Wishlist buttons\n- View buttons\n- Search/Sort options\n- Cart/Wishlist/Orders icons;
+    fork
+    #lightblue:if (View Item\nClicked) then (yes)
+        #lightyellow:Click "View" on item;
+        #lightgreen:Redirect to Item Page;
         stop
     endif
+    fork again
+    #lightblue:if (Search/Sort) then (Yes)
+        #lightblue:Enters search query or selects sort;
+        #lightyellow:Update displayed items;
+    endif
+    fork again
+    #lightblue:if (Add to Wishlist) then (Yes)
+        #lightyellow:Add item to Wishlist;
+        #lightyellow:Show confirmation;
+    endif
+    fork again
+    #lightblue:if (Click Cart Icon) then (Yes)
+        #lightgreen:Redirect to Cart Page;
+        stop
+    endif
+    fork again
+    #lightblue:if (Click Wishlist) then (Yes)
+        #lightgreen:Redirect to Wishlist Page;
+        stop
+    endif
+    fork again
+    #lightblue:if (Click Orders) then (Yes)
+        #lightgreen:Redirect to Orders History;
+        stop
+    endif
+    fork again
+    #lightblue:if (Click Logout) then (Yes)
+        #lightyellow:Logout user;
+        #lightgreen:Redirect to Landing Page;
+        stop
+    endif
+    end fork
 repeat while (Continue Browsing?) is (Yes)
-stop
 @enduml

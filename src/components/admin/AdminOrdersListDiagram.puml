@@ -1,22 +1,49 @@
-@startuml AdminOrdersListDiagram
+' @startuml AdminOrdersListDiagram
+' start
+' #lightgreen:Admin Orders ListPage;
+' #lightyellow:if(Loading Data) then(fail)
+'     #red:Loading failed;
+'     end
+' else(success)
+'     repeat :View List;
+'     fork
+'     #lightblue:if(Order Clicked) then(yes)
+'         #lightyellow:Redirect to\nOrder Edit\nPage;
+'         stop
+'         endif
+'     fork again
+'     #lightblue:Admin Clicks Back;
+'         #lightgreen:Redirect to previous page;
+'         stop
+
+' end fork
+' repeat while(Keep viewing)
+' stop
+' @enduml
+
+
+@startuml AdminOrderListDiagram
 start
-#lightgreen:Admin Orders ListPage;
-#lightyellow:if(Loading Data) then(fail)
-    #red:Loading failed;
-    end
-else(success)
+#lightgreen:Admin Orders List Page;
+#lightyellow:if(Fetching Data) then(fail)
+#red:Failed to \nFetchOrders;
+end
+else(Success)
+endif
+#lightyellow:Loading;
     repeat :View List;
     fork
-    #lightblue:if(Order Clicked) then(yes)
-        #lightyellow:Redirect to\nOrder Edit\nPage;
-        stop
+        #lightblue:if(Order Clicked) then(yes)
+            #lightyellow:Redirect to Order\nEdit Page;
+        
         endif
     fork again
-    #lightblue:Admin Clicks Back;
-        #lightgreen:Redirect to previous page;
-        stop
+        #lightblue:if(Admin Clicks Back) then(yes)
+            #lightgreen:Redirect to previous page;
+            stop
+        endif
+    end fork
+repeat while(Keep viewing) is (yes)
 
-end fork
-repeat while(Keep viewing)
-stop
 @enduml
+
