@@ -20,11 +20,15 @@ export default function Register() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(values),
     });
+    const onFinishFailed = async(errorInfo:any) => {
+      console.warn('Validation failed:', errorInfo);
+    }
 
     const data = await res.json();
     setLoading(false);
 
     if (res.ok) {
+      console.log('Registering with:', values);
       login({ id: data.id, name: data.name, role: data.role }, data.token);
       router.push('/home');
     } else {
@@ -37,18 +41,24 @@ export default function Register() {
       <section className="w-full max-w-md" aria-labelledby="register-heading">
         <h1 id="register-heading" className="text-3xl font-bold text-blue-600 text-center mb-6">Create Your TechMart Account</h1>
 
-        <Form onFinish={onFinish} layout="vertical">
+        <Form name='register-form' onFinish={onFinish} layout="vertical">
           <Form.Item name="fullname" label="Name" rules={[{ required: true }]}>
-            <Input autoComplete="name" />
+            <Input autoComplete="name" id='register-name' />
           </Form.Item>
           <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email' }]}>
-            <Input autoComplete="email" />
+            <Input autoComplete="email" id='register-email' />
           </Form.Item>
-          <Form.Item name="password" label="Password" rules={[{ required: true }]}>
-            <Input.Password autoComplete="new-password" />
+          <Form.Item name="password" label="Password" rules={[
+            {
+              required: true,
+              pattern: /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
+              message: 'Password must be at least 8 characters, contain a capital letter and a number'
+            }
+          ]}>
+            <Input.Password autoComplete="new-password" id='register-password' />
           </Form.Item>
-          <Form.Item name="dateOfBirth" label="Date of Birth" rules={[{required: true}]}>
-            <DatePicker />
+          <Form.Item name="dateOfBirth" label="Date of Birth" rules={[{ required: true }]}>
+            <input type='date' id='register-dob' className='antd-input' />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" loading={loading} className="w-full">

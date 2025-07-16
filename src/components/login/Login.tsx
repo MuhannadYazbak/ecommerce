@@ -17,6 +17,11 @@ export default function Login() {
     })
     const [loading,setLoading] = useState(false);
 
+    function routeAfterLogin(role: string) {
+        return role === 'admin' ? '/admin/items' : '/home';
+    }
+
+
     const onFinish = async (values: User) => {
 
         setLoading(true);
@@ -36,7 +41,14 @@ export default function Login() {
         if (response.ok) {
             // Use the context login function instead of directly modifying localStorage
             login({ id: data.id, name: data.name, role: data.role }, data.token);
-            await router.push('/home'); // Wait for navigation after state update
+            await router.push(routeAfterLogin(data.role));
+
+            // login({ id: data.id, name: data.name, role: data.role }, data.token);
+            // if (data.role =='admin') {
+            //     await router.push('/admin/items');
+            // } else {
+            //     await router.push('/home');
+            // }
         } else {
             alert(`Login failed: ${data.error}`);
             setLoading(false);
@@ -53,10 +65,10 @@ export default function Login() {
                     <h1 id="login-heading" className='text-3xl font-bold text-blue-600 text-center mb-6'>Login to TechMart</h1>
                     <Form name='login-form' onFinish={onFinish} onFinishFailed={onFinishFailed} layout='vertical'>
                         <Form.Item name='email' label='Email' rules={[{ required: true }]}>
-                            <Input />
+                            <Input id='login-email' />
                         </Form.Item>
                         <Form.Item name='password' label='Password' rules={[{ required: true }]}>
-                            <Input.Password />
+                            <Input.Password id='login-password' />
                         </Form.Item>
                         <Form.Item label={null}>
                             <Button htmlType='submit' type='primary' loading={loading} className='w-full'>Login</Button>
