@@ -93,9 +93,9 @@ export default function LoggedInHome() {
         }
     };
     return (
-        <main className='container max-w-xl mx-auto' >
+        <main className=' max-w-xl mx-auto' >
 
-            <header className="flex justify-start items-center mb-6">
+            <header className="flex justify-start items-center pb-3">
                 <h1 className="md:text-3xl font-bold mb-4 text-center">
                     Welcome to Your TechMart Dashboard
                 </h1>
@@ -134,7 +134,7 @@ export default function LoggedInHome() {
             {currentItems.length > 0 ? (
                 <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                     {currentItems.map((item, index) => (
-                        <article key={`${item.id}-${index}`} className="border rounded-lg shadow-md p-4 bg-white hover:shadow-xl transition-transform hover:scale-105">
+                        <article key={`${item.id}-${index}`} className="relative border rounded-lg shadow-md p-4 bg-white hover:shadow-xl transition-transform hover:scale-105">
                             {item.quantity === 0 ? <SoldOut /> : ''}
                             <div className="flex aspect-[16/9] overflow-hidden">
                                 <Image
@@ -147,7 +147,7 @@ export default function LoggedInHome() {
                                 />
 
                             </div>
-                            <h2 className="text-xl font-semibold">{item.name}</h2>
+                            <h2 className="font-semibold">{item.name}</h2>
                             {/* <p className="text-gray-600 mb-2">{item.description}</p> */}
                             <p className="text-blue-600 font-bold text-lg">₪{item.price}</p>
                             <nav className='flex flex-row h-auto w-full'>

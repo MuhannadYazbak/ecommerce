@@ -18,7 +18,7 @@ test('🔐 User can Register with valid credentials', async ({ page }) => {
     await page.waitForSelector('h1');
     await page.fill('#register-name', 'Automation Test');
     await page.fill('#register-email', 'test@gmail.com');
-    await page.fill('#register-password', '0000');
+    await page.fill('#register-password', 'ABCdef1234');
     await page.fill('#register-dob', '2012-08-13');
     await page.click('button[type="submit"]');
     await page.waitForURL('**/home', { timeout: 7000 });
@@ -64,6 +64,29 @@ test('❌ Registration fails with already used email', async ({ page }) => {
     await page.click('button[type="submit"]');
 });
 
+test('❌ Future Date Failed Registration', async ({ page }) => {
+
+    await page.route('**/api/register', async route => {
+        const requestBody = JSON.parse(await route.request().postData() || '{}');
+            await route.fulfill({
+                status: 409,
+                contentType: 'application/json',
+                body: JSON.stringify({ error: 'Email already in use' })
+            });
+    });
+
+    await page.goto('/register');
+    await page.fill('#register-name', 'Test User');
+    await page.fill('#register-email', 'Notalready@used.com');
+    await page.fill('#register-password', 'SecureP@ssw0rd');
+    await page.fill('#register-dob', '2030-05-15');
+    await page.click('button[type="submit"]');
+    page.once('dialog', async dialog => {
+        expect(dialog.message()).toContain("Date can't be in the future.");
+        await dialog.dismiss();
+    });
+});
+
 test('🔙 Back button on Reigster page redirects to landing', async ({ page }) => {
   await page.goto('/');
   await page.click('text=register'); // assuming this triggers real navigation
@@ -74,5 +97,6 @@ test('🔙 Back button on Reigster page redirects to landing', async ({ page }) 
   await page.waitForURL('/', { timeout: 5000 }); // wait for landing page
   await expect(page).toHaveURL('/');
 });
+
 
 

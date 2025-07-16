@@ -7,4 +7,4 @@ export interface User {
     role : 'user' | 'admin'
 }
 
-export type SlimUser = Pick<User,'id' |'name' | 'role'>;
+export type SlimUser = Pick<User,'id' |'name' | 'role' | 'dateOfBirth'>;
