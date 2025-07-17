@@ -5,9 +5,9 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 
 export default function CartIcon() {
-  const { cartItems } = useCart();
+  const { cartItems, cartReady } = useCart();
   const { user } = useAuth();
-  if (!user) return null;
+  if (!user || !cartReady) return null;
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
@@ -19,7 +19,8 @@ export default function CartIcon() {
 </svg>
 
       {totalItems > 0 && (
-        <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-1.5">
+        <span aria-label="Cart Items Count"
+              className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-1.5">
           {totalItems}
         </span>
       )}

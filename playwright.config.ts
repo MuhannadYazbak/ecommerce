@@ -11,6 +11,7 @@ export default defineConfig({
     browserName: 'chromium',
     headless: true,
     trace: 'on-first-retry',
+    storageState: 'auth.json'
   },
   projects: [
     {

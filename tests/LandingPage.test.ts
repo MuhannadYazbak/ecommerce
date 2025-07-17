@@ -33,3 +33,7 @@ test('💙 Clicking register should redirect to /register page', async ({ page }
   // Assert that URL changed to /register
   await expect(page).toHaveURL(/\/register$/);
 });
+
+test.afterEach(async ({page} )=>{
+  await page.close();
+})

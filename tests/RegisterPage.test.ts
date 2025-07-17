@@ -98,5 +98,9 @@ test('🔙 Back button on Reigster page redirects to landing', async ({ page }) 
   await expect(page).toHaveURL('/');
 });
 
+test.afterEach(async ({page} )=>{
+  await page.close();
+})
+
 
 

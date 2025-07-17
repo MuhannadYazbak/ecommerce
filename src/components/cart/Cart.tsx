@@ -58,7 +58,7 @@ export default function Cart() {
                                 <article>
                                     <h2 className="text-lg font-semibold">{item.name}</h2>
                                     <p>Quantity: {item.quantity}</p>
-                                    <p>Price: {item.price.toFixed(2)}₪</p>
+                                    <p>Price: {Number(item.price).toFixed(2)}₪</p>
                                 </article>
                                 <button
                                     onClick={() => removeFromCart(item.id)}

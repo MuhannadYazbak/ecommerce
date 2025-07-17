@@ -13,10 +13,33 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const cartTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   //const [cart, setCart] = useState<CartItem[]>([]);
   const { user } = useAuth();
+  // useEffect(() => {
+  //   const stored = localStorage.getItem('cart');
+  //   if (stored) setCartItems(JSON.parse(stored));
+  // }, []);
+  const [cartReady, setCartReady] = useState(false);
   useEffect(() => {
-    const stored = localStorage.getItem('cart');
-    if (stored) setCartItems(JSON.parse(stored));
-  }, []);
+    const fetchCartFromBackend = async () => {
+      if (!user) return;
+
+      try {
+        const res = await fetch(`/api/cart/${user.id}`);
+        const data = await res.json();
+        setCartItems(data);
+        setCartItems(data.map((item: { price: any; }) => ({
+          ...item,
+          price: Number(item.price)
+        })));
+        console.log('🛒 Hydrated cart:', data);
+      } catch (err) {
+        console.error('❌ Failed to fetch cart from backend:', err);
+      } finally {
+        setCartReady(true);
+      }
+    };
+
+    fetchCartFromBackend();
+  }, [user]);
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
@@ -70,16 +93,17 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <CartContext.Provider
-  value={{
-    cartItems,
-    cartTotal,
-    addToCart,
-    removeFromCart,
-    clearCart,
-  }}
->
-  {children}
-</CartContext.Provider>
+      value={{
+        cartItems,
+        cartTotal,
+        cartReady,
+        addToCart,
+        removeFromCart,
+        clearCart,
+      }}
+    >
+      {children}
+    </CartContext.Provider>
 
     // <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
     //   {children}

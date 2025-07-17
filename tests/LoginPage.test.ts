@@ -69,6 +69,40 @@ test('🚫 Invalid login should show error alert', async ({ page }) => {
   await page.click('button[type="submit"]');
 });
 
+test('🚫 Login fails with incorrect password for valid email', async ({ page }) => {
+  await page.route('**/api/login', async route => {
+    const requestBody = JSON.parse(await route.request().postData() || '{}');
+
+    if (requestBody.email === 'user@email.com' && requestBody.password !== 'CorrectP@ss1') {
+      await route.fulfill({
+        status: 401,
+        contentType: 'application/json',
+        body: JSON.stringify({ error: 'Login Failed: Incorrect password' })
+      });
+    } else {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          id: '123',
+          name: 'Test User',
+          role: 'user',
+          token: 'mocked-token'
+        })
+      });
+    }
+  });
+
+  await page.goto('/login');
+  await page.fill('#login-email', 'user@email.com');
+  await page.fill('#login-password', 'WrongPassword123');
+  await page.click('button[type="submit"]');
+   page.once('dialog', async dialog => {
+    expect(dialog.message()).toContain('Incorrect password');
+    await dialog.dismiss();
+  });
+});
+
 test('🔙 Back button on Login page redirects to landing', async ({ page }) => {
   await page.goto('/');
   await page.click('text=login'); // assuming this triggers real navigation
@@ -79,3 +113,7 @@ test('🔙 Back button on Login page redirects to landing', async ({ page }) => 
   await page.waitForURL('/', { timeout: 5000 }); // wait for landing page
   await expect(page).toHaveURL('/');
 });
+
+test.afterEach(async ({page} )=>{
+  await page.close();
+})

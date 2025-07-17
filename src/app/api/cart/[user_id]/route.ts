@@ -28,3 +28,14 @@ export async function DELETE(req: NextRequest, { params }: { params: { user_id: 
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
+
+export async function GET(req: NextRequest, { params }: { params: { user_id: string } }) {
+  const userId = Number(params.user_id)
+  try {
+    const pool = getPool();
+    const [rows] = await pool.query('SELECT * FROM cart_items where user_id = ?',[userId]);
+    return NextResponse.json(rows);
+  } catch (err) {
+    return NextResponse.json({ error: 'Failed to fetch cart' }, { status: 500 });
+  }
+}
