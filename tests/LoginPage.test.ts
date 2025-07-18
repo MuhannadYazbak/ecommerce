@@ -16,8 +16,8 @@ test('🔐 User can log in with valid credentials', async ({ page }) => {
 
     await page.goto('/login');
     await page.waitForSelector('h1');
-    await page.fill('#login-email', 'sajrawiAmer@gmail.com');
-    await page.fill('#login-password', '1212');
+    await page.fill('#login-email', 'user@test.com');
+    await page.fill('#login-password', 'User@passs01');
     await page.click('button[type="submit"]');
 
     await expect(page).toHaveURL('/home');
@@ -39,8 +39,8 @@ test('🔐 Admin can log in with valid credentials', async ({ page }) => {
 
     await page.goto('/login');
     await page.waitForSelector('h1');
-    await page.fill('#login-email', 'yazbakm@gmail.com');
-    await page.fill('#login-password', '123');
+    await page.fill('#login-email', 'admin@test.com');
+    await page.fill('#login-password', 'Admin-1234');
     await page.click('button[type="submit"]');
     await page.waitForURL('**/admin/items', { timeout: 7000 });
     //await expect(page).toHaveURL('/admin/items');

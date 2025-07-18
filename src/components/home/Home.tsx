@@ -130,8 +130,8 @@ export default function LoggedInHome() {
                     </div>
                 </div>
                 <nav aria-label="User actions" className="flex gap-4" role='cart&wish'>
-                    <button className='bg-yellow-500 hover:bg-yellow-600 text-white rounded ml-4' onClick={() => router.push('/orders')}>Orders History</button>
-                    <button className='bg-green-300 hover:bg-green-500 text-black rounded ml-4' onClick={() => router.push('/wish')}>Wishlist</button>
+                    <button aria-label='Orders History' className='bg-yellow-500 hover:bg-yellow-600 text-white rounded ml-4' onClick={() => router.push('/orders')}>Orders History</button>
+                    <button aria-label='WishList' className='bg-green-300 hover:bg-green-500 text-black rounded ml-4' onClick={() => router.push('/wish')}>Wishlist</button>
                 </nav>
             </section>
             {currentItems.length > 0 ? (

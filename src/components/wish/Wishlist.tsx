@@ -103,9 +103,12 @@ export default function WishList() {
       
       {wishlist.length === 0 ? (
         <section className='relative'>
-        <h2 className="text-center text-gray-600 italic">
+        <h2 aria-label='Empty Wishlist' className="text-center text-gray-600 italic">
           Looks like you're not wishing for anything yet. Start browsing and add your favorites!
         </h2>
+        <nav className="w-full flex justify-center mt-8" aria-label='Go-Back'>
+            <BackButton />
+          </nav>
         </section>
       ) : (
         <section className="space-y-6">

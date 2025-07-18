@@ -66,6 +66,9 @@ export default function OrderHistory() {
         <section aria-label="no-orders-heading">
           <h2 id="no-orders-heading" className="text-lg font-medium mb-2">Order History</h2>
           <p>No orders found.</p>
+          <nav className="w-full flex justify-center mt-8" aria-label='Go-Back'>
+            <BackButton />
+          </nav>
         </section>
       ) : (
         <section aria-labelledby="orders-list-heading" className="space-y-6">
