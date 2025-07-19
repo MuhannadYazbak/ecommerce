@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 const testUserId = '123';
 test.beforeEach(async ({ page }) => {
   // Clears all previous routes
-  await page.unroute('**'); 
+  await page.unroute('**');
 
   await page.goto('http://host.docker.internal:3000/home');
 });
@@ -47,7 +47,7 @@ test('❤️ Clicking Wish adds item to wishlist and shows feedback', async ({ p
 });
 
 test('🛒 Cart loads from backend after login', async ({ page }) => {
-  
+
   await page.route(`**/api/cart/${testUserId}`, async route => {
     await route.fulfill({
       status: 200,
@@ -148,7 +148,7 @@ test('💙 Clicking on Orders History and verifying real data', async ({ page, r
 });
 
 test('💙 Clicking on View Item and verifying real data', async ({ page, request }) => {
-  
+
 
   // Navigate to /item/[item_id]
   const ViewDetailsButton = page.locator('text=View Details').first();
@@ -164,15 +164,38 @@ test('💙 Clicking on View Item and verifying real data', async ({ page, reques
   //console.log('🧠 Real Orders History data:', data);
   console.log('🧠 Item name:', data.name);
   expect(data.name).toBeDefined(); // Optional safety check
-  
-    // Assert correct item was rendered
-    await expect(page.locator('#item-heading')).toHaveText(data.name);
-    // const item = page.locator('#item-heading');
-    // await expect(item).toHaveText(data.name);
 
-  
+  // Assert correct item was rendered
+  await expect(page.locator('#item-heading')).toHaveText(data.name);
+  // const item = page.locator('#item-heading');
+  // await expect(item).toHaveText(data.name);
+
+
 
   // Go back to home
   await page.click('text=Back');
   await expect(page).toHaveURL(/\/home$/);
+});
+
+test('Search keyword and validate results', async ({ page }) => {
+  await page.fill('input[placeholder="Search"]', 'phone');
+  await page.press('input[placeholder="Search"]', 'Enter');
+  const productTitles = await page.$$eval('.product-title', items =>
+    items.map(i => i.textContent?.toLowerCase()));
+
+  expect(productTitles).toContain('iphone');
+});
+
+test('Sort and validate sorted correctly', async ({ page }) => {
+  await page.selectOption('select#sort', 'price-asc');
+  const prices = await page.$$eval('.product-price', els =>
+    els.map(el => parseFloat(el.textContent!.replace('$', '')))
+  );
+  for (let i = 0; i < prices.length - 1; i++) {
+    expect(prices[i]).toBeLessThanOrEqual(prices[i + 1]);
+  }
+});
+
+test.afterEach(async({page})=>{
+  await page.close();
 });
