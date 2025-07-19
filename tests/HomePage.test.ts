@@ -176,3 +176,26 @@ test('💙 Clicking on View Item and verifying real data', async ({ page, reques
   await page.click('text=Back');
   await expect(page).toHaveURL(/\/home$/);
 });
+
+test('Search keyword and validate results', async ({ page }) => {
+  await page.fill('input[placeholder="Search"]', 'phone');
+  await page.press('input[placeholder="Search"]', 'Enter');
+  const productTitles = await page.$$eval('.product-title', items =>
+    items.map(i => i.textContent?.toLowerCase()));
+
+  expect(productTitles).toContain('iphone');
+});
+
+test('Sort and validate sorted correctly', async ({ page }) => {
+  await page.selectOption('select#sort', 'price-asc');
+  const prices = await page.$$eval('.product-price', els =>
+    els.map(el => parseFloat(el.textContent!.replace('$', '')))
+  );
+  for (let i = 0; i < prices.length - 1; i++) {
+    expect(prices[i]).toBeLessThanOrEqual(prices[i + 1]);
+  }
+});
+
+test.afterEach(async({page})=>{
+  await page.close();
+});
