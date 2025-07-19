@@ -15,6 +15,7 @@
     "bcryptjs": "^3.0.2",
     "chart.js": "^4.5.0",
     "dayjs": "^1.11.13",
+    "dotenv": "^17.2.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.1",
     "next": "15.3.3",

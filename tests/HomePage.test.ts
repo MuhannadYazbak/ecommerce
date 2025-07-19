@@ -177,24 +177,36 @@ test('💙 Clicking on View Item and verifying real data', async ({ page, reques
   await expect(page).toHaveURL(/\/home$/);
 });
 
-test('Search keyword and validate results', async ({ page }) => {
-  await page.fill('input[placeholder="Search"]', 'phone');
-  await page.press('input[placeholder="Search"]', 'Enter');
-  const productTitles = await page.$$eval('.product-title', items =>
-    items.map(i => i.textContent?.toLowerCase()));
+test('💙 Search for phone and validate results include iphone', async ({ page }) => {
+  await page.getByLabel('search keyword').fill('phone');
+  await page.getByLabel('search keyword').press('Enter');
 
-  expect(productTitles).toContain('iphone');
+  // Target the actual product name inside h2
+  const productTitles = await page.$$eval('h2.font-semibold', items =>
+    items.map(i => i.textContent?.toLowerCase().trim() || '')
+  );
+
+  console.log('🔍 Found product titles:', productTitles);
+  //Assert having the right item name included
+  const matchFound = productTitles.some(title => title.includes('iphone'));
+  expect(matchFound).toBe(true);
 });
 
-test('Sort and validate sorted correctly', async ({ page }) => {
-  await page.selectOption('select#sort', 'price-asc');
-  const prices = await page.$$eval('.product-price', els =>
-    els.map(el => parseFloat(el.textContent!.replace('$', '')))
+
+test('💙 Sort by price low to high and validate results are sorted', async ({ page }) => {
+  await page.getByLabel('sort results').selectOption('price-low-high');
+  //await page.selectOption('select#sort', 'price-low-high');
+  const prices = await page.$$eval('p.text-blue-600.font-bold.text-lg', els =>
+    els.map(el => parseFloat(el.textContent!.replace('₪', '')))
   );
   for (let i = 0; i < prices.length - 1; i++) {
     expect(prices[i]).toBeLessThanOrEqual(prices[i + 1]);
   }
 });
+
+test('💙 logut',async({page})=>{
+  
+})
 
 test.afterEach(async({page})=>{
   await page.close();

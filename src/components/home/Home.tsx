@@ -107,12 +107,14 @@ export default function LoggedInHome() {
                 <input
                     type="text"
                     placeholder="Search products..."
+                    aria-label='search keyword'
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="border border-gray-300 rounded px-4 py-2 w-full sm:w-64"
                 />
                 <div className="relative w-full sm:w-48">
                     <select
+                        aria-label='sort results'
                         value={sortOption}
                         onChange={(e) => setSortOption(e.target.value as SortOption)}
                         className="block appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500"
