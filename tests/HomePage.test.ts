@@ -2,9 +2,9 @@ import { test, expect } from '@playwright/test';
 const testUserId = '123';
 test.beforeEach(async ({ page }) => {
   // Clears all previous routes
-  await page.unroute('**'); 
+  await page.unroute('**');
 
-  await page.goto('/home');
+  await page.goto('http://host.docker.internal:3000/home');
 });
 
 test('🛍️ Home page displays items after login', async ({ page }) => {
@@ -47,7 +47,7 @@ test('❤️ Clicking Wish adds item to wishlist and shows feedback', async ({ p
 });
 
 test('🛒 Cart loads from backend after login', async ({ page }) => {
-  
+
   await page.route(`**/api/cart/${testUserId}`, async route => {
     await route.fulfill({
       status: 200,
@@ -59,7 +59,7 @@ test('🛒 Cart loads from backend after login', async ({ page }) => {
     });
   });
 
-  await page.goto('/home');
+  await page.goto('http://host.docker.internal:3000/home');
 
   //await page.waitForTimeout(5000);
 
@@ -148,7 +148,7 @@ test('💙 Clicking on Orders History and verifying real data', async ({ page, r
 });
 
 test('💙 Clicking on View Item and verifying real data', async ({ page, request }) => {
-  
+
 
   // Navigate to /item/[item_id]
   const ViewDetailsButton = page.locator('text=View Details').first();
@@ -164,13 +164,13 @@ test('💙 Clicking on View Item and verifying real data', async ({ page, reques
   //console.log('🧠 Real Orders History data:', data);
   console.log('🧠 Item name:', data.name);
   expect(data.name).toBeDefined(); // Optional safety check
-  
-    // Assert correct item was rendered
-    await expect(page.locator('#item-heading')).toHaveText(data.name);
-    // const item = page.locator('#item-heading');
-    // await expect(item).toHaveText(data.name);
 
-  
+  // Assert correct item was rendered
+  await expect(page.locator('#item-heading')).toHaveText(data.name);
+  // const item = page.locator('#item-heading');
+  // await expect(item).toHaveText(data.name);
+
+
 
   // Go back to home
   await page.click('text=Back');
