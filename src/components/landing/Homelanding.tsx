@@ -12,7 +12,7 @@ export default function HomeLanding() {
   const [top5, setTop5] = useState<OrderItem[]>([]);
 
   const fetchTop5 = async () => {
-    const res = await fetch('/api/top5');
+    const res = await fetch('api/top5');
     const json = await res.json();
     const parsed = json.flatMap((entry: any) => entry.items_json);
     setTop5(parsed.slice(0, 5));

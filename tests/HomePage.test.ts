@@ -4,7 +4,7 @@ test.beforeEach(async ({ page }) => {
   // Clears all previous routes
   await page.unroute('**'); 
 
-  await page.goto('/home');
+  await page.goto('http://host.docker.internal:3000/home');
 });
 
 test('🛍️ Home page displays items after login', async ({ page }) => {
@@ -59,7 +59,7 @@ test('🛒 Cart loads from backend after login', async ({ page }) => {
     });
   });
 
-  await page.goto('/home');
+  await page.goto('http://host.docker.internal:3000/home');
 
   //await page.waitForTimeout(5000);
 

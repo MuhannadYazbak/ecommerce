@@ -7,6 +7,8 @@ WORKDIR /app
 # Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
+RUN npx playwright install --with-deps
+ENV CI=true
 
 # Copy the rest of the project
 COPY . .
