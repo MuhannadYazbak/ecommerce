@@ -40,7 +40,7 @@ export default function Login() {
 
         if (response.ok) {
             // Use the context login function instead of directly modifying localStorage
-            login({ id: data.id, name: data.name, role: data.role }, data.token);
+            login({ id: data.id, name: data.name, role: data.role, dateOfBirth: data.dateOfBirth }, data.token);
             await router.push(routeAfterLogin(data.role));
 
             // login({ id: data.id, name: data.name, role: data.role }, data.token);
