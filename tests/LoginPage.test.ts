@@ -1,5 +1,10 @@
 import { test, expect } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+  await page.goto('/login');
+  await page.waitForSelector('h1');
+});
+
 test('🔐 User can log in with valid credentials', async ({ page }) => {
     await page.route('**/api/login', async route => {
         await route.fulfill({
@@ -14,7 +19,6 @@ test('🔐 User can log in with valid credentials', async ({ page }) => {
         });
     });
 
-    await page.goto('http://host.docker.internal:3000/login');
     await page.waitForSelector('h1');
     await page.fill('#login-email', 'user@test.com');
     await page.fill('#login-password', 'User@passs01');
@@ -37,7 +41,6 @@ test('🔐 Admin can log in with valid credentials', async ({ page }) => {
         });
     });
 
-    await page.goto('http://host.docker.internal:3000/login');
     await page.waitForSelector('h1');
     await page.fill('#login-email', 'admin@test.com');
     await page.fill('#login-password', 'Admin-1234');
@@ -53,7 +56,6 @@ test('🚫 Invalid login should show error alert', async ({ page }) => {
       body: JSON.stringify({ error: 'Invalid credentials' })
     });
   });
-  await page.goto('http://host.docker.internal:3000/login');
   await page.waitForSelector('h1');
 
   await page.fill('#login-email', 'wronguser@example.com');
@@ -91,8 +93,6 @@ test('🚫 Login fails with incorrect password for valid email', async ({ page }
       });
     }
   });
-
-  await page.goto('http://host.docker.internal:3000/login');
   await page.fill('#login-email', 'user@email.com');
   await page.fill('#login-password', 'WrongPassword123');
   await page.click('button[type="submit"]');
@@ -103,10 +103,10 @@ test('🚫 Login fails with incorrect password for valid email', async ({ page }
 });
 
 test('🔙 Back button on Login page redirects to landing', async ({ page }) => {
-  await page.goto('http://host.docker.internal:3000/');
+  await page.goto('/');
   await page.click('text=login'); // assuming this triggers real navigation
 
-  await page.waitForURL('http://host.docker.internal:3000/login'); // confirm navigation to register
+  await page.waitForURL('/login'); // confirm navigation to register
   await page.click('text=Back'); // trigger router.back()
 
   await page.waitForURL('/', { timeout: 5000 }); // wait for landing page

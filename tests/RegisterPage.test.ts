@@ -14,7 +14,7 @@ test('🔐 User can Register with valid credentials', async ({ page }) => {
         });
     });
 
-    await page.goto('http://host.docker.internal:3000/register');
+    await page.goto('/register');
     await page.waitForSelector('h1');
     await page.fill('#register-name', 'Automation Test');
     await page.fill('#register-email', 'test@gmail.com');
@@ -50,7 +50,7 @@ test('❌ Registration fails with already used email', async ({ page }) => {
         }
     });
 
-    await page.goto('http://host.docker.internal:3000/register');
+    await page.goto('/register');
     await page.fill('#register-name', 'Test User');
     await page.fill('#register-email', 'Notalready@used.com');
     await page.fill('#register-password', 'SecureP@ssw0rd');
@@ -75,7 +75,7 @@ test('❌ Future Date Failed Registration', async ({ page }) => {
             });
     });
 
-    await page.goto('http://host.docker.internal:3000/register');
+    await page.goto('/register');
     await page.fill('#register-name', 'Test User');
     await page.fill('#register-email', 'Notalready@used.com');
     await page.fill('#register-password', 'SecureP@ssw0rd');
@@ -88,7 +88,7 @@ test('❌ Future Date Failed Registration', async ({ page }) => {
 });
 
 test('🔙 Back button on Reigster page redirects to landing', async ({ page }) => {
-  await page.goto('http://host.docker.internal:3000/');
+  await page.goto('/');
   await page.click('text=register'); // assuming this triggers real navigation
 
   await page.waitForURL('register'); // confirm navigation to register

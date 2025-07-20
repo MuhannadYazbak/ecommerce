@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test';
-
+test.beforeEach(async ({page})=>{
+  await page.goto('/');
+})
 test('💚 Landing page loads and displays top 5 items', async ({ page }) => {
-  await page.goto('http://host.docker.internal:3000/');
-  
+    
   // ✅ Check landing page URL
   await expect(page).toHaveURL(/\/$/);
   
@@ -15,8 +16,7 @@ test('💚 Landing page loads and displays top 5 items', async ({ page }) => {
 });
 
 test('💙 Clicking login should redirect to /login page', async ({ page }) => {
-  await page.goto('http://host.docker.internal:3000/');
-
+  
   // Click the "login" link by its visible text
   await page.click('text=login');
 
@@ -25,8 +25,7 @@ test('💙 Clicking login should redirect to /login page', async ({ page }) => {
 });
 
 test('💙 Clicking register should redirect to /register page', async ({ page }) => {
-  await page.goto('http://host.docker.internal:3000/');
-
+  
   // Click the "register" link by its visible text
   await page.click('text=register');
 
