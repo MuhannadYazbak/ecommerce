@@ -204,9 +204,12 @@ test('💙 Sort by price low to high and validate results are sorted', async ({ 
   }
 });
 
-test('💙 logut',async({page})=>{
-  
-})
+test('🔓 Logout redirects to landing page and clears user state', async ({ page }) => {
+  await page.waitForSelector('text=Logout');
+  await page.click('text=Logout');
+
+  await expect(page).toHaveURL(`${process.env.BASE_URL}/`);
+});
 
 test.afterEach(async({page})=>{
   await page.close();

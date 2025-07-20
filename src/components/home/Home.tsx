@@ -42,26 +42,19 @@ export default function LoggedInHome() {
                     return 0;
             }
         });
-    // Calculate total pages (if you know total items)
-    //const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-    // Or client-side pagination (if loading all items at once):
+    // Client-side pagination (if loading all items at once):
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const currentItems = filteredAndSortedItems.slice(indexOfFirstItem, indexOfLastItem);
     const totalPages = Math.ceil(filteredAndSortedItems.length / itemsPerPage);
-    // const search = (value: string) => {
-    //   sortedItems.filter(item => item.name.includes(value))
-    // }
 
     useEffect(() => {
         if (ready && !user) {
-            router.push('/login');
-        }
-        if (ready && user?.role == 'admin') {
-            router.push('/admin/items')
+            router.push('/');
         }
     }, [ready, user]);
+
 
     useEffect(() => {
         const fetchItems = async () => {
@@ -164,8 +157,8 @@ export default function LoggedInHome() {
                                 </button>
                                 <button
                                     className={`ml-4 px-1 py-1 rounded ${wishedItems.includes(item.id)
-                                            ? 'bg-pink-500 text-white'
-                                            : 'bg-gray-400 hover:bg-gray-500 text-red'
+                                        ? 'bg-pink-500 text-white'
+                                        : 'bg-gray-400 hover:bg-gray-500 text-red'
                                         }`}
                                     onClick={() => addWish(item)}
                                 >
