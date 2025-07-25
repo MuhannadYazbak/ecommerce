@@ -1,33 +1,36 @@
 @startuml AdminNewItemDiagram
+skinparam activity {
+    BackgroundColor<<repeat>> #f8d7da
+    BorderColor<<repeat>> #a94442
+    FontColor<<repeat>> black
+}
 start
-:Admin Add New Item Page;
+#lightgreen:Admin Add New Item Page;
 
-repeat 
-  :Edit Item;
+repeat :Edit Item;
   
   fork
-    if (Admin Changes a field?) then (yes)
-      :Updated field;
+    #lightblue:if (Admin Changes a field?) then (yes)
+      #Lightyellow:Updated;
     endif
   fork again
-    if (Admin Clicks Back?) then (yes)
-      :Redirect to Previous Page;
+    #lightblue:if (Admin Clicks Back?) then (yes)
+      #lightgreen:Redirect to Previous Page;
       stop
     endif
   end fork
 
 repeat while (Not Created)
 
-if (Admin Clicks Create Item?) then (yes)
+#LightBlue:Admin Clicks Create Item;
   repeat
-  :System Attempts Create;
-  if (Added Successful?) then (yes)
-    :Redirect to Admin Dashboard;
+  #LightYellow:System Attempts Create;
+  #lightyellow:if (Added Successful?) then (yes)
+    #LightGreen:Redirect to Admin Dashboard;
     stop
   else (no)
-    :Show "Creation Failed" Alert;
+    #red:Show "Creation Failed" Alert;
     end
   endif
 repeat while (Retry?)
-endif
 @enduml

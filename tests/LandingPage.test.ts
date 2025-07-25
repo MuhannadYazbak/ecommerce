@@ -1,38 +1,36 @@
 import { test, expect } from '@playwright/test';
-test.beforeEach(async ({page})=>{
-  await page.goto('/');
-})
+import { LandingPage } from './logic/LandingPage';
+
+let landingPage : LandingPage;
+
+test.beforeEach(async ({ page }) => {
+  landingPage = new LandingPage(page);
+  await landingPage.navigate();
+});
+
 test('💚 Landing page loads and displays top 5 items', async ({ page }) => {
-    
-  // ✅ Check landing page URL
+  const landingPage = new LandingPage(page);
+
   await expect(page).toHaveURL(/\/$/);
-  
-  // 💛 System renders header
-  //await expect(page.locator('h1')).toHaveText('TechMart');
-  await page.waitForSelector('h1');
-  // 📦 Check items rendering (assuming your item card class)
-  const items = page.locator('article');
-  await expect(items).toHaveCount(5);
+  await landingPage.waitForHeader();
+  const itemCount = await landingPage.getItemCards();
+  expect(itemCount).toBe(5);
 });
 
 test('💙 Clicking login should redirect to /login page', async ({ page }) => {
-  
-  // Click the "login" link by its visible text
-  await page.click('text=login');
+  const landingPage = new LandingPage(page);
 
-  // Assert that URL changed to /login
+  await landingPage.clickLogin();
   await expect(page).toHaveURL(/\/login$/);
 });
 
 test('💙 Clicking register should redirect to /register page', async ({ page }) => {
-  
-  // Click the "register" link by its visible text
-  await page.click('text=register');
+  const landingPage = new LandingPage(page);
 
-  // Assert that URL changed to /register
+  await landingPage.clickRegister();
   await expect(page).toHaveURL(/\/register$/);
 });
 
-test.afterEach(async ({page} )=>{
+test.afterEach(async ({ page }) => {
   await page.close();
-})
+});

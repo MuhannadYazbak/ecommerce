@@ -1,8 +1,12 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from './logic/LoginPage';
+
+let loginPage : LoginPage
 
 test.beforeEach(async ({ page }) => {
-  await page.goto('/login');
-  await page.waitForSelector('h1');
+  loginPage = new LoginPage(page)
+  await loginPage.navigate()
+  await loginPage.waitForHeader()
 });
 
 test('🔐 User can log in with valid credentials', async ({ page }) => {
@@ -18,11 +22,7 @@ test('🔐 User can log in with valid credentials', async ({ page }) => {
             })
         });
     });
-
-    await page.waitForSelector('h1');
-    await page.fill('#login-email', 'user@test.com');
-    await page.fill('#login-password', 'User@passs01');
-    await page.click('button[type="submit"]');
+    await loginPage.loginAs('user@test.com','User@pass01')
 
     await expect(page).toHaveURL('/home');
 });
@@ -40,11 +40,7 @@ test('🔐 Admin can log in with valid credentials', async ({ page }) => {
             })
         });
     });
-
-    await page.waitForSelector('h1');
-    await page.fill('#login-email', 'admin@test.com');
-    await page.fill('#login-password', 'Admin-1234');
-    await page.click('button[type="submit"]');
+    await loginPage.loginAs('admin@test.com', 'Admin-1234')
     await page.waitForURL('**/admin/items', { timeout: 7000 });
 });
 
@@ -56,11 +52,7 @@ test('🚫 Invalid login should show error alert', async ({ page }) => {
       body: JSON.stringify({ error: 'Invalid credentials' })
     });
   });
-  await page.waitForSelector('h1');
-
-  await page.fill('#login-email', 'wronguser@example.com');
-  await page.fill('#login-password', 'badpass');
-  await page.click('button[type="submit"]');
+  await loginPage.loginAs('wronguser@example.com', 'badpass')
   // Listen for alert triggered by failed login
   page.once('dialog', async dialog => {
     expect(dialog.message()).toContain('Login failed');
@@ -93,9 +85,7 @@ test('🚫 Login fails with incorrect password for valid email', async ({ page }
       });
     }
   });
-  await page.fill('#login-email', 'user@email.com');
-  await page.fill('#login-password', 'WrongPassword123');
-  await page.click('button[type="submit"]');
+  await loginPage.loginAs('user@email.com', 'WrongPassword123')
    page.once('dialog', async dialog => {
     expect(dialog.message()).toContain('Incorrect password');
     await dialog.dismiss();
@@ -107,7 +97,8 @@ test('🔙 Back button on Login page redirects to landing', async ({ page }) => 
   await page.click('text=login'); // assuming this triggers real navigation
 
   await page.waitForURL('/login'); // confirm navigation to register
-  await page.click('text=Back'); // trigger router.back()
+  // await page.click('text=Back'); // trigger router.back()
+  await loginPage.back()
 
   await page.waitForURL('/', { timeout: 5000 }); // wait for landing page
   await expect(page).toHaveURL('/');
