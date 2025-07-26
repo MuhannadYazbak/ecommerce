@@ -19,4 +19,8 @@ export class BasePage {
         await this.page.waitForSelector(selector);
     }
 
+    async refresh(): Promise<void> {
+        await this.page.reload(); // uses Playwright's reload for current page
+    }
+
 }

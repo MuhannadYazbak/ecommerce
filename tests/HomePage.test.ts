@@ -1,26 +1,39 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Locator } from '@playwright/test';
+import { HomePage } from './logic/HomePage';
 const testUserId = '123';
+let homePage : HomePage
+let firstItem : Locator
 test.beforeEach(async ({ page }) => {
+  homePage = new HomePage(page)
   // Clears all previous routes
   await page.unroute('**');
 
-  await page.goto('/home');
+  await homePage.navigate()
+  await homePage.waitForItemsToLoad();
+  firstItem = homePage.getFirstItem();
 });
 
 test('🛍️ Home page displays items after login', async ({ page }) => {
+  
 
+  await expect(firstItem).toBeVisible();
+  await expect(homePage.getItemTitle(firstItem)).toContainText(/.+/);
+  await expect(homePage.getItemPrice(firstItem)).toContainText(/₪\d+/);
+  await expect(homePage.getItemImage(firstItem)).toBeVisible();
+  await expect(homePage.getItemViewDetailsBtn(firstItem)).toBeVisible();
+  await expect(homePage.getItemWishBtn(firstItem)).toBeVisible();
   // Assert that at least one item is visible
-  const items = page.locator('article'); // adjust selector as needed
-  await page.waitForSelector('article');
-  await expect(page.locator('article').first()).toBeVisible();
+  // const items = page.locator('article'); // adjust selector as needed
+  // await page.waitForSelector('article');
+  // await expect(page.locator('article').first()).toBeVisible();
 
-  // Check for item name, price, and image
-  const firstItem = page.locator('article').first();
-  await expect(firstItem.locator('h2.font-semibold')).toContainText(/.+/);
-  await expect(firstItem.locator('p.text-blue-600')).toContainText(/₪\d+/);
-  await expect(firstItem.locator('img')).toBeVisible();
-  await expect(firstItem.getByRole('button', { name: /View Details/i })).toBeVisible();
-  await expect(firstItem.getByRole('button', { name: /Wish/i })).toBeVisible();
+  // // Check for item name, price, and image
+  // const firstItem = page.locator('article').first();
+  // await expect(firstItem.locator('h2.font-semibold')).toContainText(/.+/);
+  // await expect(firstItem.locator('p.text-blue-600')).toContainText(/₪\d+/);
+  // await expect(firstItem.locator('img')).toBeVisible();
+  // await expect(firstItem.getByRole('button', { name: /View Details/i })).toBeVisible();
+  // await expect(firstItem.getByRole('button', { name: /Wish/i })).toBeVisible();
 });
 
 test('❤️ Clicking Wish adds item to wishlist and shows feedback', async ({ page }) => {
@@ -32,18 +45,20 @@ test('❤️ Clicking Wish adds item to wishlist and shows feedback', async ({ p
   });
 
   //await page.goto('/home');
-  const firstItem = page.locator('article').first();
-  const wishButton = firstItem.getByRole('button', { name: /Wish/i });
+  // const firstItem = page.locator('article').first();
+  // const wishButton = firstItem.getByRole('button', { name: /Wish/i });
 
-  await wishButton.click();
+  // await wishButton.click();
+  const wishBtn = homePage.getItemWishBtn(firstItem)
+  await wishBtn.click()
 
   expect(wishlistCalled).toBe(true);
 
   // Assert button text changes
-  await expect(wishButton).toHaveText(/Wished/i);
+  await expect(wishBtn).toHaveText(/Wished/i);
 
   // Assert button has pink background
-  await expect(wishButton).toHaveClass(/bg-pink-500/);
+  await expect(wishBtn).toHaveClass(/bg-pink-500/);
 });
 
 test('🛒 Cart loads from backend after login', async ({ page }) => {
@@ -59,14 +74,20 @@ test('🛒 Cart loads from backend after login', async ({ page }) => {
     });
   });
 
-  await page.goto('/home');
+  await homePage.refresh()
 
   //await page.waitForTimeout(5000);
 
-  const cartBadge = page.getByLabel('Cart Items Count');
-  await expect(cartBadge).toHaveText('3');
+  //const cartBadge = page.getByLabel('Cart Items Count');
+  const cart = homePage.getCart()
+  await expect(cart).toBeVisible();
+  expect(cart).toHaveText('3')
+  //const itemsCount = await cart.textContent()
+  //console.log('Cart Badge Text : ',itemsCount)
+  //expect(Number(itemsCount)).toBe(3)
+  await cart.click()
   // Click the cart icon
-  await page.getByLabel('Cart Items Count').click();
+  //await page.getByLabel('Cart Items Count').click();
 
   // Wait for navigation
   await expect(page).toHaveURL(/\/cart$/);

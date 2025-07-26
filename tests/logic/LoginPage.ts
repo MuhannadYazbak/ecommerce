@@ -24,8 +24,8 @@ export class LoginPage extends BasePage {
     await this.fillEmail(email)
     await this.fillPassword(password)
     await Promise.any([
-    this.page.waitForURL(url => !url.pathname.includes('/login')),
-    this.page.locator('button[type="submit"]').click()
+      this.page.locator('button[type="submit"]').click(),
+      this.page.waitForURL(url => !url.pathname.includes('/login'))
   ]);
   }
 

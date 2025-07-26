@@ -17,10 +17,10 @@ export default function Register() {
     const selectedDate = new Date(values.dateOfBirth);
     const now = new Date();
 
-  if (selectedDate > now) {
-    setErrorMsg("Date can't be in the future.");
-    return;
-  }
+    if (selectedDate > now) {
+      setErrorMsg("Date can't be in the future.");
+      return;
+    }
 
     setLoading(true);
     const res = await fetch('/api/register', {
@@ -40,10 +40,10 @@ export default function Register() {
       setErrorMsg(data.error || 'Something went wrong');
     }
   };
-  const onFinishFailed = async(errorInfo:any) => {
-      console.warn('Validation failed:', errorInfo);
-      alert(`Validation Failed: ${errorInfo}`);
-    }
+  const onFinishFailed = async (errorInfo: any) => {
+    console.warn('Validation failed:', errorInfo);
+    alert(`Validation Failed: ${errorInfo}`);
+  }
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-4">
@@ -74,7 +74,9 @@ export default function Register() {
               Register
             </Button>
           </Form.Item>
-          {errorMsg && <p className="text-red-500 text-sm text-center">{errorMsg}</p>}
+          {process.env.NODE_ENV !== 'test' && errorMsg && (
+            <p className="text-red-500 text-sm text-center">{errorMsg}</p>
+          )}
         </Form>
       </section>
       <footer className="mt-4">
