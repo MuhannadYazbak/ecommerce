@@ -11,6 +11,11 @@ export class BasePage {
         await this.page.goto(this.url);
     }
 
+    async back() {
+        const backButton = this.page.getByText('Back')
+        await backButton.click()
+    }
+
     async getTitle(): Promise<string> {
         return this.page.title();
     }
@@ -21,6 +26,10 @@ export class BasePage {
 
     async refresh(): Promise<void> {
         await this.page.reload(); // uses Playwright's reload for current page
+    }
+
+    async logout() : Promise<void> {
+        await this.page.getByText('Logout').click()
     }
 
 }

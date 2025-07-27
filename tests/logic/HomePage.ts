@@ -48,9 +48,41 @@ export class HomePage extends BasePage {
     getItemWishBtn(item: Locator): Locator {
         return item.getByRole('button', { name: /Wish/i });
     }
-     getCart(): Locator {
+
+    getCart(): Locator {
         console.log('Located Cart is: ', this.page.getByTestId('cart-count').allInnerTexts())
         return this.page.getByTestId('cart-count')
+    }
+
+    getWishListButton(): Locator {
+        return this.page.getByLabel('WishList');
+    }
+
+    getOrdersHistoryButton(): Locator {
+        return this.page.getByLabel('Orders History')
+    }
+
+    getSearchInput(): Locator {
+        return this.page.getByLabel('search keyword')
+    }
+    async searchKeyword(keyword : string) : Promise<void> {
+        const searchInput = this.getSearchInput()
+        await searchInput.fill(keyword)
+        await searchInput.press('enter')
+    }
+
+    async getProductTitles(): Promise<string[]> {
+        return await this.page.$$eval('h2.font-semibold', items =>
+            items.map(item => item.textContent?.toLowerCase().trim() || ''))
+    }
+
+    getSortOption() : Locator {
+        return this.page.getByLabel('sort results')
+    }
+
+    async sortByOption(option : string) : Promise<void> {
+        const sort = this.getSortOption()
+        await sort.selectOption(option)
     }
 
     // getCartItemsCount(): number {
