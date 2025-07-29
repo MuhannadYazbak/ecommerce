@@ -30,7 +30,3 @@ test('💙 Clicking register should redirect to /register page', async ({ page }
   await landingPage.clickRegister();
   await expect(page).toHaveURL(/\/register$/);
 });
-
-test.afterEach(async ({ page }) => {
-  await page.close();
-});

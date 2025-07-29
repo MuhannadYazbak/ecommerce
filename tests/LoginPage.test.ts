@@ -103,7 +103,3 @@ test('🔙 Back button on Login page redirects to landing', async ({ page }) => 
   await page.waitForURL('/', { timeout: 5000 }); // wait for landing page
   await expect(page).toHaveURL('/');
 });
-
-test.afterEach(async ({page} )=>{
-  await page.close();
-})

@@ -234,7 +234,3 @@ test('🔓 Logout redirects to landing page and clears user state', async ({ pag
 
   await expect(page).toHaveURL(`${process.env.BASE_URL}/`);
 });
-
-test.afterEach(async({page})=>{
-  await page.close();
-});

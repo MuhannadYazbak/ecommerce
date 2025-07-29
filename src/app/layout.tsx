@@ -5,6 +5,7 @@ import '@ant-design/v5-patch-for-react-19';
 import Navbar from "@/components/Navbar";
 import { AuthProvider } from '@/context/AuthContext'
 import { CartProvider } from "@/context/CartContext";
+import ChatbotUI from "@/components/ChatbotUI";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,9 @@ export default function RootLayout({
           <CartProvider>
             <Navbar />
             {children}
+            <div className="fixed bottom-4 right-4 overflow-hidden z-50 shadow-lg bg-white border rounded-lg">
+  <ChatbotUI />
+</div>
           </CartProvider>
         </AuthProvider>
       </body>

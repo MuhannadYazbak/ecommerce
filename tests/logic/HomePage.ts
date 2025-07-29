@@ -76,6 +76,11 @@ export class HomePage extends BasePage {
             items.map(item => item.textContent?.toLowerCase().trim() || ''))
     }
 
+    async getProductPrices(): Promise<number[]> {
+        return await this.page.$$eval('p.text-blue-600 font-bold text-lg', items =>
+            items.map(item => Number(item.textContent)|| 0))
+    }
+
     getSortOption() : Locator {
         return this.page.getByLabel('sort results')
     }
