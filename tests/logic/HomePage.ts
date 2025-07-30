@@ -68,7 +68,7 @@ export class HomePage extends BasePage {
     async searchKeyword(keyword : string) : Promise<void> {
         const searchInput = this.getSearchInput()
         await searchInput.fill(keyword)
-        await searchInput.press('enter')
+        //await searchInput.press('enter')
     }
 
     async getProductTitles(): Promise<string[]> {

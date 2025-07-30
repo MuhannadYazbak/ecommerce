@@ -109,7 +109,7 @@ export default function ItemView({ itemId }: Props) {
 
                 <figure className="my-4">
                     <img src={item.photo} alt={`Photo of ${item.name}`} className="w-80 hover:scale-110" />
-                    <figcaption className="text-sm text-gray-500 mt-1">Image of {item.name}</figcaption>
+                    <figcaption id='item-name' className="text-sm text-gray-500 mt-1">Image of {item.name}</figcaption>
                 </figure>
 
                 <section aria-label="Description" className='relative'>

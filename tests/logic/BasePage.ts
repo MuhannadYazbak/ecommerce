@@ -12,7 +12,7 @@ export class BasePage {
     }
 
     async back() {
-        const backButton = this.page.getByText('Back')
+        const backButton = this.page.locator('#backButton')
         await backButton.click()
     }
 

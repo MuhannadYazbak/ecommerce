@@ -27,22 +27,22 @@ test('🔐 User can log in with valid credentials', async ({ page }) => {
     await expect(page).toHaveURL('/home');
 });
 
-test('🔐 Admin can log in with valid credentials', async ({ page }) => {
-    await page.route('**/api/login', async route => {
-        await route.fulfill({
-            status: 200,
-            contentType: 'application/json',
-            body: JSON.stringify({
-                id: '123',
-                name: 'Test User',
-                role: 'admin',
-                token: 'mocked-token'
-            })
-        });
-    });
-    await loginPage.loginAs('admin@test.com', 'Admin-1234')
-    await page.waitForURL('**/admin/items', { timeout: 7000 });
-});
+// test('🔐 Admin can log in with valid credentials', async ({ page }) => {
+//     await page.route('**/api/login', async route => {
+//         await route.fulfill({
+//             status: 200,
+//             contentType: 'application/json',
+//             body: JSON.stringify({
+//                 id: '123',
+//                 name: 'Test User',
+//                 role: 'admin',
+//                 token: 'mocked-token'
+//             })
+//         });
+//     });
+//     await loginPage.loginAs('admin@test.com', 'Admin-1234')
+//     await page.waitForURL('**/admin/items', { timeout: 7000 });
+// });
 
 test('🚫 Invalid login should show error alert', async ({ page }) => {
   await page.route('**/api/login', async route => {

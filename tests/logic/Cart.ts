@@ -1,5 +1,5 @@
 import { BasePage } from "./BasePage";
-import { Page, Locator } from "@playwright/test";
+import { Page, Locator, expect } from "@playwright/test";
 
 export class CartPage extends BasePage {
     private cartItems: Locator

@@ -173,8 +173,7 @@ test('💙 Clicking on View Item and verifying real data', async ({ page, reques
   const viewDetailsButton = homePage.getItemViewDetailsBtn(firstItem)
   await viewDetailsButton.click();
   await expect(page).toHaveURL('/items/1');
-  await 
-  await expect(page).toHaveURL(/\/home$/);
+  
 });
 
   // // Fetch real Item data by id from backend

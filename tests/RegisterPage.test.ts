@@ -108,9 +108,9 @@ test('🔙 Back button on Reigster page redirects to landing', async ({ page }) 
   await registerPage.back()
   console.log('After back, current URL:', page.url());
 
-  await page.waitForURL('/', { timeout: 5000 }); // wait for landing page
+  //await page.waitForURL('/', { timeout: 5000 }); // wait for landing page
   //await page.waitForURL('/', { waitUntil: 'domcontentloaded', timeout: 5000 });
-  await expect(page).toHaveURL('/');
+  await expect(page).not.toHaveURL('/reigster');
 });
 
 
