@@ -55,7 +55,7 @@ test('🚫 Invalid login should show error alert', async ({ page }) => {
   await loginPage.loginAs('wronguser@example.com', 'badpass')
   // Listen for alert triggered by failed login
   page.once('dialog', async dialog => {
-    expect(dialog.message()).toContain('Login failed');
+    expect(dialog.message()).toContain('Login failed: User not found');
     await dialog.dismiss();
   });
 
@@ -87,19 +87,23 @@ test('🚫 Login fails with incorrect password for valid email', async ({ page }
   });
   await loginPage.loginAs('user@email.com', 'WrongPassword123')
    page.once('dialog', async dialog => {
-    expect(dialog.message()).toContain('Incorrect password');
+    expect(dialog.message()).toContain('Login failed: Incorrect password');
     await dialog.dismiss();
   });
 });
 
 test('🔙 Back button on Login page redirects to landing', async ({ page }) => {
+  // Navigate to landing page
   await page.goto('/');
-  await page.click('text=login'); // assuming this triggers real navigation
 
-  await page.waitForURL('/login'); // confirm navigation to register
-  // await page.click('text=Back'); // trigger router.back()
-  await loginPage.back()
+  // Click login and wait for navigation to login page
+  await page.click('text=login');
+  await page.waitForURL('/login');
 
-  await page.waitForURL('/', { timeout: 5000 }); // wait for landing page
-  await expect(page).toHaveURL('/');
+  // Go back and wait for landing page to load
+  await loginPage.back('/')
+  await page.waitForURL('/');
+
+  // Assert that we're no longer on the login page
+  expect(page.url()).toBe('http://localhost:3000/');
 });

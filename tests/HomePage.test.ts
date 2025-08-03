@@ -68,16 +68,6 @@ test('🛒 Cart loads from backend after login', async ({ page }) => {
   await expect(page).toHaveURL(/\/cart$/);
 });
 
-  // // Assert two cart items are rendered
-  // const cartItems = page.locator('li[role="listitem"]');
-  // await expect(cartItems).toHaveCount(2);
-
-  // // Assert item names
-  // await expect(cartItems.nth(0).locator('h2')).toContainText('iPhone 15 Pro');
-  // await expect(cartItems.nth(1).locator('h2')).toContainText('MacBook Air M3');
-
-//});
-
 // test('💙 Clicking on WishList and verifying real data', async ({ page, request }) => {
 
 //   // Navigate to /wish
@@ -121,7 +111,7 @@ test('💙 Clicking WishList navigates and renders', async ({ page }) => {
   await expect(
     page.getByLabel('Empty Wishlist').or(page.locator('article').first())
   ).toBeVisible();
-  await homePage.back()
+  await homePage.back('/home')
 
   //await page.click('text=Back');
   await expect(page).toHaveURL(/\/home$/);
@@ -136,7 +126,7 @@ test('💙 Clicking on Orders History and verifying real data', async ({ page, r
    await expect(
     page.getByLabel('no-orders-heading').or(page.locator('article').first())
   ).toBeVisible();
-  await homePage.back()
+  await homePage.back('/home')
   await expect(page).toHaveURL(/\/home$/);
 });
 

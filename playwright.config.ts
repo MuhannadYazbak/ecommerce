@@ -14,6 +14,7 @@ console.log('🔧 Loaded env file:', envPath);
 console.log('🌐 BASE_URL:', process.env.BASE_URL);
 
 export default defineConfig({
+  workers: 4,
   testDir: './tests',
   timeout: 30 * 1000,
   expect: {

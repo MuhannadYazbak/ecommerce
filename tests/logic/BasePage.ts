@@ -11,10 +11,17 @@ export class BasePage {
         await this.page.goto(this.url);
     }
 
-    async back() {
-        const backButton = this.page.locator('#backButton')
-        await backButton.click()
+    async back(former: string): Promise<void> {
+        const backButton = this.page.locator('#backButton');
+        await backButton.waitFor({ state: 'visible' });
+        await backButton.click();
+        await this.page.waitForURL(former);
     }
+
+    // async back() {
+    //     const backButton = this.page.locator('#backButton')
+    //     await backButton.click()
+    // }
 
     async getTitle(): Promise<string> {
         return this.page.title();

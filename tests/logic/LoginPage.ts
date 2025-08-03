@@ -29,8 +29,8 @@ export class LoginPage extends BasePage {
   ]);
   }
 
-  async back() : Promise<void> {
-    const backBtn = this.page.locator('text=back')
-    await backBtn.click()
-  }
+  // async back() : Promise<void> {
+  //   const backBtn = this.page.locator('text=back')
+  //   await backBtn.click()
+  // }
 }
