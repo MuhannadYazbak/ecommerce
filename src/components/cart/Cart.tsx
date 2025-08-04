@@ -41,14 +41,13 @@ export default function Cart() {
             </header>
 
             {cartItems.length === 0 ? (
-                <section>
+                <section role='empty cart'>
                     <p>Your cart is currently empty.</p>
-                    <button className='bg-silver text-blue-600 rounded hover:bg-gray-300' onClick={() => router.back()}>Back</button>
                 </section>
             ) : (
                 <>
                     <section role='list' className="space-y-4">
-                        {cartItems.map(((item,index) => (
+                        {cartItems.map(((item, index) => (
                             <li key={`${item.id}-${index}`} role='listitem' className="border p-4 rounded shadow flex justify-between items-center">
                                 <input
                                     type="checkbox"
@@ -72,16 +71,17 @@ export default function Cart() {
 
                     <section className="mt-6 text-right">
                         <p className="text-xl font-semibold">Total: {total.toFixed(2)}₪</p>
-                        <button className='bg-blue-500 hover:bg-blue-600 text-white rounded mr-3' disabled={selectedItems.length === 0} onClick={() => handleCheckout()}>
+                        <button id='checkout' className='bg-blue-500 hover:bg-blue-600 text-white rounded mr-3' disabled={selectedItems.length === 0} onClick={() => handleCheckout()}>
                             Checkout Selected
-                        </button>         
+                        </button>
                     </section>
-                    <footer className='w-full justify-center'>
-                       <BackButton />
-                    </footer>
+
 
                 </>
             )}
+            <footer className='w-full justify-center'>
+                <BackButton />
+            </footer>
         </main>
     );
 };

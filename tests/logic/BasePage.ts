@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import { Page, expect } from "@playwright/test";
 
 export class BasePage {
     protected readonly page: Page;
@@ -14,6 +14,7 @@ export class BasePage {
     async back(former: string): Promise<void> {
         const backButton = this.page.locator('#backButton');
         await backButton.waitFor({ state: 'visible' });
+        await expect(backButton).toBeAttached();
         await backButton.click();
         await this.page.waitForURL(former);
     }

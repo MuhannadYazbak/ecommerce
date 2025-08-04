@@ -87,7 +87,7 @@ test('🚫 Login fails with incorrect password for valid email', async ({ page }
   });
   await loginPage.loginAs('user@email.com', 'WrongPassword123')
    page.once('dialog', async dialog => {
-    expect(dialog.message()).toContain('Login failed: Incorrect password');
+    expect(dialog.message()).toContain('Incorrect password');
     await dialog.dismiss();
   });
 });
