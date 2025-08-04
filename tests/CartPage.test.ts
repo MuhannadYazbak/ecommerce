@@ -44,11 +44,57 @@ test('Mocking non-empty cart, validate', async ({ page }) => {
     const count = await cartPage.getCartItemsCount()
 
 
-    await page.screenshot({ path: 'mocked-cart.png' })
-    // const cartItems = page.locator("text=Wireless Mouse");
-    // expect(cartItems).toBeVisible()
-    // console.log('Cart have ', cartItems, 'and a total of ', count, ' items')
+    //await page.screenshot({ path: 'mocked-cart.png' })
+    //const cartItems = page.locator("text=Wireless Mouse");
+    //expect(cartItems).toBeVisible()
+    console.log('Cart have ', count, ' items')
 })
+
+test('Mocked cart validate remove item', async ({ page }) => {
+    await page.route('**/api/cart/**', route => {
+        route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify([
+                { id: '1', name: 'Wireless Mouse', quantity: 2, price: 29.99 },
+                { id: '2', name: 'Mechanical Keyboard', quantity: 1, price: 89.99 }
+            ])
+        });
+    });
+    await cartPage.refresh()
+    await page.waitForSelector('[role="listitem"]')
+    await expect(cartPage.getItemAt(0)).not.toBeNull()
+    const beforeRemoveCount = await cartPage.getCartItemsCount()
+    await cartPage.removeItemAt(0)
+    const afterRemoveCount = await cartPage.getCartItemsCount()
+    await expect(beforeRemoveCount - afterRemoveCount).toBe(1)
+    console.log('Cart have ', afterRemoveCount, ' items')
+})
+
+test('Select item and proceed to checkout', async ({ page }) => {
+    await page.route('**/api/cart/**', route => {
+        route.fulfill({
+            status: 200,
+            contentType: 'application/json',
+            body: JSON.stringify([
+                { id: '1', name: 'Wireless Mouse', quantity: 2, price: 29.99 },
+                { id: '2', name: 'Mechanical Keyboard', quantity: 1, price: 89.99 }
+            ])
+        });
+    });
+    await cartPage.refresh()
+
+    await page.waitForSelector('[role="listitem"]')
+    const count = await cartPage.getCartItemsCount()
+    expect(count).toBe(2)
+
+    // Select the first item's checkbox
+    await cartPage.clickItemCheckBoxAtIndex(0)
+    await page.screenshot({path: 'checkbox-validate.png'})
+    await cartPage.checkoutSelected()
+    // Assert navigation to checkout page with selected item
+    await expect(page).toHaveURL(/\/checkout\?selected=/);
+});
 
 test('🔙 Back button on Login page redirects to landing', async ({ page }) => {
     // Navigate to landing page
