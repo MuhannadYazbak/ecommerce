@@ -1,0 +1,4 @@
+await page.evaluate(() => {
+  const chatbot = document.querySelector('#chatbot-container');
+  if (chatbot) chatbot.style.display = 'none';
+});

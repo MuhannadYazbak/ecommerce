@@ -112,7 +112,7 @@ export default function WishList() {
           <h2 className="text-lg font-semibold mb-4">You have {wishlist.length} item(s) wished</h2>
           {wishlist.map((item,index) => (
             
-            <article key={`${item.item_id}-${index}`} className="border rounded-lg p-4 shadow-sm">
+            <article role='wishlist item' key={`${item.item_id}-${index}`} className="border rounded-lg p-4 shadow-sm">
               <div className="flex justify-between items-start mb-2">
                 <div>
                   <h3 className="font-medium">{item.item_name}</h3>
