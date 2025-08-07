@@ -32,3 +32,15 @@ body {
   stroke-linejoin:round;
   stroke-width:2px;
 }
+
+#chatbot-ui {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999; /* High enough to stay on top, but not interfere */
+  width: 300px;
+  height: 400px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  border-radius: 10px;
+}

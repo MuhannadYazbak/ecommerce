@@ -35,8 +35,8 @@ export default function RootLayout({
             <Navbar />
             {children}
             <div className="fixed bottom-4 right-4 overflow-hidden z-50 shadow-lg bg-white border rounded-lg">
-  {/* <ChatbotUI /> */}
-</div>
+              <ChatbotUI />
+            </div>
           </CartProvider>
         </AuthProvider>
       </body>
