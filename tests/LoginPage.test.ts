@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from './logic/LoginPage';
+import { annotateTest } from './utils/annotate';
 
-let loginPage : LoginPage
+let loginPage: LoginPage
 
 test.beforeEach(async ({ page }) => {
   loginPage = new LoginPage(page)
@@ -10,24 +11,26 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('🔐 User can log in with valid credentials', async ({ page }) => {
-    await page.route('**/api/login', async route => {
-        await route.fulfill({
-            status: 200,
-            contentType: 'application/json',
-            body: JSON.stringify({
-                id: '123',
-                name: 'Test User',
-                role: 'user',
-                token: 'mocked-token'
-            })
-        });
+  annotateTest({ feature: 'LoginPage' })
+  await page.route('**/api/login', async route => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        id: '123',
+        name: 'Test User',
+        role: 'user',
+        token: 'mocked-token'
+      })
     });
-    await loginPage.loginAs('user@test.com','User@pass01')
+  });
+  await loginPage.loginAs('user@test.com', 'User@pass01')
 
-    await expect(page).toHaveURL('/home');
+  await expect(page).toHaveURL('/home');
 });
 
 // test('🔐 Admin can log in with valid credentials', async ({ page }) => {
+//     annotateTest({feature: 'LoginPage'})
 //     await page.route('**/api/login', async route => {
 //         await route.fulfill({
 //             status: 200,
@@ -45,6 +48,7 @@ test('🔐 User can log in with valid credentials', async ({ page }) => {
 // });
 
 test('🚫 Invalid login should show error alert', async ({ page }) => {
+  annotateTest({ feature: 'LoginPage' })
   await page.route('**/api/login', async route => {
     await route.fulfill({
       status: 401,
@@ -59,10 +63,11 @@ test('🚫 Invalid login should show error alert', async ({ page }) => {
     await dialog.dismiss();
   });
 
-  
+
 });
 
 test('🚫 Login fails with incorrect password for valid email', async ({ page }) => {
+  annotateTest({ feature: 'LoginPage' })
   await page.route('**/api/login', async route => {
     const requestBody = JSON.parse(await route.request().postData() || '{}');
 
@@ -86,24 +91,18 @@ test('🚫 Login fails with incorrect password for valid email', async ({ page }
     }
   });
   await loginPage.loginAs('user@email.com', 'WrongPassword123')
-   page.once('dialog', async dialog => {
+  page.once('dialog', async dialog => {
     expect(dialog.message()).toContain('Incorrect password');
     await dialog.dismiss();
   });
 });
 
 test('🔙 Back button on Login page redirects to landing', async ({ page }) => {
-  // Navigate to landing page
+  annotateTest({ feature: 'LoginPage' })
   await page.goto('/');
-
-  // Click login and wait for navigation to login page
   await page.click('text=login');
   await page.waitForURL('/login');
-
-  // Go back and wait for landing page to load
   await loginPage.back('/')
   await page.waitForURL('/');
-
-  // Assert that we're no longer on the login page
   expect(page.url()).toBe('http://localhost:3000/');
 });

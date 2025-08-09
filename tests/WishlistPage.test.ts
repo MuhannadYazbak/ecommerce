@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { WishlistPage } from './logic/Wishlist'
+import { annotateTest } from './utils/annotate';
 
 let wishlistPage: WishlistPage
 
@@ -21,12 +22,9 @@ let wishlist = [
 test.use({ storageState: 'auth.json' });
 
 
-// test.beforeEach(async ({ page }) => {
-//     wishlistPage = new WishlistPage(page)
-//     await wishlistPage.navigate()
-// });
 
 test('should display heading and check if wishlist is empty', async ({ page }) => {
+    annotateTest({ feature: 'WishlistPage' })
     wishlistPage = new WishlistPage(page)
     await wishlistPage.navigate()
     const headingText = await wishlistPage.getHeadingText();
@@ -40,7 +38,7 @@ test('should display heading and check if wishlist is empty', async ({ page }) =
 });
 
 test('should display correct number of wishlist items', async ({ page }) => {
-
+    annotateTest({ feature: 'WishlistPage' })
     await page.route('**/api/wish?userId=123', async route => {
         console.log('✅ Route triggered:', route.request().method(), route.request().url());
         const url = new URL(route.request().url());
@@ -68,6 +66,7 @@ test('should display correct number of wishlist items', async ({ page }) => {
 });
 
 test('should allow viewing an item from wishlist', async ({ page }) => {
+    annotateTest({ feature: 'WishlistPage' })
     await page.route('**/api/wish?userId=123', async route => {
         await route.fulfill({
             status: 200,
@@ -94,6 +93,7 @@ test('should allow viewing an item from wishlist', async ({ page }) => {
 
 
 test('should allow removing an item from wishlist', async ({ page }) => {
+    annotateTest({ feature: 'WishlistPage' })
     await page.route('**/api/wish?userId=123', async route => {
         const method = route.request().method();
 
@@ -126,8 +126,6 @@ test('should allow removing an item from wishlist', async ({ page }) => {
     await page.waitForFunction(() => {
         return document.querySelectorAll('[role="wishlist item"]').length === 1;
     }, { timeout: 3000 });
-
-    //await wishlistPage.refresh();
     await wishlistPage.waitForItems();
     await page.screenshot({ path: 'wishlist-after-remove.png' })
     const newCount = await wishlistPage.getWishlistCount();

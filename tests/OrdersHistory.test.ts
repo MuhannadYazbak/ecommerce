@@ -1,10 +1,12 @@
 import { OrdersHistoryPage } from "./logic/OrdersHistory";
 import { test, expect } from '@playwright/test'
-import { Order, OrderItem } from "@/types/order";
+import { Order } from "@/types/order";
+import { annotateTest } from "./utils/annotate";
 
 let ordersHistoryPage: OrdersHistoryPage
 
 test('Orders history initial test', async ({ page }) => {
+    annotateTest({ feature: 'OrdersHistoryPage' })
     await page.route('**/api/orders?userId=123', async route => {
         const mockOrders: Order[] = [
             {
@@ -72,6 +74,7 @@ test('Orders history initial test', async ({ page }) => {
 })
 
 test('Orders history shows empty state when no orders exist', async ({ page }) => {
+    annotateTest({ feature: 'OrdersHistoryPage' })
     ordersHistoryPage = new OrdersHistoryPage(page)
     await ordersHistoryPage.navigate()
 

@@ -25,7 +25,7 @@ export default function HomeLanding() {
   return (
     <main className="p-6">
       <header className="text-center mb-4">
-        <h1 className="text-4xl font-bold text-red-500">TechMart</h1>
+        <h1 id='header' className="text-4xl font-bold text-red-500">TechMart</h1>
         <h2 className="text-xl mt-2">Welcome, Customer!</h2>
         <p className="mt-2 text-gray-700">
           TechMart is your ultimate e-commerce destination for top-notch gadgets and electronics.

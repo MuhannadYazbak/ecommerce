@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { CheckoutPage } from './logic/CheckoutPage'
 import { PaymentDetails } from '@/types/payment';
 import { Address } from '@/types/address';
+import { annotateTest } from './utils/annotate';
 
 let checkoutPage: CheckoutPage;
 
@@ -24,6 +25,7 @@ const mockAddress: Address = {
 test.use({ storageState: 'auth.json' });
 
 test('should navigate to checkout and display form fields', async ({ page }) => {
+  annotateTest({ feature: 'CheckoutPage' })
   checkoutPage = new CheckoutPage(page, selectedItems);
   await checkoutPage.navigate();
 
@@ -35,6 +37,7 @@ test('should navigate to checkout and display form fields', async ({ page }) => 
 });
 
 test('should fill payment and address details', async ({ page }) => {
+  annotateTest({ feature: 'CheckoutPage' })
   checkoutPage = new CheckoutPage(page, selectedItems);
   await checkoutPage.navigate();
 
@@ -47,6 +50,7 @@ test('should fill payment and address details', async ({ page }) => {
 });
 
 test('should allow using location and submitting checkout', async ({ page }) => {
+  annotateTest({ feature: 'CheckoutPage' })
   checkoutPage = new CheckoutPage(page, selectedItems);
   await checkoutPage.navigate();
 
@@ -63,6 +67,7 @@ test('should allow using location and submitting checkout', async ({ page }) => 
 });
 
 test('should complete full checkout flow and verify payment success', async ({ page }) => {
+  annotateTest({ feature: 'CheckoutPage' })
   // Mock address submission
   await page.route('**/api/address', async route => {
     const addressPayload = await route.request().postDataJSON();
@@ -122,4 +127,5 @@ test('should complete full checkout flow and verify payment success', async ({ p
 
   await page.screenshot({ path: 'checkout-complete.png' });
   console.log('✅ Full checkout flow completed and verified');
+
 });

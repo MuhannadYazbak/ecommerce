@@ -1,28 +1,24 @@
-import { Page, expect } from "@playwright/test";
+import { Page, expect, Locator } from "@playwright/test";
 
 export class BasePage {
     protected readonly page: Page;
     protected readonly url: string
+    protected readonly backButton: Locator
     constructor(page: Page, url: string) {
         this.page = page;
         this.url = url;
+        this.backButton = this.page.locator('#backButton');
     }
     async navigate() {
         await this.page.goto(this.url);
     }
 
     async back(former: string): Promise<void> {
-        const backButton = this.page.locator('#backButton');
-        await backButton.waitFor({ state: 'visible' });
-        await expect(backButton).toBeAttached();
-        await backButton.click();
+        await this.backButton.waitFor({ state: 'visible' });
+        await expect(this.backButton).toBeAttached();
+        await this.backButton.click();
         await this.page.waitForURL(former);
     }
-
-    // async back() {
-    //     const backButton = this.page.locator('#backButton')
-    //     await backButton.click()
-    // }
 
     async getTitle(): Promise<string> {
         return this.page.title();
@@ -36,8 +32,15 @@ export class BasePage {
         await this.page.reload(); // uses Playwright's reload for current page
     }
 
-    async logout() : Promise<void> {
+    async logout(): Promise<void> {
         await this.page.getByText('Logout').click()
+    }
+
+    async getCurrentURL(): Promise<string> {
+        return this.page.url();
+    }
+    async waitForLoad(): Promise<void> {
+        await this.page.waitForLoadState('networkidle');
     }
 
 }

@@ -2,10 +2,14 @@ import { BasePage } from "./BasePage";
 import { Page, Locator, expect } from "@playwright/test";
 
 export class CartPage extends BasePage {
-    private cartItems: Locator
+    readonly cartItems: Locator
+    readonly emptyCart : Locator
+    readonly checkoutButton: Locator
     constructor(page: Page) {
         super(page, '/cart')
         this.cartItems = page.locator("section[role='list'] > li[role='listitem']")
+        this.emptyCart = this.page.locator("text=Your cart is currently empty.")
+        this.checkoutButton = this.page.locator('#checkout')
     }
 
     async getCartItemsCount(): Promise<number>{
@@ -13,9 +17,8 @@ export class CartPage extends BasePage {
     }
 
     async isCartEmpty(): Promise<boolean> {
-        const locator = this.page.locator("text=Your cart is currently empty.");
-        await locator.waitFor({ state: 'visible' }); // Wait until it's visible
-        return await locator.isVisible();
+        await this.emptyCart.waitFor({ state: 'visible' }); // Wait until it's visible
+        return await this.emptyCart.isVisible();
     }
 
     async getDifferentItemsCount(): Promise<number> {
@@ -44,12 +47,11 @@ export class CartPage extends BasePage {
     }
 
     async isCheckoutEnabled(): Promise<boolean> {
-        const checkoutButton = this.page.locator('#checkout');
-        return await checkoutButton.isEnabled();
+        return await this.checkoutButton.isEnabled();
     }
 
     async checkoutSelected() : Promise<void> {
-        await this.page.locator('#checkout').click()
+        await this.checkoutButton.click()
     }
 
 }

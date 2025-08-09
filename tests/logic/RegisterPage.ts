@@ -1,32 +1,44 @@
-import { Page, expect } from '@playwright/test';
+import { Locator, Page, expect } from '@playwright/test';
 import { BasePage } from './BasePage'
 
 export class RegisterPage extends BasePage {
+    readonly h1: Locator
+    readonly nameLocator: Locator
+    readonly emailLocator: Locator
+    readonly passwordLocator: Locator
+    readonly dobLocator: Locator
+    readonly submitButton: Locator
     constructor(page: Page) {
         super(page, '/register')
+        this.h1 = page.locator('h1:has-text("Create")')
+        this.nameLocator = page.locator('#register-name')
+        this.emailLocator = page.locator('#register-email')
+        this.passwordLocator = page.locator('#register-password')
+        this.dobLocator = page.locator('#register-dob')
+        this.submitButton = this.page.locator('button[type="submit"]')
     }
 
     async waitForHeader(): Promise<void> {
-        await this.waitForSelector('h1:has-text("Create")')
+        await this.h1.waitFor({ state: 'visible' });
     }
 
     async fillName(name: string): Promise<void> {
-        const nameInput = this.page.locator('#register-name');
+        const nameInput = this.nameLocator
         await nameInput.fill(name)
     }
 
     async fillEmail(email: string): Promise<void> {
-        const emailInput = this.page.locator('#register-email');
+        const emailInput = this.emailLocator
         await emailInput.fill(email)
     }
 
     async fillPassword(password: string): Promise<void> {
-        const passwordInput = this.page.locator('#register-password')
+        const passwordInput = this.passwordLocator
         await passwordInput.fill(password)
     }
 
     async fillDOB(dob: Date): Promise<void> {
-        const dobInput = this.page.locator('#register-dob');
+        const dobInput = this.dobLocator
         await dobInput.fill(dob.toISOString().split('T')[0])
     }
 
@@ -35,14 +47,7 @@ export class RegisterPage extends BasePage {
         await this.fillEmail(email)
         await this.fillPassword(password)
         await this.fillDOB(dob)
-        await Promise.any([
-            this.page.locator('button[type="submit"]').click(),
-            this.page.waitForURL(url => !url.pathname.includes('/register'))
-        ]);
+        await this.submitButton.click(),
+            await this.page.waitForURL(url => !url.pathname.includes('/register'))
     }
-
-    // async back(): Promise<void> {
-    //     const backBtn = this.page.locator('text=back')
-    //     await backBtn.click()
-    // }
 }

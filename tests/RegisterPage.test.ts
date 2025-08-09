@@ -1,14 +1,16 @@
 import { test, expect } from '@playwright/test';
 import { RegisterPage } from './logic/RegisterPage';
+import { annotateTest } from './utils/annotate';
 
-let registerPage : RegisterPage
+let registerPage: RegisterPage
 
-test.beforeEach(async ({ page })=>{
+test.beforeEach(async ({ page }) => {
     registerPage = new RegisterPage(page)
     await registerPage.navigate()
 })
 
 test('🔐 User can Register with valid credentials', async ({ page }) => {
+    annotateTest({ feature: 'RegisterPage' })
     await page.route('**/api/register', async route => {
         await route.fulfill({
             status: 200,
@@ -27,7 +29,7 @@ test('🔐 User can Register with valid credentials', async ({ page }) => {
 });
 
 test('❌ Registration fails with already used email', async ({ page }) => {
-
+    annotateTest({ feature: 'RegisterPage' })
     await page.route('**/api/register', async route => {
         const requestBody = JSON.parse(await route.request().postData() || '{}');
 
@@ -56,19 +58,17 @@ test('❌ Registration fails with already used email', async ({ page }) => {
         expect(dialog.message()).toContain('Something went wrong');
         await dialog.dismiss();
     });
-
-    
 });
 
 test('❌ Future Date Failed Registration', async ({ page }) => {
-
+    annotateTest({ feature: 'RegisterPage' })
     await page.route('**/api/register', async route => {
         const requestBody = JSON.parse(await route.request().postData() || '{}');
-            await route.fulfill({
-                status: 409,
-                contentType: 'application/json',
-                body: JSON.stringify({ error: 'Email already in use' })
-            });
+        await route.fulfill({
+            status: 409,
+            contentType: 'application/json',
+            body: JSON.stringify({ error: 'Email already in use' })
+        });
     });
     await registerPage.registerAs('Test User', 'Notalready@used.com', 'SecureP@ssw0rd', new Date("2030-05-15"))
     page.once('dialog', async dialog => {
@@ -78,17 +78,14 @@ test('❌ Future Date Failed Registration', async ({ page }) => {
 });
 
 test('🔙 Back button on Reigster page redirects to landing', async ({ page }) => {
-  await page.goto('/');
-  await page.click('text=register'); // assuming this triggers real navigation
+    annotateTest({ feature: 'RegisterPage' })
+    await page.goto('/');
+    await page.click('text=register');
 
-  await page.waitForURL('/register'); // confirm navigation to register
-  //await page.click('text=Back'); // trigger router.back()
-  await registerPage.back('/')
-  console.log('After back, current URL:', page.url());
-
-  //await page.waitForURL('/', { timeout: 5000 }); // wait for landing page
-  //await page.waitForURL('/', { waitUntil: 'domcontentloaded', timeout: 5000 });
-  await expect(page.url()).toBe('http://localhost:3000/');
+    await page.waitForURL('/register');
+    await registerPage.back('/')
+    console.log('After back, current URL:', page.url());
+    await expect(page.url()).toBe('http://localhost:3000/');
 });
 
 

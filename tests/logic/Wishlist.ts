@@ -22,28 +22,6 @@ export class WishlistPage extends BasePage {
         return await this.heading.textContent() ?? '';
     }
 
-    // async waitForItems(): Promise<void> {
-    //     const count = await this.wishlistItems.count();
-    //     console.log('📦 Wishlist item count:', count);
-
-    //     if (count > 0) {
-    //         await this.wishlistItems.first().waitFor({ state: 'visible', timeout: 2000 });
-    //     } else {
-    //         console.log('📭 No wishlist items to wait for');
-    //     }
-    // }
-
-    // async waitForItems(): Promise<Locator| null> {
-    //     const count = await this.wishlistItems.count()
-    //     if (count > 0){
-    //         const firstItem = await this.wishlistItems.first()
-    //         return  firstItem
-    //     } else {
-    //         console.log('📭 No wishlist items to wait for')
-    //         return null
-    //     }
-    // }
-
     async waitForItems(timeout = 3000): Promise<Locator | null> {
         try {
             await this.page.waitForSelector('[role="wishlist item"]', {
@@ -55,7 +33,6 @@ export class WishlistPage extends BasePage {
         } catch (err) {
             console.log('📭 No wishlist items appeared within timeout');
             return null
-            //throw new Error('❌ Wishlist items did not render');
         }
     }
 
