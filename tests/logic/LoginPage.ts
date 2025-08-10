@@ -8,7 +8,7 @@ export class LoginPage extends BasePage {
   readonly submitButton: Locator
   constructor(page: Page) {
     super(page, '/login')
-    this.header = page.locator('h1')
+    this.header = page.locator('#login-heading')
     this.emailLocator = page.locator('#login-email')
     this.passwordLocator = page.locator('#login-password')
     this.submitButton = page.locator('button[type="submit"]')
@@ -28,10 +28,13 @@ export class LoginPage extends BasePage {
     await passwordInput.fill(password)
   }
 
-  async loginAs(email: string, password: string): Promise<void> {
-    await this.fillEmail(email)
-    await this.fillPassword(password)
-    await this.submitButton.click(),
-    await this.page.waitForURL(url => !url.pathname.includes('/login'))
+  async loginAs(email: string, password: string, shouldRedirect = true) {
+    await this.fillEmail(email);
+    await this.fillPassword(password);
+    await this.submitButton.click();
+
+    if (shouldRedirect) {
+      await this.page.waitForURL(url => !url.pathname.includes('/login'));
+    }
   }
 }

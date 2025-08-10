@@ -70,7 +70,7 @@ test('❌ Future Date Failed Registration', async ({ page }) => {
             body: JSON.stringify({ error: 'Email already in use' })
         });
     });
-    await registerPage.registerAs('Test User', 'Notalready@used.com', 'SecureP@ssw0rd', new Date("2030-05-15"))
+    await registerPage.registerAs('Test User', 'Notalready@used.com', 'SecureP@ssw0rd', new Date("2030-05-15"), false)
     page.once('dialog', async dialog => {
         expect(dialog.message()).toContain("Date can't be in the future.");
         await dialog.dismiss();

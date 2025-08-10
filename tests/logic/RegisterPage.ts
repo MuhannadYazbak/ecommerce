@@ -10,7 +10,7 @@ export class RegisterPage extends BasePage {
     readonly submitButton: Locator
     constructor(page: Page) {
         super(page, '/register')
-        this.h1 = page.locator('h1:has-text("Create")')
+        this.h1 = page.locator('#register-heading')
         this.nameLocator = page.locator('#register-name')
         this.emailLocator = page.locator('#register-email')
         this.passwordLocator = page.locator('#register-password')
@@ -42,12 +42,14 @@ export class RegisterPage extends BasePage {
         await dobInput.fill(dob.toISOString().split('T')[0])
     }
 
-    async registerAs(name: string, email: string, password: string, dob: Date): Promise<void> {
+    async registerAs(name: string, email: string, password: string, dob: Date, shouldRedirect = true): Promise<void> {
         await this.fillName(name)
         await this.fillEmail(email)
         await this.fillPassword(password)
         await this.fillDOB(dob)
-        await this.submitButton.click(),
+        await this.submitButton.click()
+        if (shouldRedirect){
             await this.page.waitForURL(url => !url.pathname.includes('/register'))
+        }
     }
 }

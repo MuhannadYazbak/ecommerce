@@ -6,7 +6,6 @@ import { Locator, Page } from "@playwright/test";
 export class ItemPage extends BasePage {
     item: Item;
     readonly itemHeading: Locator
-    readonly h1: Locator
     readonly itemName: Locator
     readonly itemPhoto: Locator
     readonly itemDescription: Locator
@@ -21,7 +20,6 @@ export class ItemPage extends BasePage {
         super(page, `${process.env.BASE_URL}/items/${item.id}`);
         this.item = item;
         this.itemHeading = this.page.locator('#item-heading')
-        this.h1 = this.page.locator('h1')
         this.itemName = this.page.locator('#item-name')
         this.itemPhoto = this.page.locator(`img[alt="Photo of ${this.item.name}"]`)
         this.itemDescription = this.page.locator(`text="${this.item.description}"`)
@@ -40,7 +38,7 @@ export class ItemPage extends BasePage {
     }
 
     async waitForItemsToLoad(): Promise<void> {
-        await this.h1.waitFor({ state: 'visible' });
+        await this.itemHeading.waitFor({ state: 'visible' });
     }
 
     async getName() : Promise<Locator> {

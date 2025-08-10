@@ -161,7 +161,14 @@ test('💙 Sort by price low to high and validate results are sorted', async ({ 
 });
 
 test('🔓 Logout redirects to landing page and clears user state', async ({ page }) => {
-  annotateTest({ feature: 'HomePage' })
-  await homePage.logout()
+  annotateTest({ feature: 'HomePage' });
+
+  const homePage = new HomePage(page); // Re-initialize here
+  await homePage.logout();
+
+  await page.waitForURL(`${process.env.BASE_URL}/`);
   await expect(page).toHaveURL(`${process.env.BASE_URL}/`);
+
+  const userData = await page.evaluate(() => localStorage.getItem('user'));
+  expect(userData).toBeNull();
 });

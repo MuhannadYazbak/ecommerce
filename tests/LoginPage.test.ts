@@ -56,7 +56,7 @@ test('🚫 Invalid login should show error alert', async ({ page }) => {
       body: JSON.stringify({ error: 'Invalid credentials' })
     });
   });
-  await loginPage.loginAs('wronguser@example.com', 'badpass')
+  await loginPage.loginAs('wronguser@example.com', 'badpass',false)
   // Listen for alert triggered by failed login
   page.once('dialog', async dialog => {
     expect(dialog.message()).toContain('Login failed: User not found');
@@ -90,7 +90,7 @@ test('🚫 Login fails with incorrect password for valid email', async ({ page }
       });
     }
   });
-  await loginPage.loginAs('user@email.com', 'WrongPassword123')
+  await loginPage.loginAs('user@email.com', 'WrongPassword123',false)
   page.once('dialog', async dialog => {
     expect(dialog.message()).toContain('Incorrect password');
     await dialog.dismiss();

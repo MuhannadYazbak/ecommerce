@@ -1,0 +1,37 @@
+📦 Address payload: { city: 'Haifa', street: '123 Test Street', postalcode: '12345' }
+💳 Payment payload: {
+  cardNumber: '4111111111111111',
+  expiryMonth: '12',
+  expiryYear: '2026',
+  cvv: '123',
+  name: 'Muhannad Tester',
+  total: 0,
+  items: []
+}
+🧾 Order payload: {
+  userId: '123',
+  name: 'Test User',
+  total: 0,
+  items: [],
+  date: '2025-08-10T08:21:11.593Z',
+  addressId: 'addr_12345'
+}
+📦 Address payload: { city: 'Haifa', street: '123 Test Street', postalcode: '12345' }
+💳 Payment payload: {
+  cardNumber: '4111111111111111',
+  expiryMonth: '12',
+  expiryYear: '2026',
+  cvv: '123',
+  name: 'Muhannad Tester',
+  total: 0,
+  items: []
+}
+🧾 Order payload: {
+  userId: '123',
+  name: 'Test User',
+  total: 0,
+  items: [],
+  date: '2025-08-10T08:21:11.682Z',
+  addressId: 'addr_12345'
+}
+✅ Full checkout flow completed and verified

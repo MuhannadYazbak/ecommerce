@@ -39,7 +39,7 @@ export default function ChatbotUI() {
   }
 
   const sendMessage = async () => {
-    const response = await fetch('http://localhost:3001/chat', {
+    const response = await fetch(`${process.env.CHAT_URL}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: newMessage }),

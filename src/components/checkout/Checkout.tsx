@@ -64,7 +64,7 @@ export default function Checkout() {
     const addressId = addressData.id; // assuming your API returns the new address ID
 
     // 2️⃣ Then continue with payment
-    const paymentRes = await fetch('http://localhost:3001/pay', {
+    const paymentRes = await fetch(`${process.env.MOCKOON_URL}/pay`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -5,7 +5,7 @@ type Params = { params: { id: string } };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   try {
-    const res = await fetch(`http://localhost:3000/api/items/${params.id}`);
+    const res = await fetch(`${process.env.BASE_URL}/api/items/${params.id}`);
     const item = await res.json();
     console.log('Metadata response: ', item);
 

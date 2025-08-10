@@ -62,7 +62,7 @@ export async function PUT(
     }
 
     try {
-      const res = await fetch(`http://localhost:3000/api/admin/join/${orderId}`, {
+      const res = await fetch(`${process.env.BASE_URL}/api/admin/join/${orderId}`, {
   method: 'GET',
 });
 const data = await res.json();
