@@ -96,7 +96,6 @@ test('🔙 Back button on Cart page redirects to landing', async ({ page }) => {
 
     // Go back and wait for landing page to load
     await cartPage.back('/home')
-    await page.waitForURL('/home');
 
     // Assert that we're no longer on the login page
     await expect(page.url()).toBe(`${process.env.BASE_URL}/home`);

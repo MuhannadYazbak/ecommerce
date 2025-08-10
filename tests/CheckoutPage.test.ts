@@ -81,7 +81,7 @@ test('should complete full checkout flow and verify payment success', async ({ p
   });
 
   // Mock payment API
-  await page.route('http://localhost:3001/pay', async route => {
+  await page.route(`${process.env.MOCKOON_URL}/pay`, async route => {
     const paymentPayload = await route.request().postDataJSON();
     console.log('💳 Payment payload:', paymentPayload);
 
@@ -123,7 +123,7 @@ test('should complete full checkout flow and verify payment success', async ({ p
   await checkoutPage.submitCheckout();
 
   // Assert navigation to /home
-  await expect(page).toHaveURL(/\/home/);
+  await expect(page).toHaveURL(`${process.env.BASE_URL}/home`);
 
   await page.screenshot({ path: 'checkout-complete.png' });
   console.log('✅ Full checkout flow completed and verified');

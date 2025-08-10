@@ -6,8 +6,7 @@ import { RowDataPacket } from 'mysql2';
 import { Order } from '@/types/order';
 import { sendOrderShippedtNotification } from '@/utils/mail';
 
-
-export async function GET(request: Request, context: { params: { id: string } }) {
+export async function GET(request: NextRequest, context: { params: { id: string } }): Promise<NextResponse> {
   const { params } = context;
   const orderId = Number(params.id);
   console.log(`Hello admin, editing order ${orderId}`);
@@ -33,7 +32,7 @@ export async function GET(request: Request, context: { params: { id: string } })
 export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
-) {
+): Promise<NextResponse> {
   const orderId = Number(params.id)
   if (isNaN(orderId)) {
     return NextResponse.json({ error: 'Invalid order ID' }, { status: 400 })
@@ -63,11 +62,11 @@ export async function PUT(
 
     try {
       const res = await fetch(`${process.env.BASE_URL}/api/admin/join/${orderId}`, {
-  method: 'GET',
-});
-const data = await res.json();
-      const { fullname, email, status, items_json, total_amount, created_at} = data;
-      await sendOrderShippedtNotification({ orderId,fullname, email, status, items_json, total_amount, created_at });
+        method: 'GET',
+      });
+      const data = await res.json();
+      const { fullname, email, status, items_json, total_amount, created_at } = data;
+      await sendOrderShippedtNotification({ orderId, fullname, email, status, items_json, total_amount, created_at });
       console.log('✅ Email sent');
     } catch (emailErr) {
       console.error('❌ Email failed:', emailErr);
