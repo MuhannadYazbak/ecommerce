@@ -1,0 +1,50 @@
+# Page snapshot
+
+```yaml
+- navigation:
+  - img "Logo"
+  - heading "TechMart" [level=1]
+  - text: Please log in
+- main:
+  - heading "TechMart" [level=1]
+  - heading "Welcome, Customer!" [level=2]
+  - paragraph: TechMart is your ultimate e-commerce destination for top-notch gadgets and electronics.
+  - region "Top 5 Products":
+    - heading "Top 5 Picks for You" [level=3]
+    - button "View details for iPhone 15 Pro":
+      - img "Buy iPhone 15 Pro online at TechMart"
+      - heading "iPhone 15 Pro" [level=4]
+      - paragraph: ₪1199
+    - button "View details for Sony Playstation 5":
+      - img "Buy Sony Playstation 5 online at TechMart"
+      - heading "Sony Playstation 5" [level=4]
+      - paragraph: ₪2240
+    - button "View details for Samsung Galaxy S24 Ultra":
+      - img "Buy Samsung Galaxy S24 Ultra online at TechMart"
+      - heading "Samsung Galaxy S24 Ultra" [level=4]
+      - paragraph: ₪1100
+    - button "View details for MacBook Air M3":
+      - img "Buy MacBook Air M3 online at TechMart"
+      - heading "MacBook Air M3" [level=4]
+      - paragraph: ₪1299
+    - button "View details for Xiaomi tab 7 pro":
+      - img "Buy Xiaomi tab 7 pro online at TechMart"
+      - heading "Xiaomi tab 7 pro" [level=4]
+      - paragraph: ₪2639
+  - paragraph:
+    - text: To enjoy full features, please
+    - link "login":
+      - /url: /login
+    - text: or
+    - link "register":
+      - /url: /register
+- heading "TechMart Chatbot" [level=1]
+- textbox "Type your message..."
+- button "Send"
+- alert: TechMart | Top Gadgets You’ll Love
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 3 Issue
+- button "Collapse issues badge":
+  - img
+```

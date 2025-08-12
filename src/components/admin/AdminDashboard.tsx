@@ -78,6 +78,7 @@ export default function AdminDashboard() {
       <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {currentItems.map((item,index) => (
           <article
+            id = 'item-article'
             key={`${item.id}-${index}`}
             className={item.quantity > 0 ? "border rounded-lg shadow-md p-4 bg-white hover:shadow-xl transition-transform hover:scale-105" : "border rounded-lg shadow-md p-4 bg-gray-400 hover:shadow-xl"}
           >

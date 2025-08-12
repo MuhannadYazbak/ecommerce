@@ -20,7 +20,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, price, description, photo } = body;
+    const { name, price, description,quantity, photo } = body;
 
     if (!name || !price || !description || !photo) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
@@ -28,8 +28,8 @@ export async function POST(req: NextRequest) {
 
     const pool = getPool();
     await pool.query(
-      `INSERT INTO itemtable (name, price, description, photo) VALUES (?, ?, ?, ?)`,
-      [name, price, description, photo]
+      `INSERT INTO itemtable (name, price, description, quantity, photo) VALUES (?, ?, ?, ?, ?)`,
+      [name, price, description,quantity, photo]
     );
 
     return NextResponse.json({ message: 'Item created' }, { status: 201 });

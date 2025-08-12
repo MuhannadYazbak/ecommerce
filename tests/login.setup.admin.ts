@@ -2,7 +2,7 @@ import { chromium } from '@playwright/test';
 import { config } from 'dotenv';
 import fs from 'fs';
 
-// Load the correct env file
+// Dynamically choose env file
 const envPath = fs.existsSync('.env.docker') && process.env.DOCKER_ENV === 'true'
   ? '.env.docker'
   : '.env.local';
@@ -22,13 +22,13 @@ config({ path: envPath });
   await page.evaluate(() => {
     localStorage.setItem('token', 'mocked-token');
     localStorage.setItem('user', JSON.stringify({
-      id: '123',
-      name: 'Test User',
-      role: 'user'
+      id: '1',
+      name: 'Admin User',
+      role: 'admin'
     }));
   });
 
-  await page.context().storageState({ path: 'auth.json' });
+  await page.context().storageState({ path: 'auth.admin.json' });
   await browser.close();
-  console.log('✅ User auth state saved to auth.json');
+  console.log('✅ Admin auth state saved to auth.admin.json');
 })();

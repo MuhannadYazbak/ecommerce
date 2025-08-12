@@ -14,6 +14,7 @@ export default function AddItem() {
     name: '',
     price: '',
     description: '',
+    quantity: '',
     photo: '',
   });
 
@@ -27,6 +28,7 @@ export default function AddItem() {
       name: form.name,
       price: parseFloat(form.price),
       description: form.description,
+      quantity: Number(form.quantity),
       photo: form.photo,
     };
 
@@ -38,6 +40,7 @@ export default function AddItem() {
       });
 
       if (res.ok) {
+        console.log('Form payload:', form);
         console.log('✅ Item added successfully');
         router.push('/admin/items');
       } else {
@@ -63,6 +66,7 @@ export default function AddItem() {
         <input name="name" placeholder="Name" value={form.name} onChange={handleChange} className="mb-2 p-2 w-full border" required />
         <input name="price" placeholder="Price" value={form.price} onChange={handleChange} type="number" className="mb-2 p-2 w-full border" required />
         <textarea name="description" placeholder="Description" value={form.description} onChange={handleChange} className="mb-2 p-2 w-full border" />
+        <input name="quantity" placeholder="Quantity" value={form.quantity} onChange={handleChange} className="mb-2 p-2 w-full border" required />
         <input name="photo" placeholder="Photo URL" value={form.photo} onChange={handleChange} className="mb-2 p-2 w-full border" />
         <button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Create Item <CreateNewItemIcon /></button>
       </section>
