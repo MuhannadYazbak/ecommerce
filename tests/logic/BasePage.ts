@@ -20,6 +20,7 @@ export class BasePage {
         await this.page.waitForURL(former);
     }
 
+
     async getTitle(): Promise<string> {
         return this.page.title();
     }
