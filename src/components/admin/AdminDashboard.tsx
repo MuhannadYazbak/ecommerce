@@ -23,19 +23,20 @@ export default function AdminDashboard() {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(items.length / itemsPerPage);
+  const [refreshTrigger, setRefreshTrigger] = useState(0)
 
   useEffect(() => {
     if (!user || user.role !== 'admin') return;
     console.log('FETCHING ITEMS !!!')
     fetchItems();
     console.log('Items: ', items)
-  }, [user]);
+  }, [user, refreshTrigger]);
   useEffect(() => {
     setCurrentPage(1);
   }, [items.length]);
 
-  const fetchItems = async () => {
-    const res = await fetch(`/api/items?page=${currentPage}&limit=${itemsPerPage}`);
+  const fetchItems = async (page = currentPage) => {
+    const res = await fetch(`/api/items?page=${page}&limit=${itemsPerPage}`);
     const data = await res.json();
     setItems(data);
   };
@@ -49,6 +50,7 @@ export default function AdminDashboard() {
         method: 'DELETE'
       });
       console.log(`🗑️ Deleted item (item_id: ${id})`);
+      setRefreshTrigger(prev => prev + 1)
     } catch (err) {
       console.error('❌ Failed to delete from backend:', err);
     }

@@ -4,8 +4,7 @@
 - navigation:
   - img "Logo"
   - heading "TechMart" [level=1]
-  - text: Hello, Admin User
-  - button "Logout"
+  - text: Please log in
 - main:
   - heading "Admin Dashboard" [level=1]
   - navigation:
@@ -23,5 +22,4 @@
 - heading "TechMart Chatbot" [level=1]
 - textbox "Type your message..."
 - button "Send"
-- alert
 ```
