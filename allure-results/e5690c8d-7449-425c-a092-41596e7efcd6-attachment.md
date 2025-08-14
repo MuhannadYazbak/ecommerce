@@ -1,0 +1,59 @@
+# Page snapshot
+
+```yaml
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 1 Issue
+- button "Collapse issues badge":
+  - img
+- navigation:
+  - button "previous" [disabled]:
+    - img "previous"
+  - text: 1/1
+  - button "next" [disabled]:
+    - img "next"
+- img
+- link "Next.js 15.3.3 (stale) Webpack":
+  - /url: https://nextjs.org/docs/messages/version-staleness
+  - img
+  - text: Next.js 15.3.3 (stale) Webpack
+- img
+- dialog "Runtime Error":
+  - text: Runtime Error
+  - button "Copy Stack Trace":
+    - img
+  - button "No related documentation found" [disabled]:
+    - img
+  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools":
+    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+    - img
+  - paragraph: "Error: \"arc\" is not a registered element."
+  - paragraph:
+    - img
+    - text: src\components\PieChart.tsx (33:9) @ ItemsPieChart
+    - button "Open in editor":
+      - img
+  - text: "31 | <div data-testid=\"pie-chart-wrapper\"> 32 | {data.length > 0 ? ( > 33 | <Pie data={chartData} /> | ^ 34 | ) : ( 35 | <p data-testid=\"empty-chart-message\" className=\"text-gray-500\"> 36 | No chart data to display."
+  - paragraph: Call Stack 12
+  - button "Show 9 ignore-listed frame(s)":
+    - text: Show 9 ignore-listed frame(s)
+    - img
+  - text: ItemsPieChart
+  - button:
+    - img
+  - text: src\components\PieChart.tsx (33:9) AdminPieChart
+  - button:
+    - img
+  - text: src\components\admin\AdminPieChart.tsx (33:44) AdminPieChartPage
+  - button:
+    - img
+  - text: src\app\admin\pieChart\page.tsx (30:10)
+- contentinfo:
+  - region "Error feedback":
+    - paragraph:
+      - link "Was this helpful?":
+        - /url: https://nextjs.org/telemetry#error-feedback
+    - button "Mark as helpful"
+    - button "Mark as not helpful"
+- 'heading "Application error: a client-side exception has occurred while loading localhost (see the browser console for more information)." [level=2]'
+```

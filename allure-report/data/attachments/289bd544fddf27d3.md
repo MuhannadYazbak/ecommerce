@@ -1,0 +1,25 @@
+# Page snapshot
+
+```yaml
+- navigation:
+  - img "Logo"
+  - heading "TechMart" [level=1]
+  - text: Hello, Test User
+  - button "Logout"
+  - link:
+    - /url: /cart
+    - img
+- main:
+  - heading "🥧 Purchased Items Breakdown" [level=1]
+  - navigation:
+    - button "Back"
+    - textbox
+    - 'heading "showing pie for $function getDate() { [native code] }" [level=2]'
+  - paragraph: No chart data available.
+- heading "TechMart Chatbot" [level=1]
+- textbox "Type your message..."
+- button "Send"
+- alert
+- button "Open Next.js Dev Tools":
+  - img
+```
