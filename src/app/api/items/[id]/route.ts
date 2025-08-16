@@ -62,6 +62,8 @@ export async function PUT(
   const { name, description, price, photo, quantity } = body
 
   if (
+    price <= 0 ||
+    quantity < 0 ||
     typeof name !== 'string' ||
     typeof description !== 'string' ||
     typeof price !== 'number' ||
