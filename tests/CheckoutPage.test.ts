@@ -44,7 +44,7 @@ test('should fill payment and address details', async ({ page }) => {
   await checkoutPage.fillPaymentDetails(mockPayment);
   await checkoutPage.fillAddressDetails(mockAddress);
 
-  await page.screenshot({ path: 'checkout-filled.png' });
+  await page.screenshot({ path: './test-screenshots/checkout-filled.png' });
 
   console.log('✅ Payment and address details filled');
 });
@@ -61,7 +61,7 @@ test('should allow using location and submitting checkout', async ({ page }) => 
   await checkoutPage.fillAddressDetails(mockAddress);
   await checkoutPage.submitCheckout();
 
-  await page.screenshot({ path: 'checkout-submitted.png' });
+  await page.screenshot({ path: './test-screenshots/checkout-submitted.png' });
 
   console.log('✅ Checkout submitted');
 });
@@ -125,7 +125,7 @@ test('should complete full checkout flow and verify payment success', async ({ p
   // Assert navigation to /home
   await expect(page).toHaveURL(`${process.env.BASE_URL}/home`);
 
-  await page.screenshot({ path: 'checkout-complete.png' });
+  await page.screenshot({ path: './test-screenshots/checkout-complete.png' });
   console.log('✅ Full checkout flow completed and verified');
 
 });

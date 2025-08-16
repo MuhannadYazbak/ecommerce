@@ -30,7 +30,7 @@ test.describe('Admin Pie Chart Page', () => {
         annotateTest({ feature: 'AdminPieChartPage' })
         await page.mouse.move(200, 200);
         await page.waitForTimeout(500); // give tooltip time to appear
-        await page.screenshot({path: 'pieChart-tooltip.png'})
+        await page.screenshot({path: './test-screenshots/pieChart-tooltip.png'})
         //await pieChartPage.clickSlice();
     });
 

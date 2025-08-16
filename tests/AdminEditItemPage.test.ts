@@ -70,7 +70,7 @@ test.describe('Admin Item Edit Page', () => {
 
     test('should load item details correctly', async ({ page }) => {
         annotateTest({ feature: 'AdminEditItemPage' });
-        await page.screenshot({ path: 'adminEditIem.png' })
+        await page.screenshot({ path: './test-screenshots/adminEditIem.png' })
         const nameInput = adminEditItemPage.itemField('name');
         await expect(nameInput).toHaveValue('Test Item');
     });
@@ -82,18 +82,6 @@ test.describe('Admin Item Edit Page', () => {
         await expect(page).toHaveURL('/admin/items');
     });
 
-    // test('should show alert on failed update', async ({ page }) => {
-    //     annotateTest({ feature: 'AdminEditItemPage' });
-    //     await adminEditItemPage.editField('price', '-999');
-    //     await adminEditItemPage.clickUpdate();
-    //     // const alertText = await adminEditItemPage.getAlertText();
-    //     // expect(alertText).toContain('Update failed');
-    //     page.once('dialog', async dialog => {
-    //         expect(dialog.message()).toContain('Update failed');
-    //         await dialog.dismiss();
-    //     });
-    // });
-
     test('should show alert on failed update', async ({ page }) => {
         annotateTest({ feature: 'AdminEditItemPage' });
 
@@ -104,9 +92,7 @@ test.describe('Admin Item Edit Page', () => {
 
         await adminEditItemPage.editField('price', '-999');
         await adminEditItemPage.clickUpdate();
-
-        // Optional: wait for some visible confirmation or navigation
-        await page.waitForTimeout(500); // buffer to keep session alive
+        await page.waitForTimeout(500);
     });
 
     test('should cancel and go back', async ({ page }) => {

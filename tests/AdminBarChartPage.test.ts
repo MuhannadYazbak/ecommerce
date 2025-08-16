@@ -9,7 +9,7 @@ test('Bar chart loads and displays correctly', async ({ page }) => {
   chartPage = new AdminBarChartPage(page);
   await chartPage.navigate();
   await chartPage.waitForChart();
-  await page.screenshot({path: 'barchart.png'})
+  await page.screenshot({path: './test-screenshots/barchart.png'})
   expect(await chartPage.heading.isVisible()).toBeTruthy();
   expect(await chartPage.isChartVisible()).toBeTruthy();
 
@@ -31,7 +31,7 @@ test('Tooltip appears on bar hover', async ({ page }) => {
   await page.mouse.move(canvasBox.x + canvasBox.width / 2, canvasBox.y + canvasBox.height / 2);
   await page.waitForTimeout(500); 
 
-  await page.screenshot({ path: 'tooltip-hover.png' });
+  await page.screenshot({ path: './test-screenshots/tooltip-hover.png' });
 });
 
 test('Chart is responsive to viewport changes', async ({ page }) => {

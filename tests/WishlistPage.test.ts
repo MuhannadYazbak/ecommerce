@@ -84,7 +84,7 @@ test('should allow viewing an item from wishlist', async ({ page }) => {
     await wishlistPage.navigate()
     await wishlistPage.waitForItems()
     if (!(await wishlistPage.isWishlistEmpty())) {
-        await page.screenshot({ path: 'wishlist-allow-view.png' })
+        await page.screenshot({ path: './test-screenshots/wishlist-allow-view.png' })
         await wishlistPage.viewItem(0);
         await expect(page).toHaveURL(/\/items\/\d+/);
         console.log('✅ Navigated to item detail page');
@@ -116,7 +116,7 @@ test('should allow removing an item from wishlist', async ({ page }) => {
     const wishlistPage = new WishlistPage(page);
     await wishlistPage.navigate();
     await wishlistPage.waitForItems();
-    await page.screenshot({ path: 'wishlist-before-remove.png' })
+    await page.screenshot({ path: './test-screenshots/wishlist-before-remove.png' })
     const initialCount = await wishlistPage.getWishlistCount();
     console.log('🧮 Initial count:', initialCount);
     expect(initialCount).toBe(2);
@@ -127,7 +127,7 @@ test('should allow removing an item from wishlist', async ({ page }) => {
         return document.querySelectorAll('[role="wishlist item"]').length === 1;
     }, { timeout: 3000 });
     await wishlistPage.waitForItems();
-    await page.screenshot({ path: 'wishlist-after-remove.png' })
+    await page.screenshot({ path: './test-screenshots/wishlist-after-remove.png' })
     const newCount = await wishlistPage.getWishlistCount();
     console.log('🧮 New count:', newCount);
     expect(newCount).toBe(initialCount - 1);

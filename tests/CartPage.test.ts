@@ -79,7 +79,7 @@ test('Select item and proceed to checkout', async ({ page }) => {
 
     // Select the first item's checkbox
     await cartPage.clickItemCheckBoxAtIndex(0)
-    await page.screenshot({ path: 'checkbox-validate.png' })
+    await page.screenshot({ path: './test-screenshots/checkbox-validate.png' })
     await cartPage.checkoutSelected()
     // Assert navigation to checkout page with selected item
     await expect(page).toHaveURL(/\/checkout\?selected=/);

@@ -52,10 +52,10 @@ test.describe('Admin Items Dashboard', () => {
         await adminPage.navigate()
         await page.waitForSelector('#item-article')
         const totalCountBefore = await page.locator('#item-article').count();
-        await page.screenshot({ path: 'before-delete.png' })
+        await page.screenshot({ path: './test-screenshots/before-delete.png' })
         await adminPage.removeItem(0);
         await page.waitForLoadState('networkidle');
-        await page.screenshot({ path: 'after-delete.png' })
+        await page.screenshot({ path: './test-screenshots/after-delete.png' })
         const totalCountAfter = await page.locator('#item-article').count();
         expect(Number(totalCountAfter)).toBeLessThan(Number(totalCountBefore));
     });
