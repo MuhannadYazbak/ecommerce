@@ -1,5 +1,12 @@
 name: CI Pipeline
 
+env:
+  RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  NEXT_PUBLIC_LOCATIONIQ_KEY: ${{ secrets.LOCATIONIQ_KEY }}
+  JWT_SECRET: ${{ secrets.JWT_SECRET}}
+
+
 on:
   push:
     branches: [main]
@@ -62,5 +69,9 @@ jobs:
           context: .
           push: true
           tags: yazbakm/techmart:latest
-          # cache-from: type=gha
-          # cache-to: type=gha,mode=max
+          build-args: |
+            RESEND_API_KEY=${{ secrets.RESEND_API_KEY }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            LOCATIONIQ_KEY=${{ secrets.LOCATIONIQ_KEY }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
+
