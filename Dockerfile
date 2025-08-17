@@ -8,12 +8,12 @@ WORKDIR /app
 COPY .env.docker .env.docker
 COPY .env.local .env.local
 COPY package*.json ./
+COPY playwright.config.ts ./
+COPY public/ ./public/
+COPY src/ ./src/
 RUN npm install
 RUN npx playwright install --with-deps
 ENV CI=true
-
-# Copy the rest of the project
-COPY . .
 
 # Expose dev server port
 EXPOSE 3000
