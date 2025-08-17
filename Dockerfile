@@ -8,10 +8,14 @@ WORKDIR /app
 ARG RESEND_API_KEY
 ARG DB_PASSWORD
 ARG LOCATIONIQ_KEY
+ARG JWT_SECRET
+ENV RESEND_API_KEY=$RESEND_API_KEY
+ENV DB_PASSWORD=$DB_PASSWORD
+ENV LOCATIONIQ_KEY=$LOCATIONIQ_KEY
+ENV JWT_SECRET=$JWT_SECRET
+
 
 # Copy package files and install dependencies
-COPY .env.docker .env.docker
-COPY .env.local .env.local
 COPY package*.json ./
 COPY playwright.config.ts ./
 COPY public/ ./public/
