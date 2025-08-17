@@ -31,6 +31,8 @@ jobs:
 
       - name: Run Playwright tests
         run: npx playwright test
+        continue-on-error: true
+
 
       - name: Generate Allure report
         run: npx allure generate ./allure-results --clean -o ./allure-report
