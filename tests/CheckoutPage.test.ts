@@ -105,6 +105,12 @@ test('should complete full checkout flow and verify payment success', async ({ p
     await route.fulfill({ status: 200 });
   });
 
+   // Intercept alert
+  page.on('dialog', async dialog => {
+    expect(dialog.message()).toContain('Payment successful');
+    await dialog.dismiss();
+  });
+
   const selectedItems = [101, 102];
   const checkoutPage = new CheckoutPage(page, selectedItems);
   await checkoutPage.navigate();
@@ -114,11 +120,7 @@ test('should complete full checkout flow and verify payment success', async ({ p
   await checkoutPage.submitCheckout();
 
 
-  // Intercept alert
-  page.on('dialog', async dialog => {
-    expect(dialog.message()).toContain('Payment successful');
-    await dialog.dismiss();
-  });
+ 
 
   await checkoutPage.submitCheckout();
 
