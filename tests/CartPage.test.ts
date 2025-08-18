@@ -88,15 +88,13 @@ test('Select item and proceed to checkout', async ({ page }) => {
 
 test('🔙 Back button on Cart page redirects to landing', async ({ page }) => {
     annotateTest({ feature: 'CartPage' })
-    // Navigate to landing page
     const homePage = new HomePage(page)
     await homePage.navigate()
     const cartIcon = homePage.getCart()
     await cartIcon.click()
-
-    // Go back and wait for landing page to load
+    cartPage = new CartPage(page)
+    await cartPage.navigate()
+    await cartPage.waitForLoad()
     await cartPage.back('/home')
-
-    // Assert that we're no longer on the login page
-    await expect(page.url()).toBe(`${process.env.BASE_URL}/home`);
+    expect(page.url()).toBe(`${process.env.BASE_URL}/home`);
 });

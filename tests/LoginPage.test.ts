@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from './logic/LoginPage';
 import { annotateTest } from './utils/annotate';
+import { LandingPage } from './logic/LandingPage';
 
 let loginPage: LoginPage
 
@@ -99,10 +100,12 @@ test('🚫 Login fails with incorrect password for valid email', async ({ page }
 
 test('🔙 Back button on Login page redirects to landing', async ({ page }) => {
   annotateTest({ feature: 'LoginPage' })
-  await page.goto('/');
-  await page.click('text=login');
-  await page.waitForURL('/login');
+  const landingPage = new LandingPage(page)
+  await landingPage.navigate()
+  await landingPage.clickLogin()
+  loginPage = new LoginPage(page)
+  await loginPage.navigate()
+  await loginPage.waitForHeader()
   await loginPage.back('/')
-  await page.waitForURL('/');
   expect(page.url()).toBe(`${process.env.BASE_URL}/`);
 });

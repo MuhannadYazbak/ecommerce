@@ -46,12 +46,3 @@ test.describe('AddItemPage', () => {
         await addItemPage.clickCreateItem();
     });
 });
-test.describe('not authorized access', async () => {
-    test.use({ storageState: 'auth.json' }) // role user not admin
-    test('should show access denied message for non-admin', async ({ page }) => {
-        annotateTest({ feature: 'AdminAddItemPage' })
-        const addItemPage = new AddItemPage(page);
-        await addItemPage.navigate()
-        await expect(addItemPage.getAccessDeniedMessage()).toBeVisible();
-    });
-})

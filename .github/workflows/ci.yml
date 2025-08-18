@@ -4,8 +4,7 @@ env:
   RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
   NEXT_PUBLIC_LOCATIONIQ_KEY: ${{ secrets.LOCATIONIQ_KEY }}
-  JWT_SECRET: ${{ secrets.JWT_SECRET}}
-
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
 on:
   push:
@@ -36,10 +35,23 @@ jobs:
       - name: Install Allure CLI
         run: npm install -g allure-commandline --save-dev
 
+      - name: Install Mockoon CLI
+        run: npm install -g @mockoon/cli
+
+      - name: Start Mockoon on port 4000
+        run: mockoon-cli start --data ./mockoon-env.json --port 4000 --daemon
+
+      - name: Wait for Mockoon to be ready
+        run: |
+          for i in {1..10}; do
+            curl --silent http://localhost:4000/health && break
+            echo "Waiting for Mockoon..."
+            sleep 2
+          done
+
       - name: Run Playwright tests
         run: npx playwright test
         continue-on-error: true
-
 
       - name: Generate Allure report
         run: npx allure generate ./allure-results --clean -o ./allure-report
@@ -74,4 +86,3 @@ jobs:
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             LOCATIONIQ_KEY=${{ secrets.LOCATIONIQ_KEY }}
             JWT_SECRET=${{ secrets.JWT_SECRET }}
-
