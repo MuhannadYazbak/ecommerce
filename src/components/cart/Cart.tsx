@@ -3,7 +3,7 @@
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BackButton from '../ui/BackButton';
 import TrashIcon from '../ui/TrashIcon';
 
@@ -12,7 +12,13 @@ export default function Cart() {
     const { user } = useAuth();
     const router = useRouter();
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
-    const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const selectedCartItems = cartItems.filter(item => selectedItems.includes(item.item_id));
+    const total = selectedCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    
+    useEffect(() => {
+        console.log("📦 selectedItems:", selectedItems);
+    }, [selectedItems]);
+
     const toggleItem = (itemId: number) => {
         setSelectedItems(prev =>
             prev.includes(itemId)
@@ -24,8 +30,13 @@ export default function Cart() {
         if (selectedItems.length === 0 || !user?.id) return;
 
         try {
-            const itemsToCheckout = cartItems.filter(item => selectedItems.includes(item.id));
+            const itemsToCheckout = cartItems.filter(item => selectedItems.includes(item.item_id));
             console.log('Items to Checkout: ', itemsToCheckout)
+            if (selectedItems.length === 0) {
+                alert("Please select at least one item before checkout.");
+                return;
+            }
+
             router.push(`/checkout?selected=${selectedItems.join(',')}`);
         } catch (error) {
             console.error('Checkout error:', error);
@@ -46,13 +57,20 @@ export default function Cart() {
                 </section>
             ) : (
                 <>
-                    <section role='list' className="space-y-4">
+                    <ul role='list' className="space-y-4">
                         {cartItems.map(((item, index) => (
-                            <li key={`${item.id}-${index}`} role='listitem' className="border p-4 rounded shadow flex justify-between items-center">
+                            <li key={`${item.item_id} -${index}`} role='listitem' className="border p-4 rounded shadow flex justify-between items-center">
                                 <input
                                     type="checkbox"
-                                    checked={selectedItems.includes(item.id)}
-                                    onChange={() => toggleItem(item.id)}
+                                    checked={selectedItems.includes(item.item_id)}
+                                    onChange={() => {
+                                        setSelectedItems(prev =>
+                                            prev.includes(item.item_id)
+                                                ? prev.filter(id => id !== item.item_id)
+                                                : [...prev, item.item_id]
+                                        );
+                                    }}
+
                                 />
                                 <article>
                                     <h2 className="text-lg font-semibold">{item.name}</h2>
@@ -60,14 +78,14 @@ export default function Cart() {
                                     <p>Price: {Number(item.price).toFixed(2)}₪</p>
                                 </article>
                                 <button
-                                    onClick={() => removeFromCart(item.id)}
+                                    onClick={() => removeFromCart(item.item_id)}
                                     className="text-red-500 hover:underline transition-all duration-300 ease-in-out hover:shadow-md"
                                 >
                                     Remove <TrashIcon />
                                 </button>
                             </li>
                         )))}
-                    </section>
+                    </ul>
 
                     <section className="mt-6 text-right">
                         <p className="text-xl font-semibold">Total: {total.toFixed(2)}₪</p>

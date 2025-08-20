@@ -3,27 +3,31 @@ import { AdminPieChartPage } from './logic/AdminPieChartPage';
 import { AdminItemsPage } from './logic/AdminDashboardPage';
 import { annotateTest } from './utils/annotate';
 
+test.use({storageState: 'auth.admin.json'})
 test.describe('Admin Pie Chart Page', () => {
     let pieChartPage: AdminPieChartPage;
 
     test.beforeEach(async ({ page }) => {
         pieChartPage = new AdminPieChartPage(page);
         await pieChartPage.navigate();
+        //await page.waitForLoadState('networkidle')
         await pieChartPage.selectDate('2025-07-02')
         await pieChartPage.waitForChart();
     });
 
-    test('should render pie chart after loading', async () => {
+    test('should render pie chart after loading', async ({ page }) => {
         annotateTest({ feature: 'AdminPieChartPage' })
         await expect(pieChartPage.chartWrapper).toBeVisible();
+        await page.screenshot({path: './test-screenshots/new/piechart-load.png'})
     });
 
-    test('should update chart when date is changed', async () => {
+    test('should update chart when date is changed', async ({ page }) => {
         annotateTest({ feature: 'AdminPieChartPage' })
         const newDate = '2025-07-02';
         await pieChartPage.selectDate(newDate);
         await pieChartPage.waitForChart();
         await expect(pieChartPage.chartWrapper).toBeVisible();
+        await page.screenshot({path: './test-screenshots/new/piechart-dateChanged.png'})
     });
 
     test('should show tooltip when slice is clicked', async ({ page}) => {
@@ -51,6 +55,7 @@ test.describe('Admin Pie Chart Page', () => {
     test('should handle no orders for selected date', async ({ page }) => {
         annotateTest({ feature: 'AdminPieChartPage' })
         await pieChartPage.selectDate('2020-01-01'); // known empty date
+        await page.screenshot({path: './test-screenshots/new/piechart-noOrdersAtDate.png'})
         await expect(page.locator('text=No chart data available')).toBeHidden();
         await expect(page.locator('text=showing pie for $2020-01-01')).toBeVisible();
         await expect(page.locator('[data-testid="empty-chart-message"]')).toBeVisible();

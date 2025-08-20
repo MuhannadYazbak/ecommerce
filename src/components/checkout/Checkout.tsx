@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
@@ -13,11 +13,11 @@ export default function Checkout() {
   const { user } = useAuth();
   const router = useRouter();
   const token = process.env.NEXT_PUBLIC_LOCATIONIQ_KEY;
-  const searchParams = new URLSearchParams(window.location.search);
-  const selectedIds = searchParams.get('selected')?.split(',').map(id => Number(id)) || [];
+  //const searchParams = new URLSearchParams(window.location.search);
+  const [selectedIds, setSelectedIds] = useState<number[]>([])
 
   const itemsToCheckout = selectedIds.length > 0
-    ? cartItems.filter(item => selectedIds.includes(item.id))
+    ? cartItems.filter(item => selectedIds.includes(item.item_id))
     : cartItems;
   const [form, setForm] = useState({
     cardNumber: '',
@@ -31,6 +31,21 @@ export default function Checkout() {
     street: '',
     postalcode: ''
   })
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const raw = searchParams.get('selected');
+    console.log("🔍 selected param raw:", raw);
+
+    const ids = raw
+      ?.split(',')
+      .map(id => Number(id))
+      .filter(id => !isNaN(id)) || [];
+
+    console.log("🧾 parsed selectedIds:", ids);
+    setSelectedIds(ids);
+  }, []);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm(prev => ({
@@ -52,80 +67,107 @@ export default function Checkout() {
       return;
     }
 
-    // 1️⃣ First, submit address
-    const addressRes = await fetch('/api/address', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(addressForm),
-    });
+    try {
+      // 1️⃣ Submit address
+      const addressRes = await fetch('/api/address', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(addressForm),
+      });
+      const addressData = await addressRes.json();
+      const addressId = addressData.id;
 
-    const addressData = await addressRes.json();
-    console.log('addressData = ', addressData);
-    const addressId = addressData.id; // assuming your API returns the new address ID
+      // 2️⃣ Calculate total
+      const cartTotal = itemsToCheckout.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
 
-    // 2️⃣ Then continue with payment
-    const paymentRes = await fetch(`${process.env.MOCKOON_URL}/pay`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        ...form,
-        total: itemsToCheckout.reduce((sum, item) => sum + item.price * item.quantity, 0),
-        items: itemsToCheckout,
-      }),
-    });
+      // 3️⃣ Send payment request
+      const paymentRes = await fetch(`${process.env.NEXT_PUBLIC_MOCKOON_URL}/pay`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: cartTotal,
+          items: itemsToCheckout,
+        }),
+      });
+      const paymentResult = await paymentRes.json();
 
-    const paymentResult = await paymentRes.json();
-    if (paymentRes.ok) {
+      if (!paymentRes.ok || !paymentResult.success) {
+        alert('Payment failed. Try again.');
+        return;
+      }
+
+      // 4️⃣ Place the order
+      console.log("🧮 cartTotal:", cartTotal, typeof cartTotal);
+      const sanitizedItems = itemsToCheckout.map(item => ({
+        id: Number(item.item_id),
+        name: String(item.name),
+        price: Number(item.price),
+        quantity: Number(item.quantity),
+        photo: String(item.photo),
+      }));
+      const orderPayload = {
+        user_id: Number(user.id),
+        total_amount: Number(cartTotal),
+        items_json: sanitizedItems,
+        created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        status: 'Processing',
+        address_id: Number(addressId),
+        name: user.name,
+      };
+
+      const orderRes = await fetch('/api/place-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderPayload),
+      });
+      const orderResult = await orderRes.json();
+
+      if (!orderRes.ok || orderResult.error) {
+        alert('Order placement failed. Try again.');
+        return;
+      }
+
+      // 5️⃣ Final success flow
       alert('Payment successful! 🎉');
       clearCart();
       router.push('/home');
-    } else {
-      alert('Payment failed. Try again.');
+    } catch (err) {
+      console.error('❌ Checkout error:', err);
+      alert('Something went wrong. Please try again.');
     }
-
-    // 3️⃣ Finally, place the order with address ID
-    await fetch('/api/place-order', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        userId: user.id,
-        name: user.name,
-        total: itemsToCheckout.reduce((sum, item) => sum + item.price * item.quantity, 0),
-        items: itemsToCheckout,
-        date: new Date(),
-        addressId, // 🎯 send it to associate with the order
-      }),
-    });
   };
   const handleLocateMe = async () => {
-  if (!navigator.geolocation) {
-    alert('Geolocation is not supported by your browser.');
-    return;
-  }
-
-  navigator.geolocation.getCurrentPosition(async (position) => {
-    const { latitude, longitude } = position.coords;
-
-    const res = await fetch(
-      `https://us1.locationiq.com/v1/reverse?key=${token}&lat=${latitude}&lon=${longitude}&format=json`
-    );
-
-    const data = await res.json();
-
-    if (data.address) {
-      const { city, road, postcode } = data.address;
-      setAddressForm({
-        city: city || '',
-        street: road || '',
-        postalcode: postcode || '',
-      });
-    } else {
-      alert('Could not retrieve address from location.');
+    if (!navigator.geolocation) {
+      alert('Geolocation is not supported by your browser.');
+      return;
     }
-  }, () => {
-    alert('Permission denied or location unavailable.');
-  });
-};
+
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      const { latitude, longitude } = position.coords;
+
+      const res = await fetch(
+        `https://us1.locationiq.com/v1/reverse?key=${token}&lat=${latitude}&lon=${longitude}&format=json`
+      );
+
+      const data = await res.json();
+
+      if (data.address) {
+        const { city, road, postcode } = data.address;
+        setAddressForm({
+          city: city || '',
+          street: road || '',
+          postalcode: postcode || '',
+        });
+      } else {
+        alert('Could not retrieve address from location.');
+      }
+    }, () => {
+      alert('Permission denied or location unavailable.');
+    });
+  };
 
   return (
     <main className="max-w-md mx-auto mt-10 p-6 border rounded shadow">
@@ -227,6 +269,7 @@ export default function Checkout() {
 
           <button
             type="submit"
+            id='pay-now'
             className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
           >
             Pay Now

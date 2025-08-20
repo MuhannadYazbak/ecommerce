@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
 
 export async function GET(req: NextRequest, context: { params: { id: string } }) {
-  const { id } = context.params;
+  const { id } = await context.params;
 
   try {
     const pool = getPool();
@@ -53,6 +53,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  
   const itemId = Number(params.id)
   if (isNaN(itemId)) {
     return NextResponse.json({ error: 'Invalid item ID' }, { status: 400 })

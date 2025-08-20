@@ -1,2 +1,0 @@
-✅ Route triggered: GET http://localhost:3000/api/wish?userId=123
-📭 No wishlist items appeared within timeout

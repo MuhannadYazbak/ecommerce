@@ -19,6 +19,7 @@ test.describe('Admin Items Dashboard', () => {
         });
         adminPage = new AdminItemsPage(page);
         await adminPage.navigate()
+        await page.waitForLoadState('networkidle')
     });
 
     test('should navigate to new item page', async ({ page }) => {
@@ -63,24 +64,28 @@ test.describe('Admin Items Dashboard', () => {
     test('should navigate to orders list', async ({ page }) => {
         annotateTest({ feature: 'AdminDashboardPage' })
         await adminPage.goToOrdersList();
+        await page.waitForLoadState('networkidle')
         await expect(page).toHaveURL(/\/admin\/orders-list/);
     });
 
     test('should navigate to bar chart page', async ({ page }) => {
         annotateTest({ feature: 'AdminDashboardPage' })
         await adminPage.goToBarChart();
+        await page.waitForLoadState('networkidle')
         await expect(page).toHaveURL(/\/admin\/chart/);
     });
 
     test('should navigate to pie chart page', async ({ page }) => {
         annotateTest({ feature: 'AdminDashboardPage' })
         await adminPage.goToPieChart();
+        await page.waitForLoadState('networkidle')
         await expect(page).toHaveURL(/\/admin\/pieChart/);
     });
 
     test('should logout and redirect to landing page', async ({ page }) => {
         annotateTest({ feature: 'AdminDashboardPage' })
         await adminPage.logout();
+        await page.waitForLoadState('networkidle')
         await expect(page).toHaveURL(`${process.env.BASE_URL}/`);
     });
 });

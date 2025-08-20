@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import '@ant-design/v5-patch-for-react-19';
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Navbar"
 import { AuthProvider } from '@/context/AuthContext'
 import { CartProvider } from "@/context/CartContext";
 import ChatbotUI from "@/components/ChatbotUI";

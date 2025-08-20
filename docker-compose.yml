@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    command: npm run dev
+    env_file:
+      - .env.docker
+    depends_on:
+      - db
+      - mockoon
+      - chat
+
+  db:
+    image: mysql:8
+    env_file:
+      - .env.docker
+    ports:
+      - "3307:3306"
+
+  chat:
+    build:
+      context: ../techmart-rulebased-chatbot/server
+      dockerfile: Dockerfile
+    env_file:
+      - .env.docker
+    ports:
+      - "3001:3001"
+
+  mockoon:
+    image: mockoon/cli
+    env_file:
+      - .env.docker
+    command: -d /data/mockoon.json --port 4000
+    volumes:
+      - ./mockoon:/data
+    ports:
+      - "4000:4000"

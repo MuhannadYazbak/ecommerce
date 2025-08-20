@@ -47,10 +47,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   const addToCart = (item: CartItem) => {
     setCartItems(prev => {
-      const existing = prev.find(i => i.id === item.id);
+      const existing = prev.find(i => i.item_id === item.item_id);
       if (existing) {
         return prev.map(i =>
-          i.id === item.id ? { ...i, quantity: i.quantity + item.quantity } : i
+          i.item_id === item.item_id ? { ...i, quantity: i.quantity + item.quantity } : i
         );
       }
       return [...prev, item];
@@ -59,17 +59,17 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   const removeFromCart = async (id: number) => {
     // Remove from frontend first
-    setCartItems(prev => prev.filter(i => i.id !== id));
+    setCartItems(prev => prev.filter(i => i.item_id !== id));
 
     // Find the corresponding item to extract item_id
-    const item = cartItems.find(i => i.id === id);
+    const item = cartItems.find(i => i.item_id === id);
     if (!item || !user) return;
 
     try {
-      await fetch(`/api/cart/${user.id}/${item.id}`, {
+      await fetch(`/api/cart/${user.id}/${item.item_id}`, {
         method: 'DELETE'
       });
-      console.log(`🗑️ Deleted item (item_id: ${item.id}) for user ${user.id}`);
+      console.log(`🗑️ Deleted item (item_id: ${item.item_id}) for user ${user.id}`);
     } catch (err) {
       console.error('❌ Failed to delete from backend:', err);
     }

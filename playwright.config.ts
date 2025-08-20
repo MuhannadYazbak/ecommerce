@@ -10,6 +10,10 @@ const envPath = fs.existsSync('.env.docker') && process.env.DOCKER_ENV === 'true
 
 dotenv.config({ path: envPath });
 
+if(! process.env.BASE_URL) {
+    throw new Error(`❌ BASE_URL is not defined in ${envPath}`);
+}
+
 console.log('🔧 Loaded env file:', envPath);
 console.log('🌐 BASE_URL:', process.env.BASE_URL);
 
@@ -22,7 +26,8 @@ export default defineConfig({
     timeout: 5000,
   },
   use: {
-    baseURL: process.env.BASE_URL || 'http://localhost:3000',
+    baseURL: process.env.BASE_URL,
+    // || 'http://localhost:3000',
     browserName: 'chromium',
     headless: true,
     trace: 'on-first-retry',

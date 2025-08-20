@@ -6,20 +6,35 @@ import { getPool } from '@/utils/db'
 export async function POST(req: NextRequest) {
 
   try {
-    const { userId, name, total, items, date, addressId } = await req.json();
+    const { user_id, total_amount, items_json, created_at,status, address_id, name } = await req.json();
 
-    if (!userId || !Array.isArray(items) || items.length === 0) {
-      return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
-    }
-
+    if (
+  !user_id ||
+  typeof user_id !== 'number' ||
+  !Array.isArray(items_json) ||
+  items_json.length === 0 
+  // !items.every(item =>
+  //   typeof item.id === 'number' &&
+  //   typeof item.name === 'string' &&
+  //   typeof item.price === 'number' &&
+  //   typeof item.quantity === 'number' &&
+  //   typeof item.photo === 'string'
+  // )
+) {
+  console.error("❌ Invalid cart item structure:", items_json);
+  return NextResponse.json({ error: 'Invalid cart item structure' }, { status: 400 });
+}
+    //const body = await req.json()
+    console.log("📥 Received order payload:", { user_id, total_amount, items_json, created_at,status, address_id })
     const pool = getPool()
     const res = await pool.query(
-      'INSERT INTO ordertable (user_id, total_amount, items_json, address_id) VALUES (?, ?, ?, ?)',
-      [userId, total, JSON.stringify(items), addressId]
+      'INSERT INTO ordertable (user_id, total_amount, items_json, created_at, status, address_id) VALUES (?, ?, ?, ?,?,?)',
+      [user_id, total_amount, JSON.stringify(items_json),created_at,status, address_id]
     )
     console.log('Insert order res: ', res);
     try {
-      await sendCheckoutNotification({ userId, name, total, items, date });
+      console.log("📧 Calling sendCheckoutNotification...")
+      await sendCheckoutNotification({ user_id, name, total_amount, items_json, created_at });
       console.log('✅ Email sent');
     } catch (emailErr) {
       console.error('❌ Email failed:', emailErr);

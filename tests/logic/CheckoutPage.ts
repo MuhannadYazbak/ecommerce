@@ -31,7 +31,7 @@ export class CheckoutPage extends BasePage {
     this.streetInput = page.locator('input[name="street"]');
     this.postalCodeInput = page.locator('input[name="postalcode"]');
     this.locateMeButton = page.locator('button:has-text("Use My Location")');
-    this.submitButton = page.locator('button[type="submit"]');
+    this.submitButton = page.locator('#pay-now');
   }
 
   async fillPaymentDetails(details : PaymentDetails) {
@@ -54,5 +54,6 @@ export class CheckoutPage extends BasePage {
 
   async submitCheckout() {
     await this.submitButton.click();
+    //await this.page.waitForLoadState('networkidle')
   }
 }

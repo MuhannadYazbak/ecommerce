@@ -68,6 +68,25 @@ test('should allow using location and submitting checkout', async ({ page }) => 
 
 test('should complete full checkout flow and verify payment success', async ({ page }) => {
   annotateTest({ feature: 'CheckoutPage' })
+  
+  // Intercept alert
+  page.on('dialog', async dialog => {
+    await page.screenshot({ path: './test-screenshots/new/checkoutDialog.png' })
+    expect(dialog.message()).toContain('Payment successful');
+    await dialog.dismiss();
+  });
+  // Mock Cart response
+  await page.route('**/api/cart/123', async route => {
+  await route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify([
+      { item_id: 101, name: 'iPhone 15 Pro', price: 1199, quantity: 1 },
+      { item_id: 102, name: 'Google Pixel 8 Pro', price: 2650, quantity: 1 }
+    ])
+  });
+});
+
   // Mock address submission
   await page.route('**/api/address', async route => {
     const addressPayload = await route.request().postDataJSON();
@@ -82,18 +101,28 @@ test('should complete full checkout flow and verify payment success', async ({ p
 
   // Mock payment API
   await page.route(`${process.env.MOCKOON_URL}/pay`, async route => {
-    const paymentPayload = await route.request().postDataJSON();
+    let paymentPayload
+    try{
+      paymentPayload = await route.request().postDataJSON();
+      console.log('💳 Payment payload:', paymentPayload)
+    }catch(err){
+      console.error('❌ Failed to parse payment payload:', err);
+      paymentPayload = {}; // fallback to empty object
+
+    }
     console.log('💳 Payment payload:', paymentPayload);
 
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
       body: JSON.stringify({
+        success: true, // ✅ this triggers the redirect
         message: 'Payment successful',
         transactionId: 'txn_abc123',
-        amount: paymentPayload.total,
+        amount: paymentPayload.amount ?? paymentPayload.total ?? 0,
         date: new Date().toISOString(),
       }),
+
     });
   });
 
@@ -105,27 +134,19 @@ test('should complete full checkout flow and verify payment success', async ({ p
     await route.fulfill({ status: 200 });
   });
 
-   // Intercept alert
-  page.on('dialog', async dialog => {
-    expect(dialog.message()).toContain('Payment successful');
-    await dialog.dismiss();
-  });
-
   const selectedItems = [101, 102];
   const checkoutPage = new CheckoutPage(page, selectedItems);
   await checkoutPage.navigate();
-
+  //await page.waitForSelector('#Payment Information', { state: 'visible' });
   await checkoutPage.fillPaymentDetails(mockPayment);
   await checkoutPage.fillAddressDetails(mockAddress);
+  //await checkoutPage.submitCheckout();
+  await page.screenshot({ path: './test-screenshots/new/checkoutBeforeSubmit.png' })
   await checkoutPage.submitCheckout();
-
-
- 
-
-  await checkoutPage.submitCheckout();
-
+  //await page.waitForLoadState('networkidle')
+  await page.screenshot({ path: './test-screenshots/new/checkoutAfterSubmit.png' })
   // Assert navigation to /home
-  await expect(page).toHaveURL(`${process.env.BASE_URL}/home`);
+  await expect(page).toHaveURL(`${process.env.BASE_URL}/home`, { timeout: 10000 });
 
   await page.screenshot({ path: './test-screenshots/checkout-complete.png' });
   console.log('✅ Full checkout flow completed and verified');

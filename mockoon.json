@@ -17,10 +17,10 @@
       "responses": [
         {
           "uuid": "06570dde-2f93-44b2-a3f6-bf5a81b2c071",
-          "body": "",
+          "label": "{   \"message\": \"Payment successful\",   \"transactionId\": \"txn_{{uuid}}\",   \"amount\": {{request.body 'amount'}},   \"date\": \"{{date 'iso'}}\" }",
           "latency": 0,
           "statusCode": 200,
-          "label": "{   \"message\": \"Payment successful\",   \"transactionId\": \"txn_{{uuid}}\",   \"amount\": {{request.body 'amount'}},   \"date\": \"{{date 'iso'}}\" }",
+          "body": "{   \"message\": \"Payment successful\",   \"transactionId\": \"txn_{{uuid}}\",   \"amount\": {{request.body 'amount'}},   \"date\": \"{{date 'iso'}}\" }",
           "headers": [
             {
               "key": "Content-Type",

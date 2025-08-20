@@ -7,7 +7,7 @@ export class CartPage extends BasePage {
     readonly checkoutButton: Locator
     constructor(page: Page) {
         super(page, '/cart')
-        this.cartItems = page.locator("section[role='list'] > li[role='listitem']")
+        this.cartItems = page.locator("ul[role='list'] > li[role='listitem']")
         this.emptyCart = this.page.locator("text=Your cart is currently empty.")
         this.checkoutButton = this.page.locator('#checkout')
     }

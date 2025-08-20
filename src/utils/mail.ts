@@ -3,6 +3,11 @@ import { Resend } from 'resend'
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export const sendCheckoutNotification = async (checkoutDetails: any) => {
+  if (!Array.isArray(checkoutDetails.items_json)) {
+    console.error("❌ items_json is not an array:", checkoutDetails.items_json);
+    return;
+  }
+
   const orderDate = new Date(checkoutDetails.date).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
