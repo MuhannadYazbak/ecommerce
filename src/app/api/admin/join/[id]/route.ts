@@ -7,7 +7,7 @@ import { Order } from '@/types/order';
 import { ignore } from 'antd/es/theme/useToken';
 
 
-export async function GET(request: NextRequest, context: { params: { id: string } }): Promise<NextResponse> {
+export async function GET(request: NextRequest, context: { params: { id: number } }): Promise<NextResponse> {
   const { params } = context;
   const orderId = Number(params.id);
   console.log(`join on ${orderId}`);
