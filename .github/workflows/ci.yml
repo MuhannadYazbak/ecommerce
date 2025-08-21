@@ -48,10 +48,10 @@ jobs:
           done
 
       - name: Build Next.js app
-        run: npm run build
+        run: npm run dev
 
-      - name: Start Next.js server
-        run: npm run start &
+      # - name: Start Next.js server
+      #   run: npm run start &
 
       - name: Wait for dev server
         run: npx wait-on http://localhost:3000
