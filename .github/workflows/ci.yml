@@ -57,12 +57,15 @@ jobs:
       # - name: Wait for dev server
       #   run: npx wait-on http://localhost:3000
       
-      - name: Inject .env.local for Playwright
+      - name: Buffer before tests
+        run: sleep 10
+
+      - name: Inject .env.docker for Playwright
         run: |
-          echo "BASE_URL=http://web:3000" >> .env.local
-          echo "CHAT_URL=http://chat:3001/chat" >> .env.local
-          echo "MOCKOON_URL=http://mockoon:4000" >> .env.local
-          echo "NEXT_PUBLIC_MOCKOON_URL=http://mockoon:4000" >> .env.local
+          echo "BASE_URL=http://web:3000" >> .env.docker
+          echo "CHAT_URL=http://chat:3001/chat" >> .env.docker
+          echo "MOCKOON_URL=http://mockoon:4000" >> .env.docker
+          echo "NEXT_PUBLIC_MOCKOON_URL=http://mockoon:4000" >> .env.docker
 
       - name: Run Playwright tests
         run: npx playwright test
