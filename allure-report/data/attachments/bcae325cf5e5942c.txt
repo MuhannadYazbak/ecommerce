@@ -1,0 +1,1 @@
+📦 Address payload: { city: 'Haifa', street: '123 Test Street', postalcode: '12345' }

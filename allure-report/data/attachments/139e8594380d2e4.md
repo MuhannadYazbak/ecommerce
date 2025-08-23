@@ -1,0 +1,62 @@
+# Page snapshot
+
+```yaml
+- button "Open Next.js Dev Tools":
+  - img
+- button "Open issues overlay": 5 Issue
+- button "Collapse issues badge":
+  - img
+- navigation:
+  - button "previous" [disabled]:
+    - img "previous"
+  - text: 1/5
+  - button "next":
+    - img "next"
+- img
+- link "Next.js 15.3.3 (stale) Webpack":
+  - /url: https://nextjs.org/docs/messages/version-staleness
+  - img
+  - text: Next.js 15.3.3 (stale) Webpack
+- img
+- dialog "Console Error":
+  - text: Console Error
+  - button "Copy Stack Trace":
+    - img
+  - button "No related documentation found" [disabled]:
+    - img
+  - link "Learn more about enabling Node.js inspector for server code with Chrome DevTools":
+    - /url: https://nextjs.org/docs/app/building-your-application/configuring/debugging#server-side-code
+    - img
+  - paragraph: "Invalid DOM property `stroke-width`. Did you mean `strokeWidth`?"
+  - paragraph:
+    - img
+    - text: src\components\ui\TrashIcon.tsx (5:1) @ TrashIcon
+    - button "Open in editor":
+      - img
+  - text: 3 | <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" height='1em' width='1em' 4 | viewBox="0 0 32 32" enable-background="new 0 0 32 32" aria-label="remove item" role="img"> > 5 | <path fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" d="M23,27H11c-1.1,0-2-0.9-2-2V8h16v17 | ^ 6 | C25,26.1,24.1,27,23,27z"/> 7 | <line fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" x1="27" y1="8" x2="7" y2="8"/> 8 | <path fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" d="M14,8V6c0-0.6,0.4-1,1-1h4c0.6,0,1,0.4,1,1v2"/>
+  - paragraph: Call Stack 22
+  - button "Show 16 ignore-listed frame(s)":
+    - text: Show 16 ignore-listed frame(s)
+    - img
+  - text: path <anonymous> (0:0) TrashIcon
+  - button:
+    - img
+  - text: src\components\ui\TrashIcon.tsx (5:1) eval
+  - button:
+    - img
+  - text: src\components\admin\AdminDashboard.tsx (107:27) Array.map <anonymous> (0:0) AdminDashboard
+  - button:
+    - img
+  - text: src\components\admin\AdminDashboard.tsx (81:23) AdminDashboardPage
+  - button:
+    - img
+  - text: src\app\admin\items\page.tsx (30:10)
+- contentinfo:
+  - region "Error feedback":
+    - paragraph:
+      - link "Was this helpful?":
+        - /url: https://nextjs.org/telemetry#error-feedback
+    - button "Mark as helpful"
+    - button "Mark as not helpful"
+- 'heading "Application error: a client-side exception has occurred while loading localhost (see the browser console for more information)." [level=2]'
+```
