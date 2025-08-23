@@ -54,8 +54,8 @@ jobs:
       - name: Start Next.js server
         run: npm run start &
 
-      - name: Wait for dev server
-        run: npx wait-on http://localhost:3000
+      # - name: Wait for dev server
+      #   run: npx wait-on http://localhost:3000
       
       - name: Inject .env.local for Playwright
         run: |
