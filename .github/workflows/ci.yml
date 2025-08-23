@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_ENV: true
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
