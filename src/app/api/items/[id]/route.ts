@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
 
-export async function GET(req: NextRequest, context: { params: { id: string } }) {
+export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
 
   try {
@@ -22,9 +22,9 @@ export async function GET(req: NextRequest, context: { params: { id: string } })
 
 export async function DELETE(
   request: NextRequest,
-  context: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
-  const itemId = Number(context.params.id);
+  const itemId = Number((await context.params).id);
 
   if (isNaN(itemId)) {
     return NextResponse.json({ error: 'Invalid parameters' }, { status: 400 });
@@ -51,10 +51,10 @@ export async function DELETE(
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   
-  const itemId = Number(params.id)
+  const itemId = Number((await params).id)
   if (isNaN(itemId)) {
     return NextResponse.json({ error: 'Invalid item ID' }, { status: 400 })
   }

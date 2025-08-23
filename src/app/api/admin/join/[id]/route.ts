@@ -4,12 +4,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
 import { RowDataPacket } from 'mysql2';
 import { Order } from '@/types/order';
-import { ignore } from 'antd/es/theme/useToken';
 
 
-export async function GET(request: NextRequest, context: { params: { id: number } }): Promise<NextResponse> {
+export async function GET(request: NextRequest, context: {params: Promise<{id: string}>}): Promise<NextResponse> {
   const { params } = context;
-  const orderId = Number(params.id);
+  const orderId = Number((await params).id);
   console.log(`join on ${orderId}`);
 
   try {

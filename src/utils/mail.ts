@@ -8,7 +8,7 @@ export const sendCheckoutNotification = async (checkoutDetails: any) => {
     return;
   }
 
-  const orderDate = new Date(checkoutDetails.date).toLocaleDateString('en-US', {
+  const orderDate = new Date(checkoutDetails.created_at).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric',
@@ -20,10 +20,10 @@ export const sendCheckoutNotification = async (checkoutDetails: any) => {
     html: `
       <h2>New Checkout Completed</h2>
       <p><strong>Buyer:</strong> ${checkoutDetails.name}</p>
-      <p><strong>Total:</strong> ₪${checkoutDetails.total}</p>
+      <p><strong>Total:</strong> ₪${checkoutDetails.total_amount}</p>
       <p><strong>Items:</strong></p>
       <ul>
-        ${checkoutDetails.items
+        ${checkoutDetails.items_json
           .map((item: any) => `<li>${item.name} x ${item.quantity}</li>`)
           .join('')}
       </ul>

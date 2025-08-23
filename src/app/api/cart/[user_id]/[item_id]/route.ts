@@ -3,10 +3,10 @@ import { getPool } from '@/utils/db';
 
 export async function DELETE(
   request: NextRequest,
-  context: { params: { user_id: string; item_id: string } }
+  context: { params: Promise<{ user_id: string; item_id: string }> }
 ) {
-  const userId = Number(context.params.user_id);
-  const itemId = Number(context.params.item_id);
+  const userId = Number((await context.params).user_id);
+  const itemId = Number((await context.params).item_id);
 
   if (isNaN(userId) || isNaN(itemId)) {
     return NextResponse.json({ error: 'Invalid parameters' }, { status: 400 });

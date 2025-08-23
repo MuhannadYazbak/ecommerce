@@ -68,24 +68,24 @@ test('should allow using location and submitting checkout', async ({ page }) => 
 
 test('should complete full checkout flow and verify payment success', async ({ page }) => {
   annotateTest({ feature: 'CheckoutPage' })
-  
+
   // Intercept alert
   page.on('dialog', async dialog => {
-    await page.screenshot({ path: './test-screenshots/new/checkoutDialog.png' })
+    //await page.screenshot({ path: './test-screenshots/new/checkoutDialog.png' })
     expect(dialog.message()).toContain('Payment successful');
     await dialog.dismiss();
   });
   // Mock Cart response
   await page.route('**/api/cart/123', async route => {
-  await route.fulfill({
-    status: 200,
-    contentType: 'application/json',
-    body: JSON.stringify([
-      { item_id: 101, name: 'iPhone 15 Pro', price: 1199, quantity: 1 },
-      { item_id: 102, name: 'Google Pixel 8 Pro', price: 2650, quantity: 1 }
-    ])
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify([
+        { item_id: 101, name: 'iPhone 15 Pro', price: 1199, quantity: 1 },
+        { item_id: 102, name: 'Google Pixel 8 Pro', price: 2650, quantity: 1 }
+      ])
+    });
   });
-});
 
   // Mock address submission
   await page.route('**/api/address', async route => {
@@ -102,10 +102,10 @@ test('should complete full checkout flow and verify payment success', async ({ p
   // Mock payment API
   await page.route(`${process.env.MOCKOON_URL}/pay`, async route => {
     let paymentPayload
-    try{
+    try {
       paymentPayload = await route.request().postDataJSON();
       console.log('💳 Payment payload:', paymentPayload)
-    }catch(err){
+    } catch (err) {
       console.error('❌ Failed to parse payment payload:', err);
       paymentPayload = {}; // fallback to empty object
 
@@ -131,9 +131,12 @@ test('should complete full checkout flow and verify payment success', async ({ p
     const orderPayload = await route.request().postDataJSON();
     console.log('🧾 Order payload:', orderPayload);
 
-    await route.fulfill({ status: 200 });
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ success: true }), // ✅ This is critical
+    });
   });
-
   const selectedItems = [101, 102];
   const checkoutPage = new CheckoutPage(page, selectedItems);
   await checkoutPage.navigate();

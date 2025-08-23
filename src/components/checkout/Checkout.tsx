@@ -75,7 +75,7 @@ export default function Checkout() {
         body: JSON.stringify(addressForm),
       });
       const addressData = await addressRes.json();
-      const addressId = addressData.id;
+      const addressId =Number(addressData.id);
 
       // 2️⃣ Calculate total
       const cartTotal = itemsToCheckout.reduce(
@@ -123,6 +123,7 @@ export default function Checkout() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderPayload),
       });
+      console.log('orderRes at /place-order is ',orderRes)
       const orderResult = await orderRes.json();
 
       if (!orderRes.ok || orderResult.error) {

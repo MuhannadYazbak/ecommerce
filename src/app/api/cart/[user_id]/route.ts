@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
 
 
-export async function DELETE(req: NextRequest, { params }: { params: { user_id: string } }) {
-  const userId = Number(params.user_id);
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ user_id: string }> }) {
+  const userId = Number((await params).user_id);
 
 
   if (isNaN(userId)) {
@@ -29,8 +29,8 @@ export async function DELETE(req: NextRequest, { params }: { params: { user_id: 
   }
 }
 
-export async function GET(req: NextRequest, { params }: { params: { user_id: string } }) {
-  const userId = Number(params.user_id)
+export async function GET(req: NextRequest, { params }: { params: Promise<{ user_id: string }> }) {
+  const userId = Number((await params).user_id)
   try {
     const pool = getPool();
     const [rows] = await pool.query('SELECT * FROM cart_items where user_id = ?',[userId]);

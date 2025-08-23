@@ -62,7 +62,7 @@ export default function ItemView({ itemId }: Props) {
             if (res.ok) {
                 console.log('✅ Item added to cart (server):', result);
                 addToCart({
-                    id: item.id,
+                    item_id: item.id,
                     name: item.name,
                     price: item.price,
                     quantity,

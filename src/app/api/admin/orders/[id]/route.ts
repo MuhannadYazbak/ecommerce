@@ -6,9 +6,9 @@ import { RowDataPacket } from 'mysql2';
 import { Order } from '@/types/order';
 import { sendOrderShippedtNotification } from '@/utils/mail';
 
-export async function GET(request: NextRequest, context: { params: { id: string } }): Promise<NextResponse> {
+export async function GET(request: NextRequest, context: { params: Promise<{ id: string }> }): Promise<NextResponse> {
   const { params } = context;
-  const orderId = Number(params.id);
+  const orderId = Number((await params).id);
   console.log(`Hello admin, editing order ${orderId}`);
 
   try {
@@ -31,9 +31,9 @@ export async function GET(request: NextRequest, context: { params: { id: string 
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ): Promise<NextResponse> {
-  const orderId = Number(params.id)
+  const orderId = Number((await params).id)
   if (isNaN(orderId)) {
     return NextResponse.json({ error: 'Invalid order ID' }, { status: 400 })
   }

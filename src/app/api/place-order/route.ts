@@ -32,13 +32,16 @@ export async function POST(req: NextRequest) {
       [user_id, total_amount, JSON.stringify(items_json),created_at,status, address_id]
     )
     console.log('Insert order res: ', res);
-    try {
-      console.log("📧 Calling sendCheckoutNotification...")
-      await sendCheckoutNotification({ user_id, name, total_amount, items_json, created_at });
-      console.log('✅ Email sent');
-    } catch (emailErr) {
-      console.error('❌ Email failed:', emailErr);
-    }
+    // try {
+    //   console.log("📧 Calling sendCheckoutNotification...")
+    //   await sendCheckoutNotification({ user_id, name, total_amount, items_json, created_at });
+    //   console.log('✅ Email sent');
+    // } catch (emailErr) {
+    //   console.error('❌ Email failed:', emailErr);
+    // }
+    void sendCheckoutNotification({ user_id, name, total_amount, items_json, created_at })
+    .then(() => console.log('✅ Email sent'))
+    .catch(emailErr => console.error('❌ Email failed:', emailErr));
 
     return NextResponse.json({ success: true })
   } catch (err) {
