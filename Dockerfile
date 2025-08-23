@@ -23,6 +23,8 @@ COPY public/ ./public/
 COPY src/ ./src/
 COPY .next/ .next/
 COPY tsconfig.json ./tsconfig.json
+COPY auth.json ./auth.json
+COPY auth.admin.json ./auth.admin.json
 RUN npm install
 RUN npx playwright install --with-deps
 ENV CI=true
