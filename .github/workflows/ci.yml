@@ -59,10 +59,10 @@ jobs:
       
       - name: Inject .env.local for Playwright
         run: |
-          echo "BASE_URL=http://localhost:3000" >> .env.local
-          echo "CHAT_URL=http://localhost:3001/chat" >> .env.local
-          echo "MOCKOON_URL=http://localhost:4000" >> .env.local
-          echo "NEXT_PUBLIC_MOCKOON_URL=http://localhost:4000" >> .env.local
+          echo "BASE_URL=http://web:3000" >> .env.local
+          echo "CHAT_URL=http://chat:3001/chat" >> .env.local
+          echo "MOCKOON_URL=http://mockoon:4000" >> .env.local
+          echo "NEXT_PUBLIC_MOCKOON_URL=http://mockoon:4000" >> .env.local
 
       - name: Run Playwright tests
         run: npx playwright test
