@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { LandingPage } from './logic/LandingPage';
-import { annotateTest } from './utils/annotate';
+import { LandingPage } from '../logic/LandingPage';
+import { annotateTest } from '../utils/annotate';
 
 let landingPage: LandingPage;
 

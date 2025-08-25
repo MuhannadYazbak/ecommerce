@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
-import { CartPage } from "./logic/Cart";
-import { HomePage } from "./logic/HomePage";
-import { annotateTest } from "./utils/annotate";
+import { CartPage } from "../logic/Cart";
+import { HomePage } from "../logic/HomePage";
+import { annotateTest } from "../utils/annotate";
 
 let cartPage: CartPage
 const date = new Date().toLocaleDateString('en-US', {

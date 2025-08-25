@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { RegisterPage } from './logic/RegisterPage';
-import { annotateTest } from './utils/annotate';
+import { RegisterPage } from '../logic/RegisterPage';
+import { annotateTest } from '../utils/annotate';
 
 let registerPage: RegisterPage
 

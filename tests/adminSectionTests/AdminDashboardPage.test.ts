@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { AdminItemsPage } from './logic/AdminDashboardPage'
-import { annotateTest } from "./utils/annotate";
+import { AdminItemsPage } from '../logic/AdminDashboardPage'
+import { annotateTest } from "../utils/annotate";
 
 test.describe('Admin Items Dashboard', () => {
     let adminPage: AdminItemsPage

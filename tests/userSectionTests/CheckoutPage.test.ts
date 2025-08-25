@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { CheckoutPage } from './logic/CheckoutPage'
+import { CheckoutPage } from '../logic/CheckoutPage'
 import { PaymentDetails } from '@/types/payment';
 import { Address } from '@/types/address';
-import { annotateTest } from './utils/annotate';
+import { annotateTest } from '../utils/annotate';
 
 let checkoutPage: CheckoutPage;
 

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { WishlistPage } from './logic/Wishlist'
-import { annotateTest } from './utils/annotate';
+import { WishlistPage } from '../logic/Wishlist'
+import { annotateTest } from '../utils/annotate';
 
 let wishlistPage: WishlistPage
 

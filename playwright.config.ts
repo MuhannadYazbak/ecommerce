@@ -36,16 +36,16 @@ export default defineConfig({
   },
   projects: [
   {
-    name: 'User',
+    name: 'user',
+    testDir: './tests/userSectionTests',
     use: {
-      ...devices['Desktop Chrome'],
       storageState: 'auth.json',
     },
   },
   {
-    name: 'Admin',
+    name: 'admin',
+    testDir: './tests/adminSectionTests',
     use: {
-      ...devices['Desktop Chrome'],
       storageState: 'auth.admin.json',
     },
   },

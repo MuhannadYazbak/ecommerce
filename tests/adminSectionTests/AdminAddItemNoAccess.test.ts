@@ -1,6 +1,6 @@
 import { test, expect} from '@playwright/test'
-import { annotateTest } from './utils/annotate';
-import  AddItemPage from './logic/AdminAddItemPage'
+import { annotateTest } from '../utils/annotate';
+import  AddItemPage from '../logic/AdminAddItemPage'
 
 test.use({ storageState: 'auth.json' });
 let addItemPage : AddItemPage

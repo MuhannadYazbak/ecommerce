@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { AdminBarChartPage } from './logic/AdminBarChartPage';
-import { annotateTest } from './utils/annotate';
-import { AdminItemsPage } from './logic/AdminDashboardPage';
+import { AdminBarChartPage } from '../logic/AdminBarChartPage';
+import { annotateTest } from '../utils/annotate';
+import { AdminItemsPage } from '../logic/AdminDashboardPage';
 
 let chartPage: AdminBarChartPage
 test.use({storageState: 'auth.admin.json'})

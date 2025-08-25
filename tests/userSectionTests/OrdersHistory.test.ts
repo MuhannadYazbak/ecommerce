@@ -1,7 +1,7 @@
-import { OrdersHistoryPage } from "./logic/OrdersHistory";
+import { OrdersHistoryPage } from "../logic/OrdersHistory";
 import { test, expect } from '@playwright/test'
 import { Order } from "@/types/order";
-import { annotateTest } from "./utils/annotate";
+import { annotateTest } from "../utils/annotate";
 
 let ordersHistoryPage: OrdersHistoryPage
 test.use({storageState: 'auth.json'})

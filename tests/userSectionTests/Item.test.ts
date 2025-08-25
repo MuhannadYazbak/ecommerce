@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test'
-import { ItemPage } from './logic/Item';
+import { ItemPage } from '../logic/Item';
 import { Item } from '@/types/item';
-import { HomePage } from './logic/HomePage';
-import { annotateTest } from './utils/annotate';
+import { HomePage } from '../logic/HomePage';
+import { annotateTest } from '../utils/annotate';
 
 let itemPage: ItemPage
 const item = {

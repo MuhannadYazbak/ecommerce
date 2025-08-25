@@ -1,6 +1,6 @@
 import { test, expect, Locator } from '@playwright/test';
-import { HomePage } from './logic/HomePage';
-import { annotateTest } from './utils/annotate';
+import { HomePage } from '../logic/HomePage';
+import { annotateTest } from '../utils/annotate';
 const testUserId = '123';
 let homePage: HomePage
 let firstItem: Locator

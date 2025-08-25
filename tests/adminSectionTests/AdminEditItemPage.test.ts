@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { AdminItemEditPage } from './logic/AdminEditItemPage';
-import { annotateTest } from './utils/annotate';
+import { AdminItemEditPage } from '../logic/AdminEditItemPage';
+import { annotateTest } from '../utils/annotate';
 
 test.use({ storageState: 'auth.admin.json' });
 
