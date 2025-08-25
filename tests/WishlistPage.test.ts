@@ -20,16 +20,17 @@ let wishlist = [
 
 
 test.use({ storageState: 'auth.json' });
-
+test.beforeEach(async ({ page })=>{
+    wishlistPage = new WishlistPage(page)
+    await wishlistPage.navigate()
+    await page.waitForLoadState('networkidle')
+})
 
 
 test('should display heading and check if wishlist is empty', async ({ page }) => {
     annotateTest({ feature: 'WishlistPage' })
-    wishlistPage = new WishlistPage(page)
-    await wishlistPage.navigate()
     const headingText = await wishlistPage.getHeadingText();
     expect(headingText).toContain('Your Wishlist');
-
     if (await wishlistPage.isWishlistEmpty()) {
         console.log('✅ Wishlist is empty');
     } else {

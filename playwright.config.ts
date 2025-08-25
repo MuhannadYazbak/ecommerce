@@ -32,13 +32,22 @@ export default defineConfig({
     headless: true,
     trace: 'on',
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
-    storageState: 'auth.json'
+    video: 'retain-on-failure'
   },
   projects: [
-    {
-      name: 'Chromium',
-      use: { ...devices['Desktop Chrome'] },
+  {
+    name: 'User',
+    use: {
+      ...devices['Desktop Chrome'],
+      storageState: 'auth.json',
     },
-  ],
+  },
+  {
+    name: 'Admin',
+    use: {
+      ...devices['Desktop Chrome'],
+      storageState: 'auth.admin.json',
+    },
+  },
+],
 });

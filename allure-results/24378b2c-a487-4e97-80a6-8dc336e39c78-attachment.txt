@@ -1,0 +1,2 @@
+Items count before remove  3
+DELETE called for itemId: NaN

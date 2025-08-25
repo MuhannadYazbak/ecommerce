@@ -19,7 +19,7 @@ test.describe('Admin Items Dashboard', () => {
         });
         adminPage = new AdminItemsPage(page);
         await adminPage.navigate()
-        await page.waitForLoadState('networkidle')
+        //await page.waitForLoadState('networkidle')
     });
 
     test('should navigate to new item page', async ({ page }) => {

@@ -23,46 +23,36 @@ const mockAddress: Address = {
 };
 
 test.use({ storageState: 'auth.json' });
+test.beforeEach(async ({ page })=>{
+  checkoutPage = new CheckoutPage(page, selectedItems)
+  await checkoutPage.navigate()
+  await page.waitForLoadState('networkidle')
+})
 
 test('should navigate to checkout and display form fields', async ({ page }) => {
   annotateTest({ feature: 'CheckoutPage' })
-  checkoutPage = new CheckoutPage(page, selectedItems);
-  await checkoutPage.navigate();
-
   await expect(checkoutPage.nameInput).toBeVisible();
   await expect(checkoutPage.cardNumberInput).toBeVisible();
   await expect(checkoutPage.cityInput).toBeVisible();
-
   console.log('✅ Checkout form fields are visible');
 });
 
 test('should fill payment and address details', async ({ page }) => {
   annotateTest({ feature: 'CheckoutPage' })
-  checkoutPage = new CheckoutPage(page, selectedItems);
-  await checkoutPage.navigate();
-
   await checkoutPage.fillPaymentDetails(mockPayment);
   await checkoutPage.fillAddressDetails(mockAddress);
-
   await page.screenshot({ path: './test-screenshots/checkout-filled.png' });
-
   console.log('✅ Payment and address details filled');
 });
 
 test('should allow using location and submitting checkout', async ({ page }) => {
   annotateTest({ feature: 'CheckoutPage' })
-  checkoutPage = new CheckoutPage(page, selectedItems);
-  await checkoutPage.navigate();
-
   await checkoutPage.useMyLocation();
   await page.waitForTimeout(1000); // simulate location fetch delay
-
   await checkoutPage.fillPaymentDetails(mockPayment);
   await checkoutPage.fillAddressDetails(mockAddress);
   await checkoutPage.submitCheckout();
-
   await page.screenshot({ path: './test-screenshots/checkout-submitted.png' });
-
   console.log('✅ Checkout submitted');
 });
 
@@ -140,7 +130,7 @@ test('should complete full checkout flow and verify payment success', async ({ p
   const selectedItems = [101, 102];
   const checkoutPage = new CheckoutPage(page, selectedItems);
   await checkoutPage.navigate();
-  //await page.waitForSelector('#Payment Information', { state: 'visible' });
+  await page.waitForLoadState('networkidle')
   await checkoutPage.fillPaymentDetails(mockPayment);
   await checkoutPage.fillAddressDetails(mockAddress);
   //await checkoutPage.submitCheckout();

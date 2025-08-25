@@ -4,6 +4,7 @@ import { annotateTest } from './utils/annotate';
 const testUserId = '123';
 let homePage: HomePage
 let firstItem: Locator
+test.use({storageState: 'auth.json'})
 test.beforeEach(async ({ page }) => {
   homePage = new HomePage(page)
   // Clears all previous routes

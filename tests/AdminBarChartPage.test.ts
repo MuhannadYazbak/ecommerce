@@ -4,10 +4,13 @@ import { annotateTest } from './utils/annotate';
 import { AdminItemsPage } from './logic/AdminDashboardPage';
 
 let chartPage: AdminBarChartPage
-test('Bar chart loads and displays correctly', async ({ page }) => {
-  annotateTest({ feature: 'AdminBarChartPage' })
+test.use({storageState: 'auth.admin.json'})
+test.beforeEach(async ({ page })=>{
   chartPage = new AdminBarChartPage(page);
   await chartPage.navigate();
+})
+test('Bar chart loads and displays correctly', async ({ page }) => {
+  annotateTest({ feature: 'AdminBarChartPage' })
   await chartPage.waitForChart();
   await page.screenshot({path: './test-screenshots/barchart.png'})
   expect(await chartPage.heading.isVisible()).toBeTruthy();
@@ -19,11 +22,7 @@ test('Bar chart loads and displays correctly', async ({ page }) => {
 
 test('Tooltip appears on bar hover', async ({ page }) => {
   annotateTest({ feature: 'AdminBarChartPage'});
-
-  chartPage = new AdminBarChartPage(page);
-  await chartPage.navigate();
   await chartPage.waitForChart();
-
   const canvasBox = await chartPage.chartBars.boundingBox();
   if (!canvasBox) throw new Error('Canvas not found');
 
@@ -36,12 +35,8 @@ test('Tooltip appears on bar hover', async ({ page }) => {
 
 test('Chart is responsive to viewport changes', async ({ page }) => {
   annotateTest({ feature: 'AdminBarChartPage'});
-
-  chartPage = new AdminBarChartPage(page);
   await page.setViewportSize({ width: 800, height: 600 });
-  await chartPage.navigate();
   await chartPage.waitForChart();
-
   expect(await chartPage.isChartVisible()).toBeTruthy();
 });
 
@@ -49,11 +44,12 @@ test('Back button navigates correctly', async ({ page }) => {
   annotateTest({ feature: 'AdminBarChartPage'});
   const adminDashboard = new AdminItemsPage(page)
   await adminDashboard.navigate()
+  //await page.waitForLoadState('networkidle')
   await adminDashboard.goToBarChart()
   chartPage = new AdminBarChartPage(page);
   await chartPage.navigate();
   await chartPage.waitForChart();
-
   await chartPage.back('/admin/items')
-  expect(page.url()).not.toContain('/admin/chart');
+  //expect(page.url()).not.toContain('/admin/chart');
+  await expect(page).toHaveURL(/\/admin\/items/);
 });

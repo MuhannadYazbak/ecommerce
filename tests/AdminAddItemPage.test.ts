@@ -3,6 +3,7 @@ import AddItemPage from './logic/AdminAddItemPage'
 import { annotateTest } from './utils/annotate';
 
 test.describe('AddItemPage', () => {
+    let addItemPage : AddItemPage
     test.use({ storageState: 'auth.admin.json' })
     test.beforeEach(async ({ page }) => {
         // Mock access control and item creation endpoint
@@ -17,12 +18,13 @@ test.describe('AddItemPage', () => {
                 body: JSON.stringify({ id: 123, ...body }),
             });
         });
+        addItemPage = new AddItemPage(page);
+        await addItemPage.navigate();
+        await page.waitForLoadState('networkidle');
     });
 
     test('should create item successfully and redirect', async ({ page }) => {
         annotateTest({ feature: 'AdminAddItemPage' })
-        const addItemPage = new AddItemPage(page);
-        await addItemPage.navigate()
         await addItemPage.fillName('New Item');
         await addItemPage.fillPrice(99.99);
         await addItemPage.fillDescription('A great item');
@@ -36,8 +38,6 @@ test.describe('AddItemPage', () => {
 
     test('should show alert on failed item creation', async ({ page }) => {
         annotateTest({ feature: 'AdminAddItemPage' })
-        const addItemPage = new AddItemPage(page);
-        await addItemPage.navigate()
         page.on('dialog', async dialog => {
             expect(dialog.message()).toContain('Update failed');
             await dialog.dismiss();

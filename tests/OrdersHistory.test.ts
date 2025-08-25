@@ -4,6 +4,13 @@ import { Order } from "@/types/order";
 import { annotateTest } from "./utils/annotate";
 
 let ordersHistoryPage: OrdersHistoryPage
+test.use({storageState: 'auth.json'})
+
+test.beforeEach(async ({ page })=>{
+    ordersHistoryPage = new OrdersHistoryPage(page)
+    await ordersHistoryPage.navigate()
+    await page.waitForLoadState('networkidle')
+})
 
 test('Orders history initial test', async ({ page }) => {
     annotateTest({ feature: 'OrdersHistoryPage' })

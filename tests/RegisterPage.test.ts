@@ -7,6 +7,7 @@ let registerPage: RegisterPage
 test.beforeEach(async ({ page }) => {
     registerPage = new RegisterPage(page)
     await registerPage.navigate()
+    await page.waitForLoadState('networkidle')
 })
 
 test('🔐 User can Register with valid credentials', async ({ page }) => {

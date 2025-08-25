@@ -1,0 +1,5 @@
+GET triggered, returning: [ '1', '2', '3' ]
+Items count before remove  3
+DELETE called for itemId: undefined
+Cart before: [ '1', '2', '3' ]
+Cart after: [ '1', '2', '3' ]

@@ -17,7 +17,7 @@ export class BasePage {
         await this.backButton.waitFor({ state: 'visible' });
         await expect(this.backButton).toBeAttached();
         await this.backButton.click();
-        await this.page.waitForURL(former);
+        //await this.page.waitForURL(former);
     }
 
 

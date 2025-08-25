@@ -1,0 +1,2 @@
+Items count before remove  3
+Intercepted: DELETE http://localhost:3000/api/cart/123/undefined
