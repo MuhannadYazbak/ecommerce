@@ -71,7 +71,7 @@ jobs:
         run: sleep 10
 
       - name: Run Playwright tests
-        run: npx playwright test --project=User --project=Admin
+        run: npx playwright test
         continue-on-error: true
 
       - name: Upload Playwright artifacts
