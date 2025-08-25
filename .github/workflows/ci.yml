@@ -6,18 +6,17 @@ on:
   pull_request:
     branches: [main]
 
-services:
-  mysql:
-    image: mysql:8
-    env:
-      MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      MYSQL_DATABASE: ecommerce
-    ports:
-      - 3306:3306
-
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_DATABASE: ecommerce
+        ports:
+          - 3306:3306
     env:
       DOCKER_ENV: false
       RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
