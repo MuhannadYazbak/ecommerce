@@ -85,18 +85,28 @@ jobs:
       - name: Build Next.js app
         run: npm run build
 
-      - name: Start Next.js server
-        run: npm run start &
+      - name: Start server and run Playwright tests
+        run: |
+          npm run start & 
+          npx wait-on http://localhost:3000
+          # check app health
+          curl -f http://localhost:3000 || (echo "App crashed!" && exit 1)
+          # run tests
+          npx playwright test --project=User --project=Admin
 
-      - name: Wait for dev server
-        run: npx wait-on http://localhost:3000 --timeout=60000
+
+      # - name: Start Next.js server
+      #   run: npm run start &
+
+      # - name: Wait for dev server
+      #   run: npx wait-on http://localhost:3000 --timeout=60000
       
-      # - name: Buffer before tests
-      #   run: sleep 10
+      # # - name: Buffer before tests
+      # #   run: sleep 10
 
-      - name: Run Playwright tests
-        run: npx playwright test --project=User --project=Admin
-        continue-on-error: true
+      # - name: Run Playwright tests
+      #   run: npx playwright test --project=User --project=Admin
+      #   continue-on-error: true
 
       - name: Upload Playwright artifacts
         uses: actions/upload-artifact@v4
