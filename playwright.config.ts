@@ -6,7 +6,7 @@ import fs from 'fs';
 
 const envPath = fs.existsSync('.env.docker') && process.env.DOCKER_ENV === 'true'
   ? '.env.docker'
-  : '.env.local';
+  : '.env.production';
 
 dotenv.config({ path: envPath });
 
