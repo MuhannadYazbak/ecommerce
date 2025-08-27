@@ -27,6 +27,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  console.log("NEXT_PUBLIC_APP_ENV:", process.env.NEXT_PUBLIC_APP_ENV);
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-green-400`}>

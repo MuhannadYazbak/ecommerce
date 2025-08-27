@@ -1,3 +1,4 @@
+// /src/app/api/cart/[user_id]/[item_id]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
 

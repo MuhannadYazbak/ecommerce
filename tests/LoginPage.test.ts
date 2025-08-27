@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage } from '../logic/LoginPage';
-import { annotateTest } from '../utils/annotate';
-import { LandingPage } from '../logic/LandingPage';
+import { LoginPage } from './logic/LoginPage';
+import { annotateTest } from './utils/annotate';
+import { LandingPage } from './logic/LandingPage';
 
 let loginPage: LoginPage
 
@@ -29,6 +29,8 @@ test('🔐 User can log in with valid credentials', async ({ page }) => {
 
   await expect(page).toHaveURL('/home');
 });
+
+
 
 test('🚫 Invalid login should show error alert', async ({ page }) => {
   annotateTest({ feature: 'LoginPage' })

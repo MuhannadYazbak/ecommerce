@@ -20,6 +20,8 @@ jobs:
     env:
       DOCKER_ENV: false
       RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      LOCATIONIQ_API_KEY: ${{ secrets.LOCATIONIQ_API_KEY }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -65,6 +67,13 @@ jobs:
             echo "Waiting for Mockoon..."
             sleep 2
           done
+      
+      - name: Start TechMart Chatbot
+        run: |
+          cd ../techmart-chatbot
+          npm install
+          npm run start &
+          sleep 5
 
       - name: Clean previous build
         run: rm -rf .next
@@ -76,10 +85,10 @@ jobs:
         run: npm run start &
 
       - name: Wait for dev server
-        run: npx wait-on http://localhost:3000
+        run: npx wait-on http://localhost:3000 --timeout=60000
       
-      - name: Buffer before tests
-        run: sleep 10
+      # - name: Buffer before tests
+      #   run: sleep 10
 
       - name: Run Playwright tests
         run: npx playwright test --project=User --project=Admin
