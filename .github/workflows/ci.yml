@@ -70,7 +70,7 @@ jobs:
       
       - name: Start TechMart Chatbot
         run: |
-          cd ../techmart-chatbot
+          cd ../techmart-rulebased-chatbot
           npm install
           npm run start &
           sleep 5
