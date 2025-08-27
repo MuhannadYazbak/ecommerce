@@ -70,9 +70,9 @@ jobs:
       
       - name: Start TechMart Chatbot
         run: |
-          cd ../techmart-rulebased-chatbot
+          cd ../techmart-rulebased-chatbot/server
           npm install
-          npm run start &
+          npx ts-node index.ts &
           sleep 5
 
       - name: Clean previous build
