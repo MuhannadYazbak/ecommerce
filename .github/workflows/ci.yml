@@ -39,16 +39,16 @@ jobs:
           echo "NEXT_PUBLIC_APP_ENV=production" >> .env.local
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
       - name: Install Allure CLI
-        run: npm ci -g allure-commandline
+        run: npm install -g allure-commandline
 
       - name: Install Mockoon CLI
-        run: npm ci -g @mockoon/cli
+        run: npm install -g @mockoon/cli
       
       - name: List auth files
         run: ls -la auth*.json
@@ -74,7 +74,7 @@ jobs:
       - name: Start TechMart Chatbot
         run: |
           cd ./chatbot/server
-          npm ci
+          npm install
           npx ts-node index.ts &
           sleep 5
 
