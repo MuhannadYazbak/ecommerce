@@ -1,0 +1,14 @@
+           services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_DATABASE: ecommerce
+        ports:
+          - 3307:3306
+          
+          echo "DB_HOST=mysql" >> .env.production
+          echo "DB_PORT=3307" >> .env.production
+          echo "DB_USER=root" >> .env.production
+          echo "DB_NAME=ecommerce" >> .env.production
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env.production
