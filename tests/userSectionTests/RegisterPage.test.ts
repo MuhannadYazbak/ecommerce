@@ -1,8 +1,18 @@
 import { test, expect } from '@playwright/test';
 import { RegisterPage } from '../logic/RegisterPage';
 import { annotateTest } from '../utils/annotate';
+import { User } from '@/types/user';
 
 let registerPage: RegisterPage
+
+let user: User = {
+  id: 123,
+  name: 'Test User',
+  email: 'user@newtest.com',
+  dateOfBirth: new Date(1991,3,8),
+  password: 'User-1234',
+  role: 'user'
+}
 
 test.beforeEach(async ({ page }) => {
     registerPage = new RegisterPage(page)
@@ -19,6 +29,9 @@ test('🔐 User can Register with valid credentials', async ({ page }) => {
             body: JSON.stringify({
                 id: '123',
                 name: 'Test User',
+                email: 'user@newtest.com',
+                dateOfBirth: new Date(1991,8,3),
+                password: 'user-1234',
                 role: 'user',
                 token: 'mocked-token'
             })
@@ -47,6 +60,9 @@ test('❌ Registration fails with already used email', async ({ page }) => {
                 body: JSON.stringify({
                     id: '456',
                     name: requestBody.fullname,
+                    email: 'user@newtest.com',
+                    dateOfBirth: new Date(1991,8,3),
+                    password: 'user-1234',
                     role: 'user',
                     token: 'mocked-token'
                 })

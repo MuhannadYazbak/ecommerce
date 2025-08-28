@@ -2,9 +2,18 @@ import { test, expect } from '@playwright/test';
 import { LoginPage } from '../logic/LoginPage';
 import { annotateTest } from '../utils/annotate';
 import { LandingPage } from '../logic/LandingPage';
+import { User } from '@/types/user';
 
 let loginPage: LoginPage
+let user: User = {
+  id: 123,
+  name: 'Test User',
+  email: 'user@newtest.com',
+  dateOfBirth: new Date(1991,3,8),
+  password: 'User-1234',
+  role: 'user'
 
+}
 test.beforeEach(async ({ page }) => {
   loginPage = new LoginPage(page)
   await loginPage.navigate()
@@ -17,12 +26,7 @@ test('🔐 User can log in with valid credentials', async ({ page }) => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({
-        id: '123',
-        name: 'Test User',
-        role: 'user',
-        token: 'mocked-token'
-      })
+      body: JSON.stringify(user)
     });
   });
   await loginPage.loginAs('user@test.com', 'User@pass01')

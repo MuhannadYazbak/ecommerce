@@ -17,6 +17,7 @@ const mockPayment: PaymentDetails = {
 };
 
 const mockAddress: Address = {
+  address_id: 100,
   city: 'Haifa',
   street: '123 Test Street',
   postalcode: '12345',

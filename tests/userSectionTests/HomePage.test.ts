@@ -1,15 +1,26 @@
 import { test, expect, Locator } from '@playwright/test';
 import { HomePage } from '../logic/HomePage';
 import { annotateTest } from '../utils/annotate';
+import { Item } from '@/types/item';
 const testUserId = '123';
 let homePage: HomePage
 let firstItem: Locator
-test.use({storageState: 'auth.json'})
+let items: Item[] = [
+  { id: 1, name: 'iPhone 15 Pro', price: 1199.00, quantity: 1, photo: '/images/iphone15pro.jpg', description: '' },
+  { id: 4, name: 'MacBook Air M3', price: 1299.00, quantity: 2, photo: '/images/mackbook.jpg', description: '' }
+]
+test.use({ storageState: 'auth.json' })
 test.beforeEach(async ({ page }) => {
-  homePage = new HomePage(page)
   // Clears all previous routes
   await page.unroute('**');
-
+  await page.route('**/api/items', async (route) => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify(items)
+    });
+  });
+  homePage = new HomePage(page)
   await homePage.navigate()
   await homePage.waitForItemsToLoad();
   firstItem = homePage.getFirstItem();
@@ -52,10 +63,7 @@ test('🛒 Cart loads from backend after login', async ({ page }) => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify([
-        { id: 1, name: 'iPhone 15 Pro', price: 1199.00, quantity: 1, photo: '/images/iphone15pro.jpg' },
-        { id: 4, name: 'MacBook Air M3', price: 1299.00, quantity: 2, photo: '/images/mackbook.jpg' }
-      ])
+      body: JSON.stringify(items)
     });
   });
 

@@ -38,19 +38,20 @@ test.describe('Admin Pie Chart Page', () => {
         //await pieChartPage.clickSlice();
     });
 
-    test('should navigate back using BasePage back()', async ({ page }) => {
-        annotateTest({ feature: 'AdminPieChartPage' })
-        const adminDashboard = new AdminItemsPage(page)
-        await adminDashboard.navigate()
-        await adminDashboard.goToPieChart()
-        pieChartPage = new AdminPieChartPage(page);
-        await pieChartPage.navigate();
-        await pieChartPage.selectDate('2025-07-02')
-        await pieChartPage.waitForChart();
-
-        await pieChartPage.back('/admin/items')
-        expect(page.url()).not.toContain('/admin/pieChart');
-    });
+    // test('should navigate back using BasePage back()', async ({ page }) => {
+    //     annotateTest({ feature: 'AdminPieChartPage' })
+    //     await page.unroute('**')
+    //     const adminDashboard = new AdminItemsPage(page)
+    //     await adminDashboard.navigate()
+    //     await adminDashboard.goToPieChart()
+    //     pieChartPage = new AdminPieChartPage(page);
+    //     await pieChartPage.navigate();
+    //     await pieChartPage.selectDate('2025-07-02')
+    //     await pieChartPage.waitForChart();
+    //     await pieChartPage.back('/admin/items')
+    //     await expect(page).toHaveURL(/\/admin\/items/);
+    //     //expect(page.url()).not.toContain('/admin/pieChart');
+    // });
 
     test('should handle no orders for selected date', async ({ page }) => {
         annotateTest({ feature: 'AdminPieChartPage' })
@@ -59,5 +60,18 @@ test.describe('Admin Pie Chart Page', () => {
         await expect(page.locator('text=No chart data available')).toBeHidden();
         await expect(page.locator('text=showing pie for $2020-01-01')).toBeVisible();
         await expect(page.locator('[data-testid="empty-chart-message"]')).toBeVisible();
+    });
+
+    test.describe('Admin Pie Chart Page – Navigation Flow', () => {
+        test('should navigate back using BasePage back()', async ({ page }) => {
+            const adminDashboard = new AdminItemsPage(page);
+            await adminDashboard.navigate();
+            await adminDashboard.goToPieChart();
+            const pieChartPage = new AdminPieChartPage(page);
+            await pieChartPage.selectDate('2025-07-02');
+            await pieChartPage.waitForChart();
+            await pieChartPage.back('/admin/items');
+            await expect(page).toHaveURL(/\/admin\/items/);
+        });
     });
 });

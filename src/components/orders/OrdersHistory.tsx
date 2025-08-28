@@ -87,7 +87,7 @@ export default function OrderHistory() {
             }
 
             return (
-              <article key={order.order_id} className="flex-1 border rounded-lg p-4 shadow-sm" aria-label={`Order ${order.order_id}`}>
+              <article role='listemitem' key={order.order_id} className="flex-1 border rounded-lg p-4 shadow-sm" aria-label={`Order ${order.order_id}`}>
                 <header className="flex w-auto justify-between items-start mb-2">
                   <div>
                     <h3 className="font-medium">Order #{order.order_id}</h3>

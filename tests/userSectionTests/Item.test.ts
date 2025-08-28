@@ -5,7 +5,7 @@ import { HomePage } from '../logic/HomePage';
 import { annotateTest } from '../utils/annotate';
 
 let itemPage: ItemPage
-const item = {
+const item: Item = {
   id: 2,
   name: 'Samsung Galaxy S24 Ultra',
   price: 1100,
@@ -20,10 +20,7 @@ test.beforeEach(async ({ page }) => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({
-        id: '2',
-        name: 'Samsung Galaxy S24 Ultra'
-      })
+      body: JSON.stringify(item)
     });
   });
   itemPage = new ItemPage(page, item)

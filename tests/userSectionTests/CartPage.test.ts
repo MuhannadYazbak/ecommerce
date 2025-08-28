@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 import { CartPage } from "../logic/Cart";
 import { HomePage } from "../logic/HomePage";
 import { annotateTest } from "../utils/annotate";
+import { CartItem } from "@/types/cartItem";
 
 let cartPage: CartPage
 const date = new Date().toLocaleDateString('en-US', {
@@ -9,10 +10,10 @@ const date = new Date().toLocaleDateString('en-US', {
                         month: 'long',
                         day: 'numeric',
                       });
-let cartItems = [
-    { item_id: '1', name: 'Wireless Mouse', quantity: 2, price: 29.99, photo:'', created_at: date},
-    { item_id: '2', name: 'Mechanical Keyboard', quantity: 1, price: 89.99, photo:'', created_at: date },
-    { item_id: '3', name: 'Xiaomi Redmi 14C', quantity: 2, price: 499, photo:'', created_at: date }
+let cartItems : CartItem[] = [
+    { item_id: 1, name: 'Wireless Mouse', quantity: 2, price: 29.99, photo:''},
+    { item_id: 2, name: 'Mechanical Keyboard', quantity: 1, price: 89.99, photo:''},
+    { item_id: 3, name: 'Xiaomi Redmi 14C', quantity: 2, price: 499, photo:''}
 ];
 
 const userId = '123'
@@ -51,10 +52,11 @@ test('Mocking non-empty cart, validate', async ({ page }) => {
 
 test('Mocked cart validate remove item', async ({ page }) => {
     annotateTest({ feature: 'CartPage' })
-    await page.route('**', route => {
-        console.log('Intercepted:', route.request().method(), route.request().url());
-        route.continue();
-    });
+    await page.unroute('**')
+    // await page.route('**', route => {
+    //     console.log('Intercepted:', route.request().method(), route.request().url());
+    //     route.continue();
+    // });
     await page.route(`**/api/cart/${userId}`, route => {
         if (route.request().method() === 'GET') {
             route.fulfill({status: 200, contentType: 'application/json', body: JSON.stringify(cartItems)});
@@ -78,6 +80,8 @@ test('Mocked cart validate remove item', async ({ page }) => {
             route.continue();
         }
     });
+    cartPage = new CartPage(page)
+    await cartPage.navigate()
     await page.waitForSelector('[role="listitem"]')
     expect(await cartPage.getItemAt(0)).not.toBeNull()
     const beforeRemoveCount = await cartPage.getCartItemsCount()
@@ -121,8 +125,10 @@ test('🔙 Back button on Cart page redirects to landing', async ({ page }) => {
     annotateTest({ feature: 'CartPage' })
     const homePage = new HomePage(page)
     await homePage.navigate()
+    await page.waitForTimeout(500)
     const cartIcon = homePage.getCart()
     await cartIcon.click()
+    await page.waitForTimeout(500)
     cartPage = new CartPage(page)
     await cartPage.navigate()
     await cartPage.waitForLoad()

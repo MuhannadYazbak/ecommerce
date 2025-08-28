@@ -1,0 +1,3 @@
+✅ Route triggered: GET http://localhost:3000/api/wish?userId=123
+📦 Wishlist items are visible
+🧮 Count after wait: 2
