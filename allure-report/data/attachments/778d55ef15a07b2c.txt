@@ -1,2 +1,0 @@
-GET triggered, returning: [ '1', '2', '3' ]
-Items count before remove  3

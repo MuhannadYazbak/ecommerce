@@ -1,5 +1,0 @@
-Items count before remove  3
-Parsed URL: /api/cart/123/undefined
-Segments: [ 'api', 'cart', '123', 'undefined' ]
-Extracted itemId: NaN
-DELETE called for itemId: NaN

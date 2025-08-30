@@ -1,5 +1,0 @@
-Items count before remove  3
-Parsed URL: /api/cart/123/1
-Segments: [ 'api', 'cart', '123', '1' ]
-Extracted itemId: 1
-DELETE called for itemId: 1

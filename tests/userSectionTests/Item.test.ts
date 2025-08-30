@@ -16,7 +16,7 @@ const item: Item = {
 
 test.use({ storageState: 'auth.json' });
 test.beforeEach(async ({ page }) => {
-  await page.route(`**/api/item/${item.id}`, async route => {
+  await page.route(`**/api/items/${item.id}`, async route => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',

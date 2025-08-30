@@ -2,7 +2,7 @@ import { test, expect, Locator } from '@playwright/test';
 import { HomePage } from '../logic/HomePage';
 import { annotateTest } from '../utils/annotate';
 import { Item } from '@/types/item';
-const testUserId = '123';
+const testUserId = 123;
 let homePage: HomePage
 let firstItem: Locator
 let items: Item[] = [

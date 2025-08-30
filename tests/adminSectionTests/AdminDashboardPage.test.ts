@@ -30,6 +30,13 @@ test.describe('Admin Items Dashboard', () => {
 
     test('should view details of nth item', async ({ page }) => {
         annotateTest({ feature: 'AdminDashboardPage' })
+        await page.route(`**/api/items/${mockItems[0].id}`, async route => {
+            await route.fulfill({
+                status: 200,
+                contentType: 'application/json',
+                body: JSON.stringify(mockItems[0])
+            });
+        });
         await adminPage.viewItem(0);
         await expect(page).toHaveURL(/\/admin\/items\/\d+/);
     });

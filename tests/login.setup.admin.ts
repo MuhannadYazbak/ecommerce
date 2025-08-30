@@ -22,7 +22,7 @@ config({ path: envPath });
   await page.evaluate(() => {
     localStorage.setItem('token', 'mocked-token');
     localStorage.setItem('user', JSON.stringify({
-      id: '1',
+      id: 1,
       name: 'Admin User',
       role: 'admin'
     }));
