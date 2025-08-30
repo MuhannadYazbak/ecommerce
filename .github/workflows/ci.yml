@@ -10,7 +10,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
+      NODE_ENV: test
       DOCKER_ENV: false
+      SKIP_DB: true
       RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
       LOCATIONIQ_API_KEY: ${{ secrets.LOCATIONIQ_KEY }}
 
