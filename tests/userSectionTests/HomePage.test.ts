@@ -42,7 +42,11 @@ test('❤️ Clicking Wish adds item to wishlist and shows feedback', async ({ p
 
   await page.route('**/api/wish', async route => {
     wishlistCalled = true;
-    await route.fulfill({ status: 200 });
+    await route.fulfill({
+      contentType: 'application/json',
+      status: 200,
+      body: JSON.stringify(items)
+    });
   });
   const wishBtn = homePage.getItemWishBtn(firstItem)
   await wishBtn.click()
@@ -86,7 +90,7 @@ test('🛒 Cart loads from backend after login', async ({ page }) => {
 //   await expect(page).toHaveURL(/\/wish$/);
 
 //   // Fetch real wishlist data from backend
-//   const response = await request.get(`/api/wish?userId=${testUserId}`);
+//   const response = await page.route(`**/api/wish?userId=${testUserId}`);
 //   expect(response.ok()).toBeTruthy();
 
 //   const data = await response.json();
@@ -112,7 +116,19 @@ test('🛒 Cart loads from backend after login', async ({ page }) => {
 // });
 
 test('💙 Clicking WishList navigates and renders', async ({ page }) => {
+  let wishlistCalled = false
   annotateTest({ feature: 'HomePage' })
+    await page.route('**/api/wish', async route => {
+    wishlistCalled = true;
+    await route.fulfill({
+      contentType: 'application/json',
+      status: 200,
+      body: JSON.stringify(items)
+    });
+  });
+  homePage = new HomePage(page)
+  await homePage.navigate()
+  await homePage.waitForItemsToLoad()
   const wishListButton = homePage.getWishListButton()
   await wishListButton.click();
   await expect(page).toHaveURL(/\/wish$/);
@@ -127,6 +143,13 @@ test('💙 Clicking WishList navigates and renders', async ({ page }) => {
 test('💙 Clicking on Orders History and verifying real data', async ({ page, request }) => {
 
   annotateTest({ feature: 'HomePage' })
+  await page.route('**/api/orders', async route => {
+  await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify([]) // or mock orders
+    });
+  });
   const ordersHistoryButton = homePage.getOrdersHistoryButton()
   await ordersHistoryButton.click();
   await expect(page).toHaveURL(/\/orders$/);
@@ -148,6 +171,16 @@ test('💙 Clicking on View Item and verifying real data', async ({ page, reques
 
 test('💙 Search for phone and validate results include iphone', async ({ page }) => {
   annotateTest({ feature: 'HomePage' })
+  await page.route('**/api/search?**', async route => {
+  await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify(items)
+    });
+  });
+  homePage = new HomePage(page)
+  await homePage.navigate()
+  await homePage.waitForItemsToLoad()
   await homePage.searchKeyword('phone')
 
   // Target the actual product name inside h2

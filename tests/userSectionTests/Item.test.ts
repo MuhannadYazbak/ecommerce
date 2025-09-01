@@ -30,7 +30,7 @@ test.beforeEach(async ({ page }) => {
 
 test('📦 Authenticated user can view item details', async ({ page }) => {
   annotateTest({ feature: 'ItemPage' })
-  const heading = itemPage.waitForHeader()
+  const heading = await itemPage.waitForHeader()
   await expect(page).toHaveTitle(new RegExp(`TechMart \\| ${item.name}`, 'i'));
 });
 

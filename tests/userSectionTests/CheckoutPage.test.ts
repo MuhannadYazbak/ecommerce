@@ -131,7 +131,7 @@ test('should complete full checkout flow and verify payment success', async ({ p
   const selectedItems = [101, 102];
   const checkoutPage = new CheckoutPage(page, selectedItems);
   await checkoutPage.navigate();
-  await page.waitForLoadState('networkidle')
+  await page.waitForTimeout(500)
   await checkoutPage.fillPaymentDetails(mockPayment);
   await checkoutPage.fillAddressDetails(mockAddress);
   //await checkoutPage.submitCheckout();
