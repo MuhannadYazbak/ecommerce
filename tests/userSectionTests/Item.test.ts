@@ -16,12 +16,16 @@ const item: Item = {
 
 test.use({ storageState: 'auth.json' });
 test.beforeEach(async ({ page }) => {
-  await page.route(`**/api/items/${item.id}`, async route => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify(item)
-    });
+  await page.route('**/api/items/**', async route => {
+    if (route.request().url().includes(`/api/items/${item.id}`)) {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify(item),
+      });
+    } else {
+      route.continue();
+    }
   });
   itemPage = new ItemPage(page, item)
   await itemPage.navigate()

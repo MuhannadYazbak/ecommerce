@@ -91,7 +91,7 @@ test('should complete full checkout flow and verify payment success', async ({ p
   });
 
   // Mock payment API
-  await page.route(`${process.env.MOCKOON_URL}/pay`, async route => {
+  await page.route(`${process.env.NEXT_PUBLIC_MOCKOON_URL}/pay`, async route => {
     let paymentPayload
     try {
       paymentPayload = await route.request().postDataJSON();
