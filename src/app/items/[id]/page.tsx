@@ -5,8 +5,19 @@ import { cache } from 'react';
 type Params = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
+  if (process.env.SKIP_DB === 'true') {
+    const mockItem = {
+      name: 'Samsung Galaxy S24 Ultra',
+      description: 'Great High-end Android phone with 200MP camera and S Pen.',
+    };
+
+    return {
+      title: `TechMart | ${mockItem.name}`,
+      description: mockItem.description,
+    };
+  }
   try {
-    const res = await fetch(`/api/items/${(await params).id}`, {cache: 'no-store'});
+    const res = await fetch(`/api/items/${(await params).id}`, { cache: 'no-store' });
     const item = await res.json();
     console.log('Metadata response: ', item);
 
