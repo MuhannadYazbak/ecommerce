@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 import ItemView from '@/components/itemview/ItemById';
+import { cache } from 'react';
 
 type Params = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   try {
-    const res = await fetch(`${process.env.BASE_URL}/api/items/${(await params).id}`);
+    const res = await fetch(`/api/items/${(await params).id}`, {cache: 'no-store'});
     const item = await res.json();
     console.log('Metadata response: ', item);
 
