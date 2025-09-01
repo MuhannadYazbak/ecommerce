@@ -1,10 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
 
-export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
-  const { id } = await context.params;
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+  const mockItem = {
+    id: 2,
+    name: 'Samsung Galaxy S24 Ultra',
+    price: 1100,
+    description: 'Great High-end Android phone with 200MP camera and S Pen.',
+    photo: '/images/s24ultra.jpg',
+    quantity: 1
+  };
 
-  try {
+  if (process.env.SKIP_DB === 'true') {
+    return NextResponse.json(mockItem, { status: 200 });
+  }
+
+    try {
+    const id = params.id
     const pool = getPool();
     const [rows] = await pool.query('SELECT * FROM itemtable WHERE id = ?', [id]);
     const item = Array.isArray(rows) ? rows[0] : null;
@@ -19,6 +31,25 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
+
+// export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+//   const { id } = await context.params;
+
+//   try {
+//     const pool = getPool();
+//     const [rows] = await pool.query('SELECT * FROM itemtable WHERE id = ?', [id]);
+//     const item = Array.isArray(rows) ? rows[0] : null;
+
+//     if (!item) {
+//       return NextResponse.json({ error: 'Item not found' }, { status: 404 });
+//     }
+
+//     return NextResponse.json(item);
+//   } catch (error) {
+//     console.error('API error:', error);
+//     return NextResponse.json({ error: 'Server error' }, { status: 500 });
+//   }
+// }
 
 export async function DELETE(
   request: NextRequest,

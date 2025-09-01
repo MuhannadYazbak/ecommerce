@@ -35,6 +35,7 @@ test.beforeEach(async ({ page }) => {
 test('📦 Authenticated user can view item details', async ({ page }) => {
   annotateTest({ feature: 'ItemPage' })
   await itemPage.waitForHeader()
+  await page.screenshot({path: 'test-screenshots/new/itemS24.png'})
   await expect(page).toHaveTitle(/TechMart \| (Samsung Galaxy S24 Ultra|Item #2)/i);
   //await expect(page).toHaveTitle(new RegExp(`TechMart \\| ${item.name}`, 'i'));
 });
