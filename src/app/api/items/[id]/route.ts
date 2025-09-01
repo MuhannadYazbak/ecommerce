@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const { id } = await context.params;
+
   const mockItem = {
     id: 2,
     name: 'Samsung Galaxy S24 Ultra',
@@ -15,8 +17,7 @@ export async function GET(request: Request, { params }: { params: { id: string }
     return NextResponse.json(mockItem, { status: 200 });
   }
 
-    try {
-    const id = params.id
+  try {
     const pool = getPool();
     const [rows] = await pool.query('SELECT * FROM itemtable WHERE id = ?', [id]);
     const item = Array.isArray(rows) ? rows[0] : null;
@@ -31,25 +32,6 @@ export async function GET(request: Request, { params }: { params: { id: string }
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
-
-// export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
-//   const { id } = await context.params;
-
-//   try {
-//     const pool = getPool();
-//     const [rows] = await pool.query('SELECT * FROM itemtable WHERE id = ?', [id]);
-//     const item = Array.isArray(rows) ? rows[0] : null;
-
-//     if (!item) {
-//       return NextResponse.json({ error: 'Item not found' }, { status: 404 });
-//     }
-
-//     return NextResponse.json(item);
-//   } catch (error) {
-//     console.error('API error:', error);
-//     return NextResponse.json({ error: 'Server error' }, { status: 500 });
-//   }
-// }
 
 export async function DELETE(
   request: NextRequest,
@@ -84,7 +66,7 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  
+
   const itemId = Number((await params).id)
   if (isNaN(itemId)) {
     return NextResponse.json({ error: 'Invalid item ID' }, { status: 400 })
