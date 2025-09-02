@@ -15,11 +15,12 @@ type Props = {
 
 export default function ItemView({ itemId }: Props) {
     const { id } = useParams();
-    const { user } = useAuth();
+    const { user, guest } = useAuth();
     const [item, setItem] = useState<Item | null>(null);
     const [quantity, setQuantity] = useState(1);
     const router = useRouter();
     const { addToCart } = useCart();
+    const activeUser = user || guest
 
     const handleRemove = async (itemId: number) => {
         try {
@@ -41,7 +42,8 @@ export default function ItemView({ itemId }: Props) {
         if (!item) return;
 
         const payload = {
-            user_id: user?.id,
+            user_id: user?.id ?? guest?.id ,
+            role: activeUser?.role,
             item_id: item.id,
             name: item.name,
             price: item.price,

@@ -4,12 +4,26 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { OrderItem } from "@/types/order";
+import { useAuth } from "@/context/AuthContext";
+import { SlimUser } from "@/types/user";
 
 
 
 export default function HomeLanding() {
   const router = useRouter();
   const [top5, setTop5] = useState<OrderItem[]>([]);
+  const token = 'guest-token'
+  const { asGuest, login } = useAuth();
+  const guestData : SlimUser = {
+    id: 999,
+    role: 'guest',
+    name: 'Guest',
+    dateOfBirth: new Date('1990-01-01')
+  };
+
+  const handleGuestEntry = () => {
+    asGuest(guestData, token)
+  }
 
   const fetchTop5 = async () => {
     const res = await fetch('api/top5');
@@ -63,7 +77,10 @@ export default function HomeLanding() {
 
       <footer className="mt-8 text-center">
         <p className="text-gray-600">
-          To enjoy full features, please{" "}
+          Continue as a <a href='/home' className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1" onClick={handleGuestEntry}>
+            Guest 
+          </a>
+            Or, to enjoy full features, please{" "}
           <a
             href="/login"
             className="text-blue-600 italic hover:underline hover:text-blue-800"

@@ -9,7 +9,8 @@ import TrashIcon from '../ui/TrashIcon';
 
 export default function Cart() {
     const { cartItems, removeFromCart, clearCart } = useCart();
-    const { user } = useAuth();
+    const { user, guest } = useAuth();
+    const activeUser = user || guest
     const router = useRouter();
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
     const selectedCartItems = cartItems.filter(item => selectedItems.includes(item.item_id));
@@ -27,7 +28,7 @@ export default function Cart() {
         );
     };
     const handleCheckout = async () => {
-        if (selectedItems.length === 0 || !user?.id) return;
+        if (selectedItems.length === 0 || !activeUser?.id) return;
 
         try {
             const itemsToCheckout = cartItems.filter(item => selectedItems.includes(item.item_id));
@@ -43,7 +44,7 @@ export default function Cart() {
         }
     };
 
-    if (!user) return <p className="p-4">Please log in to view your cart.</p>;
+    if (!activeUser) return <p className="p-4">Please log in to view your cart.</p>;
 
     return (
         <main className="p-6 max-w-3xl mx-auto">

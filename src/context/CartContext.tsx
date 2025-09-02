@@ -11,35 +11,43 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const cartTotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  //const [cart, setCart] = useState<CartItem[]>([]);
-  const { user } = useAuth();
-  // useEffect(() => {
-  //   const stored = localStorage.getItem('cart');
-  //   if (stored) setCartItems(JSON.parse(stored));
-  // }, []);
+  const { user, guest } = useAuth();
+  const activeUser = user || guest
+  const isLoggedIn = !!user || !!guest
   const [cartReady, setCartReady] = useState(false);
   useEffect(() => {
-    const fetchCartFromBackend = async () => {
-      if (!user) return;
-
-      try {
-        const res = await fetch(`/api/cart/${user.id}`);
-        const data = await res.json();
-        setCartItems(data);
-        setCartItems(data.map((item: { price: any; }) => ({
-          ...item,
-          price: Number(item.price)
-        })));
-        console.log('🛒 Hydrated cart:', data);
-      } catch (err) {
-        console.error('❌ Failed to fetch cart from backend:', err);
-      } finally {
+    const hydrateCart = async () => {
+      if (user) {
+        try {
+          const res = await fetch(`/api/cart/${activeUser?.id}`);
+          const data = await res.json();
+          setCartItems(data.map((item: { price: any }) => ({
+            ...item,
+            price: Number(item.price),
+          })));
+          console.log('🛒 Hydrated cart from backend:', data);
+        } catch (err) {
+          console.error('❌ Failed to fetch cart from backend:', err);
+        } finally {
+          setCartReady(true);
+        }
+      } else if (guest) {
+        const stored = localStorage.getItem('cart');
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            setCartItems(parsed);
+            console.log('🛒 Hydrated cart from localStorage:', parsed);
+          } catch {
+            console.error('❌ Failed to parse guest cart');
+          }
+        }
         setCartReady(true);
       }
     };
 
-    fetchCartFromBackend();
-  }, [user]);
+    hydrateCart();
+  }, [user, guest]);
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
@@ -60,50 +68,33 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const removeFromCart = async (id: number) => {
     setCartItems(prev => {
       const item = prev.find(i => i.item_id === id);
-      if (!item || !user) return prev;
+      if (!item) return prev;
 
-      // Trigger backend delete
-      fetch(`/api/cart/${user.id}/${item.item_id}`, {
-        method: 'DELETE'
-      }).catch(err => {
-        console.error('❌ Failed to delete from backend:', err);
-      });
+      if (user) {
+        fetch(`/api/cart/${user.id}/${item.item_id}`, {
+          method: 'DELETE',
+        }).catch(err => {
+          console.error('❌ Failed to delete from backend:', err);
+        });
+      }
 
       return prev.filter(i => i.item_id !== id);
     });
   };
 
-  // const removeFromCart = async (id: number) => {
-  //   // Remove from frontend first
-  //   setCartItems(prev => prev.filter(i => i.item_id !== id));
-
-  //   // Find the corresponding item to extract item_id
-  //   const item = cartItems.find(i => i.item_id === id);
-  //   if (!item || !user) return;
-
-  //   try {
-  //     await fetch(`/api/cart/${user.id}/${item.item_id}`, {
-  //       method: 'DELETE'
-  //     });
-  //     console.log(`🗑️ Deleted item (item_id: ${item.item_id}) for user ${user.id}`);
-  //   } catch (err) {
-  //     console.error('❌ Failed to delete from backend:', err);
-  //   }
-  // };
-
 
   const clearCart = async () => {
     setCartItems([]);
 
-    if (!user) return;
-
-    try {
-      await fetch(`/api/cart/${user.id}`, {
-        method: 'DELETE'
-      });
-      console.log(`🧹 Cleared cart for user ${user.id}`);
-    } catch (err) {
-      console.error('❌ Failed to clear cart on backend:', err);
+    if (user) {
+      try {
+        await fetch(`/api/cart/${user.id}`, {
+          method: 'DELETE',
+        });
+        console.log(`🧹 Cleared cart for user ${user.id}`);
+      } catch (err) {
+        console.error('❌ Failed to clear cart on backend:', err);
+      }
     }
   };
 
@@ -120,10 +111,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     >
       {children}
     </CartContext.Provider>
-
-    // <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
-    //   {children}
-    // </CartContext.Provider>
   );
 };
 

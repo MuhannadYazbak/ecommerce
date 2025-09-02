@@ -26,7 +26,7 @@ test('🔐 User can log in with valid credentials', async ({ page }) => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify(user)
+      body: JSON.stringify({user, token: 'mocked-token'})
     });
   });
   await loginPage.loginAs('user@test.com', 'User@pass01')

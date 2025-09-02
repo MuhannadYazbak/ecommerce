@@ -13,7 +13,7 @@ import SoldOut from '../ui/SoldOut';
 type SortOption = 'id' | 'price-low-high' | 'price-high-low' | 'name-a-z' | 'name-z-a';
 export default function LoggedInHome() {
     const router = useRouter();
-    const { user, ready } = useAuth();
+    const { user, guest, ready } = useAuth();
     const [items, setItems] = useState<Item[]>([]);
     const [quantity, setQuantity] = useState(1);
     const [wishedItems, setWishedItems] = useState<number[]>([]);
@@ -50,7 +50,7 @@ export default function LoggedInHome() {
     const totalPages = Math.ceil(filteredAndSortedItems.length / itemsPerPage);
 
     useEffect(() => {
-        if (ready && !user) {
+        if (ready && !user && !guest) {
             router.push('/');
         }
     }, [ready, user]);

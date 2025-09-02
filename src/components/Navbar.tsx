@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import CartIcon from './CartIcon';
 
 export default function Navbar() {
-  const { user, logout } = useAuth();
+  const { user, guest, logout } = useAuth();
   const router = useRouter();
 
   const handleLogout = () => {
@@ -19,9 +19,9 @@ export default function Navbar() {
         <h1 className="text-xl font-semibold">TechMart</h1>
       </div>
       
-      {user ? (
+      {user || guest ? (
         <div className="flex justify-center space-x-5">
-          <span className='mt-2'>Hello, {user.name}</span>
+          <span className='mt-2'>Hello, {user?.name || guest?.name}</span>
           <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded">
             Logout
           </button>

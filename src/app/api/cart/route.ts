@@ -4,7 +4,12 @@ import { getPool } from '@/utils/db';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { user_id, item_id, name, price, photo, quantity } = body;
+    const { user_id, item_id, role, name, price, photo, quantity } = body;
+
+    if (!user_id || role === 'guest'){
+      console.log('Guest No DB for cart')
+      return NextResponse.json({message: 'Guest cart is handled client-side only'},{status: 200})
+    }
 
     const pool = getPool();
     await pool.query(

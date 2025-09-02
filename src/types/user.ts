@@ -4,7 +4,7 @@ export interface User {
     email: string,
     dateOfBirth: Date,
     password: string,
-    role : 'user' | 'admin'
+    role : 'user' | 'admin' | 'guest'
 }
 
 export type SlimUser = Pick<User,'id' |'name' | 'role' | 'dateOfBirth'>;

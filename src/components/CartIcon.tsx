@@ -6,8 +6,9 @@ import { useAuth } from '@/context/AuthContext';
 
 export default function CartIcon() {
   const { cartItems, cartReady } = useCart();
-  const { user } = useAuth();
-  if (!user || !cartReady) return null;
+  const { user, guest } = useAuth();
+  const isLoggedIn = !!user || !!guest
+  if (!isLoggedIn || !cartReady) return null;
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
