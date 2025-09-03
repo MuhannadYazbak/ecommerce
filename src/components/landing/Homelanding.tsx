@@ -77,7 +77,7 @@ export default function HomeLanding() {
 
       <footer className="mt-8 text-center">
         <p className="text-gray-600">
-          Continue as a <a href='/home' className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1" onClick={handleGuestEntry}>
+          Continue as a <a href='/home' className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1" onClick={handleGuestEntry} id='guest'>
             Guest 
           </a>
             Or, to enjoy full features, please{" "}

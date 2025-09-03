@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     };
   }
   try {
-    const res = await fetch(`/api/items/${(await params).id}`, { cache: 'no-store' });
+    const res = await fetch(`${process.env.BASE_URL}/api/items/${(await params).id}`, { cache: 'no-store' });
     const item = await res.json();
     console.log('Metadata response: ', item);
 

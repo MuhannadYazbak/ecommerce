@@ -1,0 +1,22 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://localhost:3000",
+      "localStorage": [
+        {
+          "name": "token",
+          "value": "mocked-token"
+        },
+        {
+          "name": "guest",
+          "value": "{\"id\":123,\"name\":\"Guest User\",\"role\":\"guest\"}"
+        },
+        {
+          "name": "cart",
+          "value": "[]"
+        }
+      ]
+    }
+  ]
+}

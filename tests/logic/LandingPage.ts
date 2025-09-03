@@ -6,12 +6,14 @@ export class LandingPage extends BasePage {
   readonly articles: Locator
   readonly login: Locator
   readonly register: Locator
+  readonly continueAsGuest: Locator
   constructor(page: Page) {
     super(page, '/');
     this.header = page.locator('#header')
     this.articles = page.locator('article')
     this.login = page.locator('text=login')
     this.register = page.locator('text=register')
+    this.continueAsGuest = page.locator('#guest')
   }
 
   async waitForHeader(): Promise<void> {
@@ -30,5 +32,9 @@ export class LandingPage extends BasePage {
 
   async clickRegister(): Promise<void> {
     await this.register.click()
+  }
+
+  async clickContinueAsGuest(): Promise<void> {
+    await this.continueAsGuest.click()
   }
 }

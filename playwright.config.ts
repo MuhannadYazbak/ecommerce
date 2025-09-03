@@ -49,5 +49,12 @@ export default defineConfig({
       storageState: 'auth.admin.json',
     },
   },
+  {
+    name: 'guest',
+    testDir: './tests/guestSectionTests',
+    use: {
+      storageState: 'auth.guest.json',
+    },
+  },
 ],
 });
