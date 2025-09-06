@@ -87,7 +87,7 @@ jobs:
           # check app health
           curl -f http://localhost:3000 || (echo "App crashed!" && exit 1)
           # run tests
-          npx playwright test --project=User --project=Admin
+          npx playwright test --project=User --project=Admin --project=guest
 
 
       - name: Upload Playwright artifacts

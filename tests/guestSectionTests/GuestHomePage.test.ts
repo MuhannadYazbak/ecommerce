@@ -64,19 +64,12 @@ test.describe('guest actions with beforeEach', async () => {
 
     test('loads from localStorage and navigates to cart page', async ({ page }) => {
         annotateTest({ feature: 'GuestHomePage' });
-
-        await page.route('**/api/items', async route => {
-            await route.fulfill({
-                status: 200,
-                contentType: 'application/json',
-                body: JSON.stringify(items)
-            });
-        });
-        await page.route(`**/api/cart/${guestId}`, async route => {
-            await route.fulfill({
-                status: 200,
-                contentType: 'application/json',
-                body: JSON.stringify([
+        homePage = new HomePage(page);
+        await homePage.navigate()
+        await homePage.waitForItemsToLoad()
+        await page.evaluate(() => {
+            
+                localStorage.setItem('guestCart', JSON.stringify([
                     {
                         item_id: 1,
                         name: 'iPhone 15 Pro',
@@ -92,32 +85,9 @@ test.describe('guest actions with beforeEach', async () => {
                         photo: '/images/mackbook.jpg'
                     }
 
-                ])
-            })
+                ]))
         });
-        // await page.addInitScript(() => {
-        //     localStorage.setItem('cart', JSON.stringify([
-        //         {
-        //             item_id: 1,
-        //             name: 'iPhone 15 Pro',
-        //             price: 1199.00,
-        //             quantity: 1,
-        //             photo: '/images/iphone15pro.jpg'
-        //         },
-        //         {
-        //             item_id: 4,
-        //             name: 'MacBook Air M3',
-        //             price: 1299.00,
-        //             quantity: 2,
-        //             photo: '/images/mackbook.jpg'
-        //         }
-
-        //     ]));
-        // });
-
-        homePage = new HomePage(page);
-        await homePage.navigate()
-        await homePage.waitForItemsToLoad()
+        await homePage.refresh()
         await page.screenshot({ path: 'test-screenshots/new/guestCart.png' })
 
         const cart = page.getByTestId('cart-count');

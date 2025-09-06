@@ -32,14 +32,14 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
           setCartReady(true);
         }
       } else if (guest) {
-        const stored = localStorage.getItem('cart');
+        const stored = localStorage.getItem('guestCart');
         if (stored) {
           try {
             const parsed = JSON.parse(stored);
             setCartItems(parsed);
             console.log('🛒 Hydrated cart from localStorage:', parsed);
           } catch {
-            console.error('❌ Failed to parse guest cart');
+            console.error('❌ Failed to parse guestCart');
           }
         }
         setCartReady(true);
@@ -56,12 +56,13 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const addToCart = (item: CartItem) => {
     setCartItems(prev => {
       const existing = prev.find(i => i.item_id === item.item_id);
-      if (existing) {
-        return prev.map(i =>
+      const updated = existing
+        ? prev.map(i =>
           i.item_id === item.item_id ? { ...i, quantity: i.quantity + item.quantity } : i
-        );
-      }
-      return [...prev, item];
+        )
+        : [...prev, item];
+      console.log('🛒 Updated cartItems:', updated);
+      return updated;
     });
   };
 
