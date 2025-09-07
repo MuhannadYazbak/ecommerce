@@ -50,6 +50,13 @@ export default defineConfig({
     },
   },
   {
+    name: 'guest',
+    testDir: './tests/guestSectionTests',
+    use: {
+      storageState: 'auth.guest.json',
+    },
+  },
+  {
     name: 'forgotPassword',
     testDir: './tests/forgotPasswordSectionsTests',
   },
