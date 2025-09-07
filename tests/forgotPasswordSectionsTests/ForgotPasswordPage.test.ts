@@ -15,7 +15,7 @@ test.describe('Forgot My Password Page validations', () => {
 
     test('✅ Input filled Correctly', async ({ page }) => {
         annotateTest({ feature: 'ForgotPasswordPage' })
-        await page.screenshot({path: 'test-screenshots/new/forgotPasswordPageLoad.png'})
+        await page.screenshot({ path: 'test-screenshots/new/forgotPasswordPageLoad.png' })
         await forgotPasswordPage.fillEmail(email)
         const filled = await forgotPasswordPage.getEmail()
         expect(filled).toBe(email)
@@ -28,18 +28,26 @@ test.describe('Forgot My Password Page validations', () => {
             expect(dialog.message()).toContain('If this email exists, a reset link has been sent.');
             await dialog.dismiss();
         });
-        await page.screenshot({path: 'test-screenshots/new/ForgotWithvalidEmail.png'})
+        await page.route('**/api/forgot-password', async route => {
+            await route.fulfill({
+                status: 200,
+                contentType: 'application/json',
+                body: JSON.stringify({ message: 'If this email exists, a reset link has been sent.' }),
+            });
+        });
+        await forgotPasswordPage.refresh()
+        await page.screenshot({ path: 'test-screenshots/new/ForgotWithvalidEmail.png' })
         await forgotPasswordPage.submitForm(email)
     })
 
-        test('🤦‍♂️ Forgot my password submitted with ❌ invalid email', async ({ page }) => {
+    test('🤦‍♂️ Forgot my password submitted with ❌ invalid email', async ({ page }) => {
         annotateTest({ feature: 'ForgotPasswordPage' })
         // Intercept alert
         page.on('dialog', async error => {
             expect(error.message()).toContain('Email not found');
             await error.dismiss();
         });
-        await page.screenshot({path: 'test-screenshots/new/ForgotWithinvalidEmail.png'})
+        await page.screenshot({ path: 'test-screenshots/new/ForgotWithinvalidEmail.png' })
         await forgotPasswordPage.submitForm(email)
     })
 })
