@@ -34,7 +34,7 @@ export default function OrderEdit() {
                 body: JSON.stringify({
                     status: form.status,
                     userId: user?.id,
-                    name: user?.name,
+                    name: user?.fullname,
                     total: form.total_amount,
                     items: form.items_json,
                     date: new Date(),

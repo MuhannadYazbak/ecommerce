@@ -21,7 +21,7 @@ export default function Navbar() {
       
       {user || guest ? (
         <div className="flex justify-center space-x-5">
-          <span className='mt-2'>Hello, {user?.name || guest?.name}</span>
+          <span className='mt-2'>Hello, {user?.fullname || guest?.fullname}</span>
           <button onClick={handleLogout} className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded">
             Logout
           </button>

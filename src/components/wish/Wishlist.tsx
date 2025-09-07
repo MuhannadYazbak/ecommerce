@@ -33,7 +33,7 @@ export default function WishList() {
         //console.log('data = ',data);
         setWishlist(Array.isArray(data) ? data : []);
         console.log('Wishlist fetched:', Array.isArray(data) ? data : []);
-        console.log('Wishlist for ',user?.id,' ',user?.name, ' is: ',wishlist);
+        console.log('Wishlist for ',user?.id,' ',user?.fullname, ' is: ',wishlist);
       } catch (err) {
         console.error('Error fetching wishlist:', err);
         setError(err instanceof Error ? err.message : 'An unknown error occurred');

@@ -17,7 +17,7 @@ export default function HomeLanding() {
   const guestData : SlimUser = {
     id: 999,
     role: 'guest',
-    name: 'Guest',
+    fullname: 'Guest',
     dateOfBirth: new Date('1990-01-01')
   };
 

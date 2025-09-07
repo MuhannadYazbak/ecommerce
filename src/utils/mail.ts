@@ -1,3 +1,4 @@
+import { ResetPasswordToken } from '@/types/resetPasswordToken';
 import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
@@ -62,4 +63,26 @@ export const sendOrderShippedtNotification = async (checkoutDetails: any) => {
       <p>Order Shipping date:<strong>${shippingDate}</strong></p>
     `,
   })
+}
+
+export async function sendPasswordResetEmail(email: string, name: string, link: string) {
+  try {
+    const response = await resend.emails.send({
+      from: 'Tech-Mart <onboarding@resend.dev>',
+      to: ['yazbakm@gmail.com'],
+      subject: 'Reset your TechMart password',
+      html: `
+        <p>Hi ${name},</p>
+        <p><strong>${email}</strong></p>
+        <p>Click the link below to reset your password. This link expires in 30 minutes:</p>
+        <a href="${link}">${link}</a>
+      `
+    });
+
+    console.log('Resend response:', response);
+    return response;
+  } catch (err) {
+    console.error('Resend error:', err);
+    return null;
+  }
 }

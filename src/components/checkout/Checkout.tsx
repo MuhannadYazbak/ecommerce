@@ -115,7 +115,7 @@ export default function Checkout() {
         created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
         status: 'Processing',
         address_id: Number(addressId),
-        name: user.name,
+        name: user.fullname,
       };
 
       const orderRes = await fetch('/api/place-order', {

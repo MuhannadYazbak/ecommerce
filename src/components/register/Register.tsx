@@ -34,7 +34,7 @@ export default function Register() {
 
     if (res.ok) {
       console.log('Registering with:', values);
-      login({ id: data.id, name: data.name, role: data.role, dateOfBirth: data.dateOfBirth }, data.token);
+      login({ id: data.id, fullname: data.name, role: data.role, dateOfBirth: data.dateOfBirth }, data.token);
       router.push('/home');
     } else {
       setErrorMsg(data.error || 'Something went wrong');
