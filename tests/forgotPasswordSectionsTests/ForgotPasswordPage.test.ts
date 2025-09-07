@@ -23,17 +23,17 @@ test.describe('Forgot My Password Page validations', () => {
 
     test('🤦‍♂️ Forgot my password submitted with valid email', async ({ page }) => {
         annotateTest({ feature: 'ForgotPasswordPage' })
-        // Intercept alert
-        page.on('dialog', async dialog => {
-            expect(dialog.message()).toContain('If this email exists, a reset link has been sent.');
-            await dialog.dismiss();
-        });
         await page.route('**/api/forgot-password', async route => {
             await route.fulfill({
                 status: 200,
                 contentType: 'application/json',
                 body: JSON.stringify({ message: 'If this email exists, a reset link has been sent.' }),
             });
+        });
+        // Intercept alert
+        page.on('dialog', async dialog => {
+            expect(dialog.message()).toContain('If this email exists, a reset link has been sent.');
+            await dialog.dismiss();
         });
         await forgotPasswordPage.refresh()
         await page.screenshot({ path: 'test-screenshots/new/ForgotWithvalidEmail.png' })
