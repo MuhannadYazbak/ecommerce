@@ -23,7 +23,8 @@ test.describe('Forgot My Password Page validations', () => {
 
     test('🤦‍♂️ Forgot my password submitted with valid email', async ({ page }) => {
         annotateTest({ feature: 'ForgotPasswordPage' })
-        await page.route('**/api/forgot-password', async route => {
+        await page.unroute('**')
+        await page.route('**/api/auth/forgot-password', async route => {
             await route.fulfill({
                 status: 200,
                 contentType: 'application/json',
@@ -35,7 +36,8 @@ test.describe('Forgot My Password Page validations', () => {
             expect(dialog.message()).toContain('If this email exists, a reset link has been sent.');
             await dialog.dismiss();
         });
-        await forgotPasswordPage.refresh()
+        forgotPasswordPage = new ForgotPasswordPage(page)
+        await forgotPasswordPage.navigate()
         await page.screenshot({ path: 'test-screenshots/new/ForgotWithvalidEmail.png' })
         await forgotPasswordPage.submitForm(email)
     })

@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     try {
         const { email } = await req.json();
         console.log("Forgot Password Request Received:", email);
-        console.log("Looking emaik up from Database...");
+        console.log("Looking email up from Database...");
 
         // Database connection
         const pool = getPool();
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
             `INSERT INTO password_reset_tokens (user_id, token_hash, expires_at, used) VALUES (?, ?, ?, ?)`,
             [user.id, tokenHash, expires_at, false]
         );
-        const resetLink = `${process.env.BASE_URL}/reset-password/${rawToken}`;
+        const resetLink = `${process.env.BASE_URL}/auth/reset-password/${rawToken}`;
         console.log('Retrieved user = ', user);
         const res = await sendPasswordResetEmail(user.email, user.fullname, resetLink);
         console.log('PasswordResetEmail res : ',res);
