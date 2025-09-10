@@ -26,7 +26,7 @@ export default function Navbar() {
             Logout
           </button>
           <div className="flex justify-center space-x-15 bg-blue-100">
-              <CartIcon />
+              {user?.role === 'admin' ? null : <CartIcon /> }
               </div>
         </div>
       ) : (
