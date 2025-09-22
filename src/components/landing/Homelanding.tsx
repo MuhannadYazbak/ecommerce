@@ -6,15 +6,20 @@ import { useRouter } from "next/navigation";
 import { OrderItem } from "@/types/order";
 import { useAuth } from "@/context/AuthContext";
 import { SlimUser } from "@/types/user";
+import { useTranslation } from "react-i18next";
+import '../../i18n'
+import { Trans } from 'react-i18next';
+import Link from 'next/link';
 
 
 
 export default function HomeLanding() {
   const router = useRouter();
+  const { t, i18n } = useTranslation();
   const [top5, setTop5] = useState<OrderItem[]>([]);
   const token = 'guest-token'
   const { asGuest, login } = useAuth();
-  const guestData : SlimUser = {
+  const guestData: SlimUser = {
     id: 999,
     role: 'guest',
     fullname: 'Guest',
@@ -24,6 +29,11 @@ export default function HomeLanding() {
   const handleGuestEntry = () => {
     asGuest(guestData, token)
   }
+
+  const changeLanguage = (lng: 'en' | 'ar' | 'he') => {
+    i18n.changeLanguage(lng);
+  };
+
 
   const fetchTop5 = async () => {
     const res = await fetch('api/top5');
@@ -39,10 +49,10 @@ export default function HomeLanding() {
   return (
     <main className="p-6">
       <header className="text-center mb-4">
-        <h1 id='header' className="text-4xl font-bold text-red-500">TechMart</h1>
-        <h2 className="text-xl mt-2">Welcome, Customer!</h2>
+        <h1 id='header' className="text-4xl font-bold text-red-500">{t('techMart')}</h1>
+        <h2 className="text-xl mt-2">{t('welcome')}</h2>
         <p className="mt-2 text-gray-700">
-          TechMart is your ultimate e-commerce destination for top-notch gadgets and electronics.
+          {t('homeLandingText')}
         </p>
       </header>
 
@@ -76,25 +86,30 @@ export default function HomeLanding() {
       </section>
 
       <footer className="mt-8 text-center">
-        <p className="text-gray-600">
-          Continue as a <a href='/home' className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1" onClick={handleGuestEntry} id='guest'>
-            Guest 
-          </a>
-            Or, to enjoy full features, please{" "}
-          <a
+        <Trans i18nKey="guestPrompt" className="text-gray-600">
+          <Link href="/home" className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1" onClick={handleGuestEntry} id="guest">Guest</Link>
+          <Link href="/login" className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1">login</Link>
+          <Link href="/register" className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1">register</Link>
+        </Trans>
+        {/* <Trans i18nKey='guestPrompt' className="text-gray-600">
+          Continue as a <Link href='/home' className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1" onClick={handleGuestEntry} id='guest'>
+            Guest
+          </Link>
+          Or, to enjoy full features, please{" "}
+          <Link
             href="/login"
             className="text-blue-600 italic hover:underline hover:text-blue-800"
           >
             login
-          </a>{" "}
+          </Link>{" "}
           or{" "}
-          <a
+          <Link
             href="/register"
             className="text-blue-600 italic hover:underline hover:text-blue-800"
           >
             register
-          </a>
-        </p>
+          </Link>
+        </Trans> */}
       </footer>
     </main>
   );

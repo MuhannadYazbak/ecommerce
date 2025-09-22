@@ -1,0 +1,9 @@
+{
+  "welcome": "Welcome to TechMart",
+  "greeting": "Hello, Muhannad!",
+  "selectLang": "Select Language",
+  "techMart": "TechMart",
+  "pleaseLogin": "Please log in",
+  "homeLandingText": "TechMart is your ultimate e-commerce destination for top-notch gadgets and electronics",
+  "guestPrompt": "Continue as a <0>Guest</0> or, to enjoy full features, please <1>login</1> or <2>register</2>"
+}

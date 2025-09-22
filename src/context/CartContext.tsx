@@ -51,6 +51,9 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cartItems));
+    if (guest) {
+      localStorage.setItem('guestCart', JSON.stringify(cartItems));
+    }
   }, [cartItems]);
 
   const addToCart = (item: CartItem) => {
