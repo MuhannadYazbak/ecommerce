@@ -63,9 +63,9 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(
   request: NextRequest,
-  params: { params: Promise<{ item_id: string }> }
+  params: { params: Promise<{} > }
 ) {
-  const itemId = Number((await params.params).item_id);
+  const itemId = Number((await params.params) as {item_id : string});
 
   if (isNaN(itemId)) {
     return NextResponse.json({ error: 'Invalid parameters' }, { status: 400 });

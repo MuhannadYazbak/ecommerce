@@ -10,23 +10,34 @@ export default function ChatbotUI() {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (!isDragging.current || !chatbotRef.current) return
-      chatbotRef.current.style.left = `${e.clientX - offset.current.x}px`
-      chatbotRef.current.style.top = `${e.clientY - offset.current.y}px`
-    }
+      if (!isDragging.current || !chatbotRef.current) return;
+      chatbotRef.current.style.left = `${e.clientX - offset.current.x}px`;
+      chatbotRef.current.style.top = `${e.clientY - offset.current.y}px`;
+    };
 
-    const handleMouseUp = () => {
-      isDragging.current = false
-    }
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!isDragging.current || !chatbotRef.current) return;
+      const touch = e.touches[0];
+      chatbotRef.current.style.left = `${touch.clientX - offset.current.x}px`;
+      chatbotRef.current.style.top = `${touch.clientY - offset.current.y}px`;
+    };
 
-    window.addEventListener('mousemove', handleMouseMove)
-    window.addEventListener('mouseup', handleMouseUp)
+    const stopDragging = () => {
+      isDragging.current = false;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', stopDragging);
+    window.addEventListener('touchmove', handleTouchMove);
+    window.addEventListener('touchend', stopDragging);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-      window.removeEventListener('mouseup', handleMouseUp)
-    }
-  }, [])
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', stopDragging);
+      window.removeEventListener('touchmove', handleTouchMove);
+      window.removeEventListener('touchend', stopDragging);
+    };
+  }, []);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!chatbotRef.current) return
@@ -37,6 +48,17 @@ export default function ChatbotUI() {
       y: e.clientY - rect.top,
     }
   }
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!chatbotRef.current) return;
+    isDragging.current = true;
+    const rect = chatbotRef.current.getBoundingClientRect();
+    const touch = e.touches[0];
+    offset.current = {
+      x: touch.clientX - rect.left,
+      y: touch.clientY - rect.top,
+    };
+  };
 
   const sendMessage = async () => {
     const response = await fetch(`${process.env.CHAT_URL}/chat`, {
@@ -51,11 +73,12 @@ export default function ChatbotUI() {
   }
 
   return (
-    <div
+    <div className="touch-none"
       id="chatbot-ui"
       ref={chatbotRef}
       style={{ position: 'fixed', bottom: '20px', right: '20px', zIndex: 9999 }}
       onMouseDown={handleMouseDown}
+      onTouchStart={handleTouchStart}
     >
       <div className="max-w-2xl mx-auto p-4 bg-gray-50 rounded-lg shadow-md h-full flex flex-col">
         <h1 className="text-xl font-bold mb-4 text-blue-700">TechMart Chatbot</h1>
