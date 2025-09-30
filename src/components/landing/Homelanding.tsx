@@ -10,13 +10,14 @@ import { useTranslation } from "react-i18next";
 import '../../i18n'
 import { Trans } from 'react-i18next';
 import Link from 'next/link';
+import { TranslatedItem } from "@/types/translatedItem";
 
 
 
 export default function HomeLanding() {
   const router = useRouter();
   const { t, i18n } = useTranslation();
-  const [top5, setTop5] = useState<OrderItem[]>([]);
+  const [top5, setTop5] = useState<TranslatedItem[]>([]);
   const token = 'guest-token'
   const { asGuest, login } = useAuth();
   const guestData: SlimUser = {
@@ -36,20 +37,29 @@ export default function HomeLanding() {
 
 
   const fetchTop5 = async () => {
-    const res = await fetch('api/top5');
-    const json = await res.json();
-    const parsed = json.flatMap((entry: any) => entry.items_json);
-    setTop5(parsed.slice(0, 5));
+    const res = await fetch('api/top5',{
+      headers: {
+        'Accept-Language': i18n.language || 'en'
+      }
+    });
+    const items = await res.json();
+    setTop5(items)
+    //const parsed = json.flatMap((entry: any) => entry.items_json);
+    //setTop5(parsed.slice(0, 5));
   };
 
   useEffect(() => {
     fetchTop5();
-  }, []);
+  }, [i18n.language]);
+
+  useEffect(()=> {
+    console.log('Top 5 response: ', top5)
+  },[top5])
 
   return (
-    <main className="p-6">
+    <main className="p-6" dir={i18n.language === 'en' ? 'ltr' : 'rtl'}>
       <header className="text-center mb-4">
-        <h1 id='header' className="text-4xl font-bold text-red-500">{t('techMart')}</h1>
+        <h1 id='header' className="text-4xl font-bold text-indigo-500">{t('techMart')}</h1>
         <h2 className="text-xl mt-2">{t('welcome')}</h2>
         <p className="mt-2 text-gray-700">
           {t('homeLandingText')}
@@ -57,13 +67,13 @@ export default function HomeLanding() {
       </header>
 
       <section aria-label="Top 5 Products" className="mt-8">
-        <h3 className="text-2xl font-semibold mb-4 text-center">Top 5 Picks for You</h3>
+        <h3 className="text-2xl font-semibold mb-4 text-center">{t('top5')}</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
-          {top5.map((item, index) => (
+          {Array.isArray(top5) && top5.map((item, index) => (
             <article
-              key={`${item.id}-${index}`}
+              key={`${item.item_id}-${index}`}
               className="border rounded-lg shadow-md p-4 bg-white hover:shadow-xl transition cursor-pointer"
-              onClick={() => router.push(`/product/${item.id}`)}
+              onClick={() => router.push(`/product/${item.item_id}`)}
               role="button"
               tabIndex={0}
               aria-label={`View details for ${item.name}`}
@@ -91,25 +101,6 @@ export default function HomeLanding() {
           <Link href="/login" className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1">login</Link>
           <Link href="/register" className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1">register</Link>
         </Trans>
-        {/* <Trans i18nKey='guestPrompt' className="text-gray-600">
-          Continue as a <Link href='/home' className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1" onClick={handleGuestEntry} id='guest'>
-            Guest
-          </Link>
-          Or, to enjoy full features, please{" "}
-          <Link
-            href="/login"
-            className="text-blue-600 italic hover:underline hover:text-blue-800"
-          >
-            login
-          </Link>{" "}
-          or{" "}
-          <Link
-            href="/register"
-            className="text-blue-600 italic hover:underline hover:text-blue-800"
-          >
-            register
-          </Link>
-        </Trans> */}
       </footer>
     </main>
   );

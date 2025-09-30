@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
+import { Trans, useTranslation } from 'react-i18next'
 import { Item } from '@/types/item'
 import BackButton from '@/components/ui/BackButton'
 import { error } from 'console'
@@ -10,7 +11,8 @@ import { error } from 'console'
 export default function AdminEditItem() {
   const { user } = useAuth()
   const router = useRouter()
-  const { id } = useParams()        // `id` is the `[id]` from the URL
+  const { id } = useParams()
+  const { t, i18n } = useTranslation()
   const [loading, setLoading] = useState(true)
   const [item, setItem] = useState<Item | null>(null)
   const [form, setForm] = useState({
@@ -32,7 +34,11 @@ export default function AdminEditItem() {
   useEffect(() => {
     async function load() {
       try {
-        const res = await fetch(`/api/items/${id}`)
+        const res = await fetch(`/api/items/${id}`,{
+          headers: {
+            'Accept-Language': i18n.language.split('-')[0] || 'en'
+          }
+        })
         if (!res.ok) throw new Error('Item not found')
         const data: Item = await res.json()
         setItem(data)
@@ -85,18 +91,22 @@ export default function AdminEditItem() {
     }
   }
 
-  if (loading) return <p className="p-6">Loading…</p>
+  if (loading) return <p className="p-6">{t('loading')}</p>
   if (!item)   return <p className="p-6">Item not found</p>
 
   return (
-    <main className="max-w-xl mx-auto p-6">
+    <main className="max-w-xl mx-auto p-6" dir={i18n.language === 'en' ? 'ltr': 'rtl'}>
       <header className='flex w-full justify-center' id='admin item header'>
-        <h1 className="text-2xl font-bold mb-4">Edit Item #{id}</h1>
+        <h1 className='text-2xl font-bold mb-4 text-indigo-500'>
+          <Trans i18nKey="adminEditTitle" values={{ id: item.id }}>
+                                      Image of {{ id: item.id }}
+                                  </Trans>
+        </h1>
       </header>
       <section className='form flex w-auto justify-center border hover:transition p-2'>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div id='name'>
-          <label className="block font-medium">Name</label>
+          <label className="block font-medium">{t('name')}</label>
           <input
             name="name"
             value={form.name}
@@ -106,7 +116,7 @@ export default function AdminEditItem() {
         </div>
 
         <div id='description'>
-          <label className="block font-medium">Description</label>
+          <label className="block font-medium">{t('description')}</label>
           <textarea
             name="description"
             value={form.description}
@@ -116,7 +126,7 @@ export default function AdminEditItem() {
         </div>
 
         <div id='price'>
-          <label className="block font-medium">Price</label>
+          <label className="block font-medium">{t('price')}</label>
           <input
             name="price"
             type="number"
@@ -128,7 +138,7 @@ export default function AdminEditItem() {
         </div>
 
         <div id='photo'>
-          <label className="block font-medium">Photo URL</label>
+          <label className="block font-medium">{t('photoURL')}</label>
           <input
             name="photo"
             value={form.photo}
@@ -137,7 +147,7 @@ export default function AdminEditItem() {
           />
         </div>
         <div id='quantity'>
-          <label className="block font-medium">Quantity</label>
+          <label className="block font-medium">{t('quantity')}</label>
           <input
             name="quantity"
             type="number"
@@ -154,14 +164,14 @@ export default function AdminEditItem() {
             type="submit"
             className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded"
           >
-            Update
+            {t('update')}
           </button>
           <button
             type="button"
             onClick={() => router.back()}
             className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded"
           >
-            Cancel
+            {t('cancel')}
           </button>
           </nav>
         </div>

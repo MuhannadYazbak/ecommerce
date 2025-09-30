@@ -4,10 +4,12 @@ import { useParams, useRouter } from 'next/navigation';
 import BackButton from '../ui/BackButton';
 import { Order } from '@/types/order';
 import { useAuth } from '@/context/AuthContext';
+import { Trans, useTranslation } from 'react-i18next';
 import { UpdateItem } from '@/types/item';
 
 export default function OrderEdit() {
     const router = useRouter();
+    const { t, i18n } = useTranslation();
     const [order, setOrder] = useState<Order>();
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
@@ -96,33 +98,36 @@ export default function OrderEdit() {
     }, [form.items_json]);
 
 
+   if (!user || user.role !== 'admin') {
+    return <p className="text-red-600">{t('adminOnly')}</p>;
+  }
+   
     return (
-        <main className='container w-full p-6'>
+        <main className='container w-full p-6' dir={i18n.language === 'en' ? 'ltr' : 'rtl'}>
             <header id='order heading' className='flex justify-center'>
-                <h1 className='text-2xl font-bold text-blue-600' aria-label='order heading'>{order?.order_id} Edit</h1>
+                <h1 className='text-2xl font-bold text-indigo-500' aria-label='order heading'><Trans i18nKey='orderEditTitle' values={{id: order?.order_id}} /></h1>
             </header>
-            {loading ? <div className="animate-pulse text-gray-500">Loading order...</div> :
+            {loading ? <div className="animate-pulse text-gray-500">{t('loading')}</div> :
                 <section className='flex flex-col w-full space-y-4'>
-                    <h2 className='justify-center'>order {order?.order_id} Details</h2>
                     <form id='order form' className='flex flex-col space-y-4' onSubmit={handleSubmit}>
                         <div className="flex flex-row items-center space-x-2 px-4 py-2">
-                            <label htmlFor="order_id">Order ID</label>
+                            <label htmlFor="order_id">{t('orderID')}</label>
                             <input disabled type='number' id='order_id' name='order_id' value={form.order_id ?? ''} onChange={(e) => handleChange(e)} />
                         </div>
                         <div className="flex flex-row items-center space-x-2 px-4 py-2">
-                            <label htmlFor="user">User Id</label>
+                            <label htmlFor="user">{t('userID')}</label>
                             <input disabled type='text' id='uder_id' name='user_id' value={form.user_id} onChange={(e) => handleChange(e)} />
                         </div>
                         <div className="flex flex-row items-center space-x-2 px-4 py-2">
-                            <label htmlFor="total_amount">Total Amount</label>
+                            <label htmlFor="total_amount">{t('totalAmount')}</label>
                             <input disabled type='number' id='total_amount' name='total_amount' value={form.total_amount} onChange={(e) => handleChange(e)} />
                         </div>
                         <div className="flex flex-row items-center space-x-2 px-4 py-2">
-                            <label htmlFor="status">Status</label>
-                            <input type='text' id='status' name='status' value={form.status} onChange={(e) => handleChange(e)} className='text-sm underline cursor-help relative group' />
+                            <label htmlFor="status">{t('status')}</label>
+                            <input type='text' id='status' name='status' value={t(`orderStatus.${form.status}`)} onChange={(e) => handleChange(e)} className='text-sm underline cursor-help relative group' />
                             <span className='absolute hidden group-hover:block bg-white shadow-md p-2 rounded z-10'>please use Processing | Shipped | Delivered | Cancelled </span>
                         </div>
-                        <button type="submit" className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded"> Update </button>
+                        <button type="submit" className="flex-1 bg-green-600 hover:bg-green-700 text-white py-2 rounded"> {t('update')} </button>
                     </form>
                 </section>}
             <nav className='flex justify-center w-full' role='Go Back'>

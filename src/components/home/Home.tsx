@@ -2,6 +2,7 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import { Item } from '@/types/item';
 import Pagination from '@/components/Pagination';
 import Image from 'next/image';
@@ -14,6 +15,7 @@ type SortOption = 'id' | 'price-low-high' | 'price-high-low' | 'name-a-z' | 'nam
 export default function LoggedInHome() {
     const router = useRouter();
     const { user, guest, ready } = useAuth();
+    const { t, i18n } = useTranslation();
     const [items, setItems] = useState<Item[]>([]);
     const [quantity, setQuantity] = useState(1);
     const [wishedItems, setWishedItems] = useState<number[]>([]);
@@ -58,12 +60,20 @@ export default function LoggedInHome() {
 
     useEffect(() => {
         const fetchItems = async () => {
-            const res = await fetch(`/api/items?page=${currentPage}&limit=${itemsPerPage}`);
+            const res = await fetch(`/api/items?page=${currentPage}&limit=${itemsPerPage}`, {
+                headers: {
+                    'Accept-Language': i18n.language || 'en'
+                }
+            });
             const data = await res.json();
             setItems(data);
         };
         fetchItems();
-    }, []);
+    }, [i18n.language]);
+
+    const changeLanguage = (lng: 'en' | 'ar' | 'he') => {
+        i18n.changeLanguage(lng);
+    };
 
     if (!ready) return null; // Wait until auth check is ready
     const handleViewItem = (id: number) => {
@@ -89,17 +99,17 @@ export default function LoggedInHome() {
         }
     };
     return (
-        <main className=' max-w-xl mx-auto' >
+        <main className='container max-w-xl mx-auto' dir={i18n.language === 'en' ? 'ltr' : 'rtl'}>
 
             <header className="flex justify-start items-center pb-3">
                 <h1 className="md:text-3xl font-bold mb-4 text-center">
-                    Welcome to Your TechMart Dashboard
+                    {t('homeUserDashboard')}
                 </h1>
             </header>
             <section className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                 <input
                     type="text"
-                    placeholder="Search products..."
+                    placeholder={t('searchPlaceholder')}
                     aria-label='search keyword'
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -112,11 +122,11 @@ export default function LoggedInHome() {
                         onChange={(e) => setSortOption(e.target.value as SortOption)}
                         className="block appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500"
                     >
-                        <option value="id">Item ID</option>
-                        <option value="price-low-high">Price: Low to High</option>
-                        <option value="price-high-low">Price: High to Low</option>
-                        <option value="name-a-z">Name: A to Z</option>
-                        <option value="name-z-a">Name: Z to A</option>
+                        <option value="id">{t('itemID')}</option>
+                        <option value="price-low-high">{t('priceInc')}</option>
+                        <option value="price-high-low">{t('priceDesc')}</option>
+                        <option value="name-a-z">{t('nameAZ')}</option>
+                        <option value="name-z-a">{t('nameZA')}</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                         <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -125,8 +135,8 @@ export default function LoggedInHome() {
                     </div>
                 </div>
                 <nav aria-label="User actions" className="flex gap-4" role='cart&wish'>
-                    <button aria-label='Orders History' className='bg-yellow-500 hover:bg-yellow-600 text-white rounded ml-4' onClick={() => router.push('/orders')}>Orders History</button>
-                    <button aria-label='WishList' className='bg-green-300 hover:bg-green-500 text-black rounded ml-4' onClick={() => router.push('/wish')}>Wishlist</button>
+                    <button aria-label='Orders History' className='bg-yellow-500 hover:bg-yellow-600 text-white rounded ml-4' onClick={() => router.push('/orders')}>{t('ordersHistory')}</button>
+                    <button aria-label='WishList' className='bg-green-300 hover:bg-green-500 text-black rounded ml-4' onClick={() => router.push('/wish')}>{t('wishlist')}</button>
                 </nav>
             </section>
             {currentItems.length > 0 ? (
@@ -153,7 +163,7 @@ export default function LoggedInHome() {
                                     onClick={() => handleViewItem(item.id)}
                                     className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded"
                                 >
-                                    View Details<DetailsIcon />
+                                    {t('viewDetails')} <DetailsIcon />
                                 </button>
                                 <button
                                     className={`ml-4 px-1 py-1 rounded ${wishedItems.includes(item.id)
@@ -162,7 +172,7 @@ export default function LoggedInHome() {
                                         }`}
                                     onClick={() => addWish(item)}
                                 >
-                                    {wishedItems.includes(item.id) ? 'Wished' : 'Wish'} <WishIcon />
+                                    {wishedItems.includes(item.id) ? t('wished') : t('wish')} <WishIcon />
                                 </button>
                             </nav>
                         </article>

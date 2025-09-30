@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import '@ant-design/v5-patch-for-react-19';
+import React, { useTransition } from "react";
 import Navbar from "@/components/Navbar"
 import { AuthProvider } from '@/context/AuthContext'
 import { CartProvider } from "@/context/CartContext";
@@ -23,13 +24,18 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
+
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   console.log("NEXT_PUBLIC_APP_ENV:", process.env.NEXT_PUBLIC_APP_ENV);
+  // const lang = typeof window !== 'undefined' ? navigator.language.split('-')[0] : 'ar'
+  // const dir = lang === 'ar' || lang === 'he' ? 'rtl' : 'ltr';
+  // console.log('Language_code is: ', lang, ' and dir is: ', dir);
+
   return (
-    <html lang="en">
+    <html>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-green-400`}>
         <AuthProvider>
           <CartProvider>

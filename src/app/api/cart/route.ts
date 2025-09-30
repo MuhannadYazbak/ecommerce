@@ -31,9 +31,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const pool = getPool();
+    const language = req.headers.get('Accept-Language')
     const [rows] = await pool.query('SELECT * FROM cart_items');
     return NextResponse.json(rows);
   } catch (err) {

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
+import { RowDataPacket } from 'mysql2/promise';
 
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
@@ -19,7 +20,20 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 
   try {
     const pool = getPool();
-    const [rows] = await pool.query('SELECT * FROM itemtable WHERE id = ?', [id]);
+    const language = await req.headers.get('Accept-Language')?.split(',')[0] || 'en'
+    //const [rows] = await pool.query('SELECT * FROM itemtable WHERE id = ?', [id]);
+    const [rows] = await pool.query(
+      `SELECT 
+         i.id,
+         i.price,
+         i.quantity,
+         i.photo,
+         t.name,
+         t.description
+       FROM itemtable i
+       JOIN item_translations t ON i.id = t.item_id
+       WHERE i.id =? and t.language_code = ?`,
+      [id,language])
     const item = Array.isArray(rows) ? rows[0] : null;
 
     if (!item) {

@@ -2,14 +2,16 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
 import BackButton from '@/components/ui/BackButton';
 import CreateNewItemIcon from '@/components/ui/CreateNewIcon';
+import { Card, Carousel } from 'antd';
 
 export default function AddItem() {
   const { user } = useAuth();
   const router = useRouter();
-
+  const { t, i18n } = useTranslation();
   const [form, setForm] = useState({
     name: '',
     price: '',
@@ -35,7 +37,7 @@ export default function AddItem() {
     try {
       const res = await fetch('/api/items', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept-Language': i18n.language.split('-')[0] || 'en' },
         body: JSON.stringify(payload),
       });
 
@@ -53,26 +55,41 @@ export default function AddItem() {
   };
 
   if (!user || user.role !== 'admin') {
-    return <p className="text-red-600">⛔ Access denied. Admins only.</p>;
+    return <p className="text-red-600">{t('adminOnly')}</p>;
   }
 
-  return (
-    <main className="max-w-lg mx-auto p-6">
-      <header className='flex w-full justify-center' id='new item heading'>
-        <h1 className="text-2xl font-bold mb-4" aria-label='new item heading'>Add New Item</h1>
-      </header>
-      <section className='form border-solid'>
-        <h2 className='text-1l font-semibold'>Item Details</h2>
-        <input name="name" placeholder="Name" value={form.name} onChange={handleChange} className="mb-2 p-2 w-full border" required />
-        <input name="price" placeholder="Price" value={form.price} onChange={handleChange} type="number" className="mb-2 p-2 w-full border" required />
-        <textarea name="description" placeholder="Description" value={form.description} onChange={handleChange} className="mb-2 p-2 w-full border" />
-        <input name="quantity" placeholder="Quantity" value={form.quantity} onChange={handleChange} className="mb-2 p-2 w-full border" required />
-        <input name="photo" placeholder="Photo URL" value={form.photo} onChange={handleChange} className="mb-2 p-2 w-full border" />
-        <button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Create Item <CreateNewItemIcon /></button>
-      </section>
-      <nav className='p-2'>
-        <BackButton />
-      </nav>
-    </main>
-  );
-}
+    // const onChange = (currentSlide: number) => {
+    //   console.log(currentSlide);
+    // }
+
+    return (
+      <main className="max-w-lg mx-auto p-6" dir={i18n.language === 'en' ? 'ltr' : 'rtl'}>
+        <header className='flex w-full justify-center' id='new item heading'>
+          <h1 className="text-2xl font-bold mb-4 text-indigo-500" aria-label='new item heading'>{t('addNewItem')}</h1>
+        </header>
+        <section className='form border-solid'>
+          <h2 className='text-1l font-semibold'>{t('itemDetails')}</h2>
+            <Card id='en'>
+              <input name="name" placeholder={t('name')} value={form.name} onChange={handleChange} className="mb-2 p-2 w-full border" required />
+              <textarea name="description" placeholder={t('description')} value={form.description} onChange={handleChange} className="mb-2 p-2 w-full border" />
+            </Card>
+            {/* <Card id='ar'>
+              <input name="name" placeholder={t('name')} value={form.name} onChange={handleChange} className="mb-2 p-2 w-full border" required />
+              <textarea name="description" placeholder={t('description')} value={form.description} onChange={handleChange} className="mb-2 p-2 w-full border" />
+            </Card>
+            <Card id='he'>
+              <input name="name" placeholder={t('name')} value={form.name} onChange={handleChange} className="mb-2 p-2 w-full border" required />
+              <textarea name="description" placeholder={t('description')} value={form.description} onChange={handleChange} className="mb-2 p-2 w-full border" />
+            </Card> */}
+          
+          <input name="price" placeholder={t('price')} value={form.price} onChange={handleChange} type="number" className="mb-2 p-2 w-full border" required />
+          <input name="quantity" placeholder={t('quantity')} value={form.quantity} onChange={handleChange} className="mb-2 p-2 w-full border" required />
+          <input name="photo" placeholder={t('photoURL')} value={form.photo} onChange={handleChange} className="mb-2 p-2 w-full border" />
+          <button onClick={handleSubmit} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">{t('addNewItem')} <CreateNewItemIcon /></button>
+        </section>
+        <nav className='p-2'>
+          <BackButton />
+        </nav>
+      </main>
+    );
+  }

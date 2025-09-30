@@ -4,11 +4,13 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import BackButton from '@/components/ui/BackButton';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 
 export default function AdminByFullName() {
     const { user } = useAuth();
     const router = useRouter();
+    const { t, i18n } = useTranslation();
     useEffect(() => {
         const script = document.createElement('script');
         script.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
@@ -18,13 +20,13 @@ export default function AdminByFullName() {
 
 
     if (!user || user.role !== 'admin') {
-        return <p className="text-red-600">⛔ Access denied. Admins only.</p>;
+        return <p className="text-red-600">{t('adminOnly')}</p>;
     }
 
     return (
-        <main className="container p-6">
+        <main className="container p-6" dir={i18n.language === 'en' ? 'ltr': 'rtl'}>
             <header className='flex w-full justify-center' id='new item heading'>
-                <h1 className="text-2xl font-bold mb-4" aria-label='new item heading'>Admin - by FullName Dashboard</h1>
+                <h1 className="text-2xl font-bold mb-4 text-indigo-500" aria-label='new item heading'>{t('adminByFullNameTitle')}</h1>
             </header>
             <section id='visuals' className='grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 p-4'>
                 <article id='1' className='w-full h-[650px] border-black border-solid border-2 rounded-md'>

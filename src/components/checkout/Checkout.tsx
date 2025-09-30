@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import BackButton from '@/components/ui/BackButton';
 import { sendCheckoutNotification } from '@/utils/mail';
 import { NextResponse } from 'next/server';
@@ -12,6 +13,7 @@ export default function Checkout() {
   const { clearCart, cartTotal, cartItems } = useCart();
   const { user } = useAuth();
   const router = useRouter();
+  const { t, i18n } = useTranslation();
   const token = process.env.NEXT_PUBLIC_LOCATIONIQ_KEY;
   //const searchParams = new URLSearchParams(window.location.search);
   const [selectedIds, setSelectedIds] = useState<number[]>([])
@@ -171,13 +173,13 @@ export default function Checkout() {
   };
 
   return (
-    <main className="max-w-md mx-auto mt-10 p-6 border rounded shadow">
+    <main className="max-w-md mx-auto mt-10 p-6 border rounded shadow" dir={i18n.language === 'en' ? 'ltr' : 'rtl'}>
       <header className='flex w-full justify-center'>
-        <h1 className="text-3xl font-bold mb-4" aria-labelledby='checkout-heading'>Checkout</h1>
+        <h1 className="text-3xl font-bold mb-4" aria-labelledby='checkout-heading'>{t('checkout')}</h1>
       </header>
       <section aria-labelledby="payment-form-heading" className='flex flex-col w-full justify-center border-dotted border-black'>
         <h2 id="payment-form-heading" className="text-xl font-semibold mb-2">
-          Payment Information
+          {t('paymentInfo')}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
@@ -185,7 +187,7 @@ export default function Checkout() {
             name="name"
             value={form.name}
             onChange={handleChange}
-            placeholder="Name on Card"
+            placeholder={t('nameOnCard')}
             required
             className="w-full border px-3 py-2 rounded"
           />
@@ -194,7 +196,7 @@ export default function Checkout() {
             name="cardNumber"
             value={form.cardNumber}
             onChange={handleChange}
-            placeholder="Card Number"
+            placeholder={t('cardNumber')}
             required
             className="w-full border px-3 py-2 rounded"
           />
@@ -204,7 +206,7 @@ export default function Checkout() {
               name="expiryMonth"
               value={form.expiryMonth}
               onChange={handleChange}
-              placeholder="MM"
+              placeholder={t('month')}
               required
               className="w-1/2 border px-3 py-2 rounded"
             />
@@ -213,7 +215,7 @@ export default function Checkout() {
               name="expiryYear"
               value={form.expiryYear}
               onChange={handleChange}
-              placeholder="YYYY"
+              placeholder={t('year')}
               required
               className="w-1/2 border px-3 py-2 rounded"
             />
@@ -223,20 +225,20 @@ export default function Checkout() {
             name="cvv"
             value={form.cvv}
             onChange={handleChange}
-            placeholder="CVV"
+            placeholder={t('cvv')}
             required
             className="w-full border px-3 py-2 rounded"
           />
           {/**new Address form */}
           <section aria-labelledby="address-form-heading" className='flex flex-col w-full space-y-4 justify-center border-dotted border-black'>
             <h2 id="address-form-heading" className="text-xl font-semibold mb-2">
-              Address Information
+              {t('addressInfo')}
             </h2>
             <button
               onClick={handleLocateMe}
               className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700"
             >
-              Use My Location
+              {t('useMyLocation')}
             </button>
 
             <input
@@ -244,7 +246,7 @@ export default function Checkout() {
               name="city"
               value={addressForm.city}
               onChange={handleAddressChange}
-              placeholder="City"
+              placeholder={t('city')}
               required
               className="w-full border px-3 py-2 rounded"
             />
@@ -253,7 +255,7 @@ export default function Checkout() {
               name="street"
               value={addressForm.street}
               onChange={handleAddressChange}
-              placeholder="Street Name or number"
+              placeholder={t('street')}
               required
               className="w-full border px-3 py-2 rounded"
             />
@@ -262,7 +264,7 @@ export default function Checkout() {
               name="postalcode"
               value={addressForm.postalcode}
               onChange={handleAddressChange}
-              placeholder="Postal Code"
+              placeholder={t('postalCode')}
               required
               className="w-1/2 border px-3 py-2 rounded"
             />
@@ -273,7 +275,7 @@ export default function Checkout() {
             id='pay-now'
             className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
           >
-            Pay Now
+            {t('payNow')}
           </button>
         </form>
       </section>

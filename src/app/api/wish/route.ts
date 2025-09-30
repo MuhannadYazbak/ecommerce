@@ -7,7 +7,6 @@ export async function POST(req: NextRequest) {
 
   try {
     const { user_id, item_id, item_name } = await req.json();
-
     if (!user_id) {
       return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
     }
@@ -29,7 +28,7 @@ export async function POST(req: NextRequest) {
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const userId = searchParams.get('userId');
-    
+    const language_code = req.headers.get('Accept-Language')?.split('-')[0] || 'en'
     if (!userId) {
         return NextResponse.json(
             { error: 'userId query parameter is required' },

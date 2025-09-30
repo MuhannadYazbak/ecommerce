@@ -1,11 +1,27 @@
 import { NextResponse, NextRequest } from 'next/server';
-import mysql from 'mysql2/promise';
+import mysql, { RowDataPacket } from 'mysql2/promise';
 import { getPool } from '@/utils/db';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const pool = getPool();
-    const [rows]: any = await pool.query('SELECT * FROM itemtable');
+    //const [rows]: any = await pool.query('SELECT * FROM itemtable');
+    const language = request.headers.get('Accept-Language')?.split(',')[0] || 'en';
+    console.log('Using Language: ', language)
+    const [rows]: [RowDataPacket[], any] = await pool.query(
+      `SELECT 
+         i.id,
+         i.price,
+         i.quantity,
+         i.photo,
+         t.name,
+         t.description
+       FROM itemtable i
+       JOIN item_translations t ON i.id = t.item_id
+       WHERE t.language_code = ?`,
+      [language]
+    );
+
 
     // Inject mock data if DB is skipped and rows are empty
     if ((process.env.SKIP_DB === 'true' || process.env.NODE_ENV === 'test') && rows.length === 0) {
@@ -63,9 +79,9 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(
   request: NextRequest,
-  params: { params: Promise<{} > }
+  params: { params: Promise<{}> }
 ) {
-  const itemId = Number((await params.params) as {item_id : string});
+  const itemId = Number((await params.params) as { item_id: string });
 
   if (isNaN(itemId)) {
     return NextResponse.json({ error: 'Invalid parameters' }, { status: 400 });

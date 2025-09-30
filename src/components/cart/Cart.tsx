@@ -4,6 +4,7 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import BackButton from '../ui/BackButton';
 import TrashIcon from '../ui/TrashIcon';
 
@@ -12,6 +13,7 @@ export default function Cart() {
     const { user, guest } = useAuth();
     const activeUser = user || guest
     const router = useRouter();
+    const { t, i18n } = useTranslation();
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
     const selectedCartItems = cartItems.filter(item => selectedItems.includes(item.item_id));
     const total = selectedCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
@@ -47,14 +49,14 @@ export default function Cart() {
     if (!activeUser) return <p className="p-4">Please log in to view your cart.</p>;
 
     return (
-        <main className="p-6 max-w-3xl mx-auto">
+        <main className="p-6 max-w-3xl mx-auto" dir={i18n.language === 'en' ? 'ltr' : 'rtl'}>
             <header id='cart-heading' aria-labelledby='cart-heading'>
-                <h1 className="text-3xl font-bold text-blue-600 mb-4">Your Cart</h1>
+                <h1 className="text-3xl font-bold text-blue-600 mb-4">{t('yourCartTitle')}</h1>
             </header>
 
             {cartItems.length === 0 ? (
                 <section role='empty cart'>
-                    <p>Your cart is currently empty.</p>
+                    <p>{t('emptyCart')}</p>
                 </section>
             ) : (
                 <>
@@ -75,23 +77,23 @@ export default function Cart() {
                                 />
                                 <article>
                                     <h2 className="text-lg font-semibold">{item.name}</h2>
-                                    <p>Quantity: {item.quantity}</p>
-                                    <p>Price: {Number(item.price).toFixed(2)}₪</p>
+                                    <p>{t('quantity')}: {item.quantity}</p>
+                                    <p>{t('price')}: {Number(item.price).toFixed(2)}₪</p>
                                 </article>
                                 <button
                                     onClick={() => removeFromCart(item.item_id)}
                                     className="text-red-500 hover:underline transition-all duration-300 ease-in-out hover:shadow-md"
                                 >
-                                    Remove <TrashIcon />
+                                    {t('remove')} <TrashIcon />
                                 </button>
                             </li>
                         )))}
                     </ul>
 
                     <section className="mt-6 text-right">
-                        <p className="text-xl font-semibold">Total: {total.toFixed(2)}₪</p>
+                        <p className="text-xl font-semibold">{t('total')}: {total.toFixed(2)}₪</p>
                         <button id='checkout' className='bg-blue-500 hover:bg-blue-600 text-white rounded mr-3' disabled={selectedItems.length === 0} onClick={() => handleCheckout()}>
-                            Checkout Selected
+                            {t('checkoutSelected')}
                         </button>
                     </section>
 

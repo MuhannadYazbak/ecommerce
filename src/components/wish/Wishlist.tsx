@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import { Trans, useTranslation } from 'react-i18next';
 import { Wishlist } from '@/types/wish';
 import BackButton from '@/components/ui/BackButton';
 import TrashIcon from '../ui/TrashIcon';
@@ -10,6 +11,7 @@ import TrashIcon from '../ui/TrashIcon';
 export default function WishList() {
   const { user, ready } = useAuth();
   const router = useRouter();
+  const { t, i18n } = useTranslation();
   const [wishlist, setWishlist] = useState<Wishlist[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +24,11 @@ export default function WishList() {
         setLoading(true);
         setError(null);
         
-        const response = await fetch(`/api/wish?userId=${user?.id}`);
+        const response = await fetch(`/api/wish?userId=${user?.id}`, {
+          headers: {
+            'Accept-Language': i18n.language.split('-')[0] || 'en'
+          }
+        });
         //console.log('Raw response = ', response.text());
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
@@ -60,7 +66,8 @@ export default function WishList() {
   if (!user) {
     return (
       <main className="flex flex-col items-center justify-center h-64 gap-4">
-        <h1>You must be logged in to view your wishlist.</h1>
+        <h1>{t('accessDenied')}</h1>
+        <button onClick={() => router.push('/login')}>{t('login')}</button>
         <BackButton />
       </main>
     );
@@ -96,20 +103,22 @@ export default function WishList() {
 };
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="container mx-auto px-4 py-8" dir={i18n.language === 'en' ? 'ltr' : 'rtl'}>
       <header className='flex w-full justify-center' id='wish-heading'>
-        <h1 className="text-3xl font-bold mb-6" aria-label='wish-heading' >Your Wishlist</h1>
+        <h1 className="text-3xl font-bold mb-6" aria-label='wish-heading' >{t('myWishlist')}</h1>
       </header>
       
       {wishlist.length === 0 ? (
         <section className='relative'>
         <h2 aria-label='Empty Wishlist' className="text-center text-gray-600 italic">
-          Looks like you're not wishing for anything yet. Start browsing and add your favorites!
+          {t('emptyWishlist')}
         </h2>
         </section>
       ) : (
         <section className="space-y-6">
-          <h2 className="text-lg font-semibold mb-4">You have {wishlist.length} item(s) wished</h2>
+          <h2 className="text-lg font-semibold mb-4">
+            <Trans i18nKey="wishCount" values={{ length: wishlist.length }} /></h2>
+            {/* You have {wishlist.length} item(s) wished</h2> */}
           {wishlist.map((item,index) => (
             
             <article role='wishlist item' key={`${item.item_id}-${index}`} className="border rounded-lg p-4 shadow-sm">
@@ -117,16 +126,16 @@ export default function WishList() {
                 <div>
                   <h3 className="font-medium">{item.item_name}</h3>
                   <p className="text-sm text-gray-500">
-                    Added on {new Date(item.wished_at).toLocaleDateString('en-US', {
+                    {t('addedOn')} {new Date(item.wished_at).toLocaleDateString(i18n.language, {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',
                     })}
                   </p>
                 </div>
-                <p className="font-bold">Item ID: {item.item_id}</p>
-                <button className='bg-green-400 hover:bg-green-600 text-white rounded mr-4' onClick={()=>router.push(`/items/${item.item_id}`)}>View/Purchase</button>
-                <button className='bg-red-400 hover:bg-red-600 text-white' onClick={()=>handleRemove(item.item_id)}>remove <TrashIcon /></button>
+                <p className="font-bold">{t('itemID')}: {item.item_id}</p>
+                <button className='bg-green-400 hover:bg-green-600 text-white rounded mr-4' onClick={()=>router.push(`/items/${item.item_id}`)}> {t('viewPurchase')} </button>
+                <button className='bg-red-400 hover:bg-red-600 text-white' onClick={()=>handleRemove(item.item_id)}>{t('remove')} <TrashIcon /></button>
               </div>
             </article>
           ))}

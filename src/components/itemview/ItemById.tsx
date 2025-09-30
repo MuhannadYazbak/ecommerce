@@ -7,6 +7,7 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import BackButton from '../ui/BackButton';
 import SoldOut from '../ui/SoldOut';
+import { Trans, useTranslation } from 'react-i18next';
 
 type Props = {
     itemId: string;
@@ -16,6 +17,7 @@ type Props = {
 export default function ItemView({ itemId }: Props) {
     const { id } = useParams();
     const { user, guest } = useAuth();
+    const { t, i18n } = useTranslation();
     const [item, setItem] = useState<Item | null>(null);
     const [quantity, setQuantity] = useState(1);
     const router = useRouter();
@@ -56,6 +58,7 @@ export default function ItemView({ itemId }: Props) {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept-Language': i18n.language.split('-')[0] || 'en',
                 },
                 body: JSON.stringify(payload),
             });
@@ -81,7 +84,12 @@ export default function ItemView({ itemId }: Props) {
 
     useEffect(() => {
         const fetchItem = async () => {
-            const res = await fetch(`/api/items/${id}`);
+            const res = await fetch(`/api/items/${id}`, {
+                headers: {
+                    'Accept-Language': i18n.language.split('-')[0] || 'en'
+                }
+            }         
+            );
 
             if (!res.ok) {
                 const errorText = await res.text();
@@ -103,7 +111,7 @@ export default function ItemView({ itemId }: Props) {
 
     if (!item) return <p>Loading item...</p>;
     return (
-        <main className="p-6">
+        <main className="p-6" >
             <article aria-labelledby="item-heading" className="max-w-3xl mx-auto">
                 <header>
                     <h1 id="item-heading" className="text-2xl font-bold">{item.name}</h1>
@@ -111,7 +119,13 @@ export default function ItemView({ itemId }: Props) {
 
                 <figure className="my-4">
                     <img src={item.photo} alt={`Photo of ${item.name}`} className="w-80 hover:scale-110" />
-                    <figcaption id='item-name' className="text-sm text-gray-500 mt-1">Image of {item.name}</figcaption>
+                    <figcaption id='item-name' className="text-sm text-gray-500 mt-1">
+                        <Trans i18nKey="imageOf" values={{ name: item.name }}>
+                            Image of {{ name: item.name }}
+                        </Trans>
+
+                        {/* Image of {item.name} */}
+                        </figcaption>
                 </figure>
 
                 <section aria-label="Description" className='relative'>
@@ -129,7 +143,7 @@ export default function ItemView({ itemId }: Props) {
                         onClick = {handleAddToCart}
                         className = "px-3 py-1 ml-4 bg-green-600 hover:bg-green-700 text-white rounded"
                     >
-                        Add to Cart
+                        {t('addToCart')}
                     </button>
                 </section>}
 
