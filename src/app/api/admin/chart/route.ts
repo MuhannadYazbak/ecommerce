@@ -2,12 +2,14 @@
 import { NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
 import { RowDataPacket } from 'mysql2'
-import { Order } from '@/types/order';
+import { getTranslation } from '@/utils/i18nBackend';
+
 interface ChartSummary extends RowDataPacket {
   order_date: string;
   order_count: number;
 }
 export async function GET(request: Request) {
+    const t = getTranslation(request)
     try {
         const pool = await getPool();
         const [rows] = await pool.query<ChartSummary[]>(
@@ -16,7 +18,7 @@ export async function GET(request: Request) {
 
         return NextResponse.json(rows);
     } catch (error) {
-        console.error('Database error:', error);
-        return NextResponse.json({ message: 'Failed to fetch orders' }, { status: 500 });
+        console.error(`${t.databaseError}`, error);
+        return NextResponse.json({ message: `${t.orderFetchFailed}` }, { status: 500 });
     }
 }

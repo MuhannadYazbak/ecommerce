@@ -1,5 +1,12 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
+import en from '@/locales/en/translation.json'
+import ar from '@/locales/ar/translation.json'
+import he from '@/locales/he/translation.json'
+const translations = { en, ar, he}
+type LangCode = keyof typeof translations;
+const currentLang: LangCode = 'en'; // or 'ar', 'he'
+const t = translations[currentLang]
 
 
 export class AdminBarChartPage extends BasePage {
@@ -10,10 +17,10 @@ export class AdminBarChartPage extends BasePage {
 
     constructor(page: Page) {
         super(page, '/admin/chart')
-        this.heading = page.locator('h1', { hasText: 'Orders by Date Bar Chart' });
-        this.backButton = page.locator('button', { hasText: 'Back' });
+        this.heading = page.locator('h1', { hasText: t.adminBarChartTitle });
+        this.backButton = page.locator('button', { hasText: en.back });
         this.chartBars = page.locator('canvas');
-        this.loadingText = page.locator('text=Loading chart...');
+        this.loadingText = page.locator(`text=${t.loading}`);
     }
 
     async waitForChart() {

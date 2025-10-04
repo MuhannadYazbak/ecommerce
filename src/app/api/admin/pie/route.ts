@@ -1,13 +1,15 @@
 import { NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
 import { RowDataPacket } from 'mysql2';
+import { getTranslation } from '@/utils/i18nBackend';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
+  const t = getTranslation(request)
   const selectedDate = searchParams.get('date'); // expecting YYYY-MM-DD format
 
   if (!selectedDate) {
-    return NextResponse.json({ message: 'Missing date parameter' }, { status: 400 });
+    return NextResponse.json({ message:`${t.missingDateParam}`  }, { status: 400 });
   }
 
   const query = `
@@ -28,7 +30,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(rows);
   } catch (error) {
-    console.error('Database error:', error);
-    return NextResponse.json({ message: 'Failed to fetch item data' }, { status: 500 });
+    console.error(`${t.databaseError}`, error);
+    return NextResponse.json({ message: `${t.itemFetchFailed}` }, { status: 500 });
   }
 }

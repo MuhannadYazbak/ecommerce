@@ -2,6 +2,13 @@ import { Locator, Page } from '@playwright/test';
 import { BasePage } from './BasePage';
 import { Address } from '@/types/address';
 import { PaymentDetails } from '@/types/payment';
+import en from '@/locales/en/translation.json'
+import ar from '@/locales/ar/translation.json'
+import he from '@/locales/he/translation.json'
+const translations = { en, ar, he}
+type LangCode = keyof typeof translations;
+const currentLang: LangCode = 'en'; // or 'ar', 'he'
+const t = translations[currentLang]
 
 export class CheckoutPage extends BasePage {
   readonly nameInput: Locator;
@@ -30,7 +37,7 @@ export class CheckoutPage extends BasePage {
     this.cityInput = page.locator('input[name="city"]');
     this.streetInput = page.locator('input[name="street"]');
     this.postalCodeInput = page.locator('input[name="postalcode"]');
-    this.locateMeButton = page.locator('button:has-text("Use My Location")');
+    this.locateMeButton = page.locator(`button:has-text(${t.useMyLocation})`);
     this.submitButton = page.locator('#pay-now');
   }
 

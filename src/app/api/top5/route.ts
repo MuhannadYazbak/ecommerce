@@ -2,8 +2,10 @@
 import { NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
 import { RowDataPacket } from 'mysql2'
+import { getTranslation } from '@/utils/i18nBackend';
 
 export async function GET(request: Request) {
+  const t = getTranslation(request)
   console.log('Top 5 called')
   try {
     const pool = await getPool();
@@ -34,7 +36,7 @@ export async function GET(request: Request) {
     const top5TranslatedItems = translatedItems.slice(0,5)
     return NextResponse.json(top5TranslatedItems);
   } catch (error) {
-    console.error('Database error:', error);
-    return NextResponse.json({ message: 'Failed to fetch orders' }, { status: 500 });
+    console.error(`${t.databaseError}`, error);
+    return NextResponse.json({ message: `${t.orderFetchFailed}`}, { status: 500 });
   }
 }

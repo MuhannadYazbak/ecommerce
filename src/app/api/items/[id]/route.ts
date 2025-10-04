@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
-import { RowDataPacket } from 'mysql2/promise';
+import { getTranslation } from '@/utils/i18nBackend';
 
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
-
+  const t = getTranslation(req)
   const mockItem = {
     id: 2,
     name: 'Samsung Galaxy S24 Ultra',
@@ -37,13 +37,13 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
     const item = Array.isArray(rows) ? rows[0] : null;
 
     if (!item) {
-      return NextResponse.json({ error: 'Item not found' }, { status: 404 });
+      return NextResponse.json({ error: `${t.notFound}` }, { status: 404 });
     }
 
     return NextResponse.json(item);
   } catch (error) {
     console.error('API error:', error);
-    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+    return NextResponse.json({ error: `${t.serverError}` }, { status: 500 });
   }
 }
 
@@ -52,9 +52,9 @@ export async function DELETE(
   context: { params: Promise<{ id: string }> }
 ) {
   const itemId = Number((await context.params).id);
-
+  const t = getTranslation(request)
   if (isNaN(itemId)) {
-    return NextResponse.json({ error: 'Invalid parameters' }, { status: 400 });
+    return NextResponse.json({ error: `${t.invalidParam}` }, { status: 400 });
   }
 
   try {
@@ -65,14 +65,14 @@ export async function DELETE(
     );
 
     if ((result as any).affectedRows === 0) {
-      console.warn(`🧨 No item found to delete for item_id=${itemId}`);
-      return NextResponse.json({ message: 'No item found to delete' }, { status: 404 });
+      console.warn(`🧨 ${t.itemDeleteFailed} for item_id=${itemId}`);
+      return NextResponse.json({ message: `${t.itemDeleteFailed}` }, { status: 404 });
     }
 
-    return NextResponse.json({ message: 'Item removed' });
+    return NextResponse.json({ message: `${t.itemDeleted}` });
   } catch (err) {
-    console.error('💥 Delete error:', err);
-    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+    console.error(`${t.deleteError}:`, err);
+    return NextResponse.json({ error: `${t.serverError}` }, { status: 500 });
   }
 }
 
@@ -80,10 +80,10 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-
+  const t = getTranslation(request)
   const itemId = Number((await params).id)
   if (isNaN(itemId)) {
-    return NextResponse.json({ error: 'Invalid item ID' }, { status: 400 })
+    return NextResponse.json({ error: `${t.invalidItemID}` }, { status: 400 })
   }
 
   const body = await request.json()
@@ -98,7 +98,7 @@ export async function PUT(
     typeof photo !== 'string' ||
     typeof quantity !== 'number'
   ) {
-    return NextResponse.json({ error: 'Bad request' }, { status: 400 })
+    return NextResponse.json({ error: `${t.badRequest}` }, { status: 400 })
   }
 
   try {
@@ -111,12 +111,12 @@ export async function PUT(
     )
 
     if ((result as any).affectedRows === 0) {
-      return NextResponse.json({ error: 'Not found' }, { status: 404 })
+      return NextResponse.json({ error: `${t.notFound}` }, { status: 404 })
     }
 
-    return NextResponse.json({ message: 'Item updated' })
+    return NextResponse.json({ message: `${t.itemUpdated}` })
   } catch (err) {
-    console.error('Update item error:', err)
-    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+    console.error(`${t.itemUpdateError}`, err)
+    return NextResponse.json({ error: `${t.serverError}` }, { status: 500 })
   }
 }

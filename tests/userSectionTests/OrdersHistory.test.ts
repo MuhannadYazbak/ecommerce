@@ -60,7 +60,7 @@ test.beforeEach(async ({ page }) => {
     })
     ordersHistoryPage = new OrdersHistoryPage(page)
     await ordersHistoryPage.navigate()
-    await page.waitForLoadState('networkidle')
+    //await page.waitForLoadState('networkidle')
 })
 
 test('Orders history initial test', async ({ page }) => {

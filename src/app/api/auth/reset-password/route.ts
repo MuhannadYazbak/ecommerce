@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
-import mysql from 'mysql2/promise';
 import { getPool } from '@/utils/db';
 import crypto from 'crypto'
+import { getTranslation } from '@/utils/i18nBackend';
 
 export async function PUT(req: Request) {
+    const t = getTranslation(req)
     console.log("DB Connection:", process.env.DB_HOST, process.env.DB_USER, process.env.DB_NAME);
     try {
         const { token, password } = await req.json();
@@ -21,7 +22,7 @@ export async function PUT(req: Request) {
             [tokenHash]
         ) as [Array<{ user_id: number }>, any];
         if (rows.length === 0) {
-            return NextResponse.json({ error: 'Invalid or expired token' }, { status: 400 });
+            return NextResponse.json({ error: `${t.invalidToken}` }, { status: 400 });
         }
         const user_id = rows[0].user_id
 
@@ -37,10 +38,10 @@ export async function PUT(req: Request) {
 
         //pool.end();
 
-        return NextResponse.json({ message: 'Password reset successfully' }, { status: 200 });
+        return NextResponse.json({ message: `${t.passwordResetSuccess}` }, { status: 200 });
     } catch (error) {
         console.error("Error Occurred:", error);
-        return NextResponse.json({ error: `Server error: ${error}` }, { status: 500 });
+        return NextResponse.json({ error: `${t.serverError}: ${error}` }, { status: 500 });
 
     }
 }

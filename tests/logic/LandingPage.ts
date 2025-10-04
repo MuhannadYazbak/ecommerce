@@ -1,5 +1,12 @@
 import { Locator, Page, expect } from '@playwright/test';
 import { BasePage } from './BasePage'
+import en from '@/locales/en/translation.json'
+import ar from '@/locales/ar/translation.json'
+import he from '@/locales/he/translation.json'
+const translations = { en, ar, he}
+type LangCode = keyof typeof translations;
+const currentLang: LangCode = 'en'; // or 'ar', 'he'
+const t = translations[currentLang]
 
 export class LandingPage extends BasePage {
   readonly header: Locator
@@ -11,8 +18,8 @@ export class LandingPage extends BasePage {
     super(page, '/');
     this.header = page.locator('#header')
     this.articles = page.locator('article')
-    this.login = page.locator('text=login')
-    this.register = page.locator('text=register')
+    this.login = page.locator(`text=${t.login}`)
+    this.register = page.locator(`text=${t.register}`)
     this.continueAsGuest = page.locator('#guest')
   }
 

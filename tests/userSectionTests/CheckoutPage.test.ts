@@ -27,7 +27,7 @@ test.use({ storageState: 'auth.json' });
 test.beforeEach(async ({ page })=>{
   checkoutPage = new CheckoutPage(page, selectedItems)
   await checkoutPage.navigate()
-  await page.waitForLoadState('networkidle')
+  //await page.waitForLoadState('networkidle')
 })
 
 test('should navigate to checkout and display form fields', async ({ page }) => {

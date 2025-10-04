@@ -1,16 +1,18 @@
 import { NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
 import { RowDataPacket } from 'mysql2';
-import { Order, OrderItem } from '@/types/order';
+import { Order } from '@/types/order';
+import { getTranslation } from '@/utils/i18nBackend';
 
 export async function GET(request: Request) {
+  const t = getTranslation(request)
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get('userId');
   const languageCode = request.headers.get('Accept-Language')?.split(',')[0]?.trim() || 'en';
 
   if (!userId) {
     return NextResponse.json(
-      { message: 'User ID is required' },
+      { message: `${t.userIDRequired}` },
       { status: 400 }
     );
   }
@@ -22,33 +24,11 @@ export async function GET(request: Request) {
       [userId]
     );
 
-    // const enrichedOrders = await Promise.all(rows.map(async (order) => {
-    //   const items: OrderItem[] = JSON.parse(order.items_json.toString());
-
-    //   const enrichedItems = await Promise.all(items.map(async (item) => {
-    //     const [translationRows] = await pool.query<RowDataPacket[]>(
-    //       'SELECT name FROM item_translations WHERE item_id = ? AND language_code = ?',
-    //       [item.id, languageCode]
-    //     );
-
-    //     return {
-    //       ...item,
-    //       name: translationRows[0]?.name || item.name
-    //     };
-    //   }));
-
-    //   return {
-    //     ...order,
-    //     items_json: order.items_json,
-    //     items: enrichedItems
-    //   };
-    // }));
-
     return NextResponse.json(rows.map(order => ({...order, items_json: order.items_json})));
   } catch (error) {
-    console.error('Database error:', error);
+    console.error(`${t.databaseError}:`, error);
     return NextResponse.json(
-      { message: 'Failed to fetch orders' },
+      { message: `${t.orderFetchFailed}` },
       { status: 500 }
     );
   }

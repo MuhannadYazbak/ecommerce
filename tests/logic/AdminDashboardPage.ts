@@ -1,5 +1,12 @@
 import { Page, Locator } from "@playwright/test";
 import { BasePage } from "./BasePage";
+import en from '@/locales/en/translation.json'
+import ar from '@/locales/ar/translation.json'
+import he from '@/locales/he/translation.json'
+const translations = { en, ar, he}
+type LangCode = keyof typeof translations;
+const currentLang: LangCode = 'en'; // or 'ar', 'he'
+const t = translations[currentLang]
 
 export class AdminItemsPage extends BasePage {
   readonly removeItemBtn : Locator
@@ -13,19 +20,19 @@ export class AdminItemsPage extends BasePage {
     super(page,'/admin/items')
     this.removeItemBtn = page.locator('.btn-remove');
     this.viewItemBtn = page.locator('.btn-view');
-    this.addItemBtn = page.locator('button:has-text("Add New Item")');
-    this.ordersListLink = page.locator('button:has-text("Orders List")');
-    this.barChartLink = page.locator('button:has-text("Bar Chart")');
-    this.pieChartLink = page.locator('button:has-text("Pie Chart")');
+    this.addItemBtn = page.locator(`button:has-text(${t.addNewItem})`);
+    this.ordersListLink = page.locator(`button:has-text(${t.ordersList})`);
+    this.barChartLink = page.locator(`button:has-text(${t.barChart})`);
+    this.pieChartLink = page.locator(`button:has-text(${t.pieChart})`);
     this.logoutBtn = page.locator('button#logout');
   }
 
   async removeItem(index: number): Promise<void> {
-    await this.page.locator(`button:has-text("Delete Item")`).nth(index).click();
+    await this.page.locator(`button:has-text(${t.deleteItem})`).nth(index).click();
   }
 
   async viewItem(index: number): Promise<void> {
-    await this.page.locator(`button:has-text("View Item")`).nth(index).click()
+    await this.page.locator(`button:has-text(${t.viewItem})`).nth(index).click()
   }
 
   async addItem() : Promise<void>{

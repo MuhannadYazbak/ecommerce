@@ -1,5 +1,12 @@
 import { Locator, Page } from '@playwright/test';
 import { BasePage } from './BasePage'
+import en from '@/locales/en/translation.json'
+import ar from '@/locales/ar/translation.json'
+import he from '@/locales/he/translation.json'
+const translations = { en, ar, he}
+type LangCode = keyof typeof translations;
+const currentLang: LangCode = 'en'; // or 'ar', 'he'
+const t = translations[currentLang]
 
 export class WishlistPage extends BasePage {
     readonly heading: Locator;
@@ -14,8 +21,8 @@ export class WishlistPage extends BasePage {
         this.heading = page.locator('[aria-label="wish-heading"]');
         this.emptyMessage = page.locator('[aria-label="Empty Wishlist"]');
         this.wishlistItems = page.locator('[role="wishlist item"]'); // Each item card
-        this.viewButtons = page.locator('button:has-text("View/Purchase")');
-        this.removeButtons = page.locator('button:has-text("remove")');
+        this.viewButtons = page.locator(`button:has-text(${t.viewPurchase})`);
+        this.removeButtons = page.locator(`button:has-text(${t.remove})`);
     }
 
     async getHeadingText(): Promise<string> {

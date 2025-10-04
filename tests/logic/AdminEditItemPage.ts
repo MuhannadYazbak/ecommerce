@@ -1,5 +1,12 @@
 import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
+import en from '@/locales/en/translation.json'
+import ar from '@/locales/ar/translation.json'
+import he from '@/locales/he/translation.json'
+const translations = { en, ar, he}
+type LangCode = keyof typeof translations;
+const currentLang: LangCode = 'en'; // or 'ar', 'he'
+const t = translations[currentLang]
 
 export class AdminItemEditPage extends BasePage {
   readonly updateButton: Locator;
@@ -11,7 +18,7 @@ export class AdminItemEditPage extends BasePage {
     super(page, `/admin/items/${id}`);
     this.itemId = id
     this.updateButton = page.locator('button[type="submit"]');
-    this.cancelButton = page.locator('button:has-text("Cancel")');
+    this.cancelButton = page.locator(`button:has-text(${t.cancel})`);
     this.alertMessage = page.locator('.alert-error');
   }
 

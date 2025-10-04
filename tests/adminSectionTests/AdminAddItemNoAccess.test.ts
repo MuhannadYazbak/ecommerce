@@ -7,7 +7,7 @@ let addItemPage : AddItemPage
 test.beforeEach(async ({ page })=>{
   addItemPage = new AddItemPage(page);
   await addItemPage.navigate();
-  await page.waitForLoadState('networkidle')
+  //await page.waitForLoadState('networkidle')
 })
 
 test('should show access denied message for non-admin', async ({ page }) => {

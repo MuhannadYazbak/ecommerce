@@ -2,6 +2,8 @@ import { test, expect, Locator } from '@playwright/test';
 import { HomePage } from '../logic/HomePage';
 import { annotateTest } from '../utils/annotate';
 import { Item } from '@/types/item';
+import en from '@/locales/en/translation.json'
+
 const testUserId = 123;
 let homePage: HomePage
 let firstItem: Locator
@@ -134,7 +136,7 @@ test('💙 Clicking WishList navigates and renders', async ({ page }) => {
   await expect(page).toHaveURL(/\/wish$/);
 
   await expect(
-    page.getByLabel('Empty Wishlist').or(page.locator('article').first())
+    page.getByLabel(`${en.emptyWishlist}`).or(page.locator('article').first())
   ).toBeVisible();
   await homePage.back('/home')
   await expect(page).toHaveURL(/\/home$/);

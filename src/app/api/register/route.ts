@@ -2,8 +2,10 @@ import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import mysql from 'mysql2/promise';
 import { getPool } from '@/utils/db';
+import { getTranslation } from '@/utils/i18nBackend';
 
 export async function POST(req: Request) {
+    const t = getTranslation(req)
     console.log("DB Connection:", process.env.DB_HOST, process.env.DB_USER, process.env.DB_NAME);
     try {
         const { enName, arName, heName, email, dateOfBirth, password } = await req.json();
@@ -36,11 +38,11 @@ export async function POST(req: Request) {
             [userId, 'en', safeEnName, userId, 'ar', safeArName, userId, 'he', safeHeName]
         );
 
-        return NextResponse.json({ message: 'User registered successfully' }, { status: 201 });
+        return NextResponse.json({ message: `${t.userRegistered}` }, { status: 201 });
     } catch (error) {
         //return NextResponse.json({ error: 'Failed to register user' }, { status: 500 });
-        console.error("Error Occurred:", error);
-        return NextResponse.json({ error: `Server error: ${error}` }, { status: 500 });
+        console.error(`${t.userRegisterFailed}:`, error);
+        return NextResponse.json({ error: `${t.userRegisterFailed}: ${error}` }, { status: 500 });
 
     }
 }

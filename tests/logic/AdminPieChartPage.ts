@@ -1,5 +1,12 @@
 import { expect, Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage'
+import en from '@/locales/en/translation.json'
+import ar from '@/locales/ar/translation.json'
+import he from '@/locales/he/translation.json'
+const translations = { en, ar, he}
+type LangCode = keyof typeof translations;
+const currentLang: LangCode = 'en'; // or 'ar', 'he'
+const t = translations[currentLang]
 
 export class AdminPieChartPage extends BasePage {
     readonly dateInput: Locator
@@ -11,7 +18,7 @@ export class AdminPieChartPage extends BasePage {
         super(page, '/admin/pieChart');
         this.dateInput = this.page.locator('input[type="date"]');
         this.chartWrapper = this.page.locator('[data-testid="pie-chart-wrapper"]');
-        this.loadingText = this.page.locator('text=Loading chart...');
+        this.loadingText = this.page.locator(`text=${t.loading}`);
         this.tooltip = this.page.locator('.chartjs-tooltip');
         this.backButton = this.page.getByRole('button', { name: /back/i });
 

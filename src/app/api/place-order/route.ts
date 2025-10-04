@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sendCheckoutNotification } from '@/utils/mail'
 import { getPool } from '@/utils/db'
+import { getTranslation } from '@/utils/i18nBackend';
 
 
 export async function POST(req: NextRequest) {
-
+  const t = getTranslation(req)
   try {
     const { user_id, total_amount, items_json, created_at,status, address_id, name } = await req.json();
 
@@ -21,8 +22,8 @@ export async function POST(req: NextRequest) {
   //   typeof item.photo === 'string'
   // )
 ) {
-  console.error("❌ Invalid cart item structure:", items_json);
-  return NextResponse.json({ error: 'Invalid cart item structure' }, { status: 400 });
+  console.error(`${t.invalidCartItemStructure}`, items_json);
+  return NextResponse.json({ error: `${t.invalidCartItemStructure}` }, { status: 400 });
 }
     //const body = await req.json()
     console.log("📥 Received order payload:", { user_id, total_amount, items_json, created_at,status, address_id })
@@ -40,12 +41,12 @@ export async function POST(req: NextRequest) {
     //   console.error('❌ Email failed:', emailErr);
     // }
     void sendCheckoutNotification({ user_id, name, total_amount, items_json, created_at })
-    .then(() => console.log('✅ Email sent'))
-    .catch(emailErr => console.error('❌ Email failed:', emailErr));
+    .then(() => console.log(`${t.emailSent}`))
+    .catch(emailErr => console.error(`${t.emailFailed}`, emailErr));
 
     return NextResponse.json({ success: true })
   } catch (err) {
-    console.error('Checkout error:', err)
-    return NextResponse.json({ error: 'Checkout failed' }, { status: 500 })
+    console.error(`${t.checkoutError}:`, err)
+    return NextResponse.json({ error: `${t.checkoutError}` }, { status: 500 })
   }
 }

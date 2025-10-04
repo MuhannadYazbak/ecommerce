@@ -1,14 +1,12 @@
 import { NextResponse } from 'next/server';
-import bcrypt from 'bcrypt';
-import mysql from 'mysql2/promise';
-import jwt from 'jsonwebtoken';
 import { getPool } from '@/utils/db';
 import { User } from '@/types/user';
 import crypto from 'crypto';
 import { sendPasswordResetEmail } from '@/utils/mail';
-import { message } from 'antd';
+import { getTranslation } from '@/utils/i18nBackend';
 
 export async function POST(req: Request) {
+    const t = getTranslation(req)
     try {
         const { email } = await req.json();
         console.log("Forgot Password Request Received:", email);
@@ -28,7 +26,7 @@ export async function POST(req: Request) {
         // If user is not found, return error
         if (rows.length === 0) {
             console.log("Unregistered email:", email);
-            return NextResponse.json({ error: 'Email not found' }, { status: 404 });
+            return NextResponse.json({ error: `${t.emailNotFound}` }, { status: 404 });
         }
 
         // Generate JWT token
@@ -45,11 +43,11 @@ export async function POST(req: Request) {
         const res = await sendPasswordResetEmail(user.email, user.fullname, resetLink);
         console.log('PasswordResetEmail res : ',res);
         return NextResponse.json({
-            message: 'If this email exists, a reset link has been sent.'
+            message: `${t.emailSent}`
         }, { status: 200 });
 
     } catch (error) {
-        console.error("Password Reset error:", error);
-        return NextResponse.json({ error: 'Server error, please try again later' }, { status: 500 });
+        console.error(`${t.passwordResetError}:`, error);
+        return NextResponse.json({ error: `${t.serverError}` }, { status: 500 });
     }
 }

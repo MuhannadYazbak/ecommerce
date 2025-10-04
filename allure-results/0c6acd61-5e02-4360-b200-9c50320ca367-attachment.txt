@@ -1,0 +1,49 @@
+📦 Address payload: { city: 'Haifa', street: '123 Test Street', postalcode: '12345' }
+💳 Payment payload: {
+  amount: 3849,
+  items: [
+    { item_id: 101, name: 'iPhone 15 Pro', price: 1199, quantity: 1 },
+    {
+      item_id: 102,
+      name: 'Google Pixel 8 Pro',
+      price: 2650,
+      quantity: 1
+    }
+  ]
+}
+💳 Payment payload: {
+  amount: 3849,
+  items: [
+    { item_id: 101, name: 'iPhone 15 Pro', price: 1199, quantity: 1 },
+    {
+      item_id: 102,
+      name: 'Google Pixel 8 Pro',
+      price: 2650,
+      quantity: 1
+    }
+  ]
+}
+🧾 Order payload: {
+  user_id: 123,
+  total_amount: 3849,
+  items_json: [
+    {
+      id: 101,
+      name: 'iPhone 15 Pro',
+      price: 1199,
+      quantity: 1,
+      photo: 'undefined'
+    },
+    {
+      id: 102,
+      name: 'Google Pixel 8 Pro',
+      price: 2650,
+      quantity: 1,
+      photo: 'undefined'
+    }
+  ],
+  created_at: '2025-10-02 11:36:08',
+  status: 'Processing',
+  address_id: null
+}
+✅ Full checkout flow completed and verified

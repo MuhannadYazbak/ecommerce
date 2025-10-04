@@ -1,0 +1,55 @@
+# Page snapshot
+
+```yaml
+- navigation:
+  - img "Logo"
+  - heading "techMart" [level=1]
+  - button "Select Language":
+    - img
+  - text: hello, guest
+  - button "logout"
+  - link:
+    - /url: /cart
+    - img
+- main:
+  - heading "homeUserDashboard" [level=1]
+  - textbox "search keyword": phone
+  - combobox "sort results":
+    - option "itemID" [selected]
+    - option "priceInc"
+    - option "priceDesc"
+    - option "nameAZ"
+    - option "nameZA"
+  - img
+  - navigation "User actions":
+    - button "Orders History": ordersHistory
+    - button "WishList": wishlist
+  - article:
+    - img "iPhone 15 Pro"
+    - heading "iPhone 15 Pro" [level=2]
+    - paragraph: ₪1199
+    - navigation:
+      - button "viewDetails details-line":
+        - text: viewDetails
+        - img "details-line"
+      - button "wish":
+        - text: wish
+        - img
+  - article:
+    - img "Samsung Galaxy S24 Ultra"
+    - heading "Samsung Galaxy S24 Ultra" [level=2]
+    - paragraph: ₪1100
+    - navigation:
+      - button "viewDetails details-line":
+        - text: viewDetails
+        - img "details-line"
+      - button "wish":
+        - text: wish
+        - img
+  - button "back"
+- heading "chatbotTitle" [level=1]
+- textbox "typeYourMessage"
+- button "send"
+- button "⤵️ minimize"
+- alert
+```

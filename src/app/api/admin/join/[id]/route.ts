@@ -4,10 +4,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
 import { RowDataPacket } from 'mysql2';
 import { Order } from '@/types/order';
+import { getTranslation } from '@/utils/i18nBackend';
 
 
 export async function GET(request: NextRequest, context: {params: Promise<{id: string}>}): Promise<NextResponse> {
   const { params } = context;
+  const t = getTranslation(request)
   const orderId = Number((await params).id);
   console.log(`join on ${orderId}`);
 
@@ -19,12 +21,12 @@ export async function GET(request: NextRequest, context: {params: Promise<{id: s
     );
 
     if (!rows.length) {
-      return NextResponse.json({ message: 'Order not found' }, { status: 404 });
+      return NextResponse.json({ message: `${t.orderNotFound}` }, { status: 404 });
     }
     console.log('join returned ',rows[0]);
     return NextResponse.json(rows[0]); // send single order
   } catch (error) {
-    console.error('Database error:', error);
-    return NextResponse.json({ message: 'Server error' }, { status: 500 });
+    console.error(`${t.databaseError}:`, error);
+    return NextResponse.json({ message: `${t.serverError}` }, { status: 500 });
   }
 }

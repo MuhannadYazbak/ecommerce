@@ -1,5 +1,12 @@
 import { Dialog, Locator, Page } from '@playwright/test';
 import { BasePage } from './BasePage';
+import en from '@/locales/en/translation.json'
+import ar from '@/locales/ar/translation.json'
+import he from '@/locales/he/translation.json'
+const translations = { en, ar, he}
+type LangCode = keyof typeof translations;
+const currentLang: LangCode = 'en'; // or 'ar', 'he'
+const t = translations[currentLang]
 
 export default class AddItemPage extends BasePage {
     readonly createItemButton: Locator;
@@ -7,8 +14,8 @@ export default class AddItemPage extends BasePage {
 
     constructor(page: Page) {
         super(page, '/admin/items/new');
-        this.createItemButton = page.locator('button:has-text("Create Item")');
-        this.accessDenied = page.locator('text=⛔ Access denied. Admins only.');
+        this.createItemButton = page.locator(`button:has-text(${t.addNewItem})`);
+        this.accessDenied = page.locator(`text=${t.adminOnly}`);
     }
 
     itemField = (fieldName: string): Locator =>

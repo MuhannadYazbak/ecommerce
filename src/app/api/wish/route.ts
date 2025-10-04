@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPool } from '@/utils/db'
-
+import { getTranslation } from '@/utils/i18nBackend';
 
 
 export async function POST(req: NextRequest) {
-
+  const t = getTranslation(req)
   try {
     const { user_id, item_id, item_name } = await req.json();
     if (!user_id) {
-      return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
+      return NextResponse.json({ error: `${t.invalidPayload}`}, { status: 400 });
     }
 
     const pool = getPool()
@@ -20,18 +20,19 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true })
   } catch (err) {
-    console.error('Checkout error:', err)
-    return NextResponse.json({ error: 'wishlist failed' }, { status: 500 })
+    console.error(`${t.checkoutError}:`, err)
+    return NextResponse.json({ error: `${t.wishlistFailed}` }, { status: 500 })
   }
 }
 
 export async function GET(req: Request) {
-    const { searchParams } = new URL(req.url);
+  const t = getTranslation(req)  
+  const { searchParams } = new URL(req.url);
     const userId = searchParams.get('userId');
     const language_code = req.headers.get('Accept-Language')?.split('-')[0] || 'en'
     if (!userId) {
         return NextResponse.json(
-            { error: 'userId query parameter is required' },
+            { error: `${t.userIDRequired}` },
             { status: 400 }
         );
     }
@@ -43,20 +44,21 @@ export async function GET(req: Request) {
         
         return NextResponse.json(rows, { status: 200 });
     } catch (error) {
-        console.error("Database error:", error);
+        console.error(`${t.databaseError}:`, error);
         return NextResponse.json(
-            { error: 'Failed to fetch wishlist items' },
+            { error: `${t.wishlistFetchFailed}`},
             { status: 500 }
         );
     }
 }
 
 export async function DELETE(req: NextRequest) {
+  const t = getTranslation(req)
   try {
     const { user_id, item_id } = await req.json();
 
     if (!user_id || !item_id) {
-      return NextResponse.json({ error: 'Invalid delete payload' }, { status: 400 });
+      return NextResponse.json({ error: `${t.invalidPayload}`}, { status: 400 });
     }
 
     const pool = getPool();
@@ -68,7 +70,7 @@ export async function DELETE(req: NextRequest) {
     console.log('Deleted item res:', res);
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
-    console.error('Error deleting item:', error);
-    return NextResponse.json({ error: 'Failed to delete item' }, { status: 500 });
+    console.error(`${t.itemDeleteFailed}`, error);
+    return NextResponse.json({ error: `${t.itemDeleteFailed}` }, { status: 500 });
   }
 }

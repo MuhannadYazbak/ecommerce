@@ -1,0 +1,53 @@
+# Page snapshot
+
+```yaml
+- navigation:
+  - img "Logo"
+  - heading "techMart" [level=1]
+  - button "Select Language":
+    - img
+  - text: hello, guest
+  - button "logout"
+  - link "Cart Items Count":
+    - /url: /cart
+    - img
+    - text: "5"
+- main:
+  - heading "yourCartTitle" [level=1]
+  - list:
+    - listitem:
+      - checkbox [checked]
+      - article:
+        - heading "Wireless Mouse" [level=2]
+        - paragraph: "quantity: 2"
+        - paragraph: "price: 29.99₪"
+      - button "remove remove item":
+        - text: remove
+        - img "remove item"
+    - listitem:
+      - checkbox
+      - article:
+        - heading "Mechanical Keyboard" [level=2]
+        - paragraph: "quantity: 1"
+        - paragraph: "price: 89.99₪"
+      - button "remove remove item":
+        - text: remove
+        - img "remove item"
+    - listitem:
+      - checkbox
+      - article:
+        - heading "Xiaomi Redmi 14C" [level=2]
+        - paragraph: "quantity: 2"
+        - paragraph: "price: 499.00₪"
+      - button "remove remove item":
+        - text: remove
+        - img "remove item"
+  - paragraph: "total: 59.98₪"
+  - button "checkoutSelected"
+  - button "back"
+- heading "chatbotTitle" [level=1]
+- textbox "typeYourMessage"
+- button "send"
+- button "⤵️ minimize"
+- alert
+```

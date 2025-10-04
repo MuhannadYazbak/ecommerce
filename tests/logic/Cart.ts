@@ -1,5 +1,12 @@
 import { BasePage } from "./BasePage";
 import { Page, Locator, expect } from "@playwright/test";
+import en from '@/locales/en/translation.json'
+import ar from '@/locales/ar/translation.json'
+import he from '@/locales/he/translation.json'
+const translations = { en, ar, he}
+type LangCode = keyof typeof translations;
+const currentLang: LangCode = 'en'; // or 'ar', 'he'
+const t = translations[currentLang]
 
 export class CartPage extends BasePage {
     readonly cartItems: Locator
@@ -8,7 +15,7 @@ export class CartPage extends BasePage {
     constructor(page: Page) {
         super(page, '/cart')
         this.cartItems = page.locator("ul[role='list'] > li[role='listitem']")
-        this.emptyCart = this.page.locator("text=Your cart is currently empty.")
+        this.emptyCart = this.page.locator(`text=${t.emptyCart}`)
         this.checkoutButton = this.page.locator('#checkout')
     }
 
@@ -32,7 +39,7 @@ export class CartPage extends BasePage {
     async removeItemAt(index: number): Promise<void> {
         try {
             const item = this.cartItems.nth(index)
-            const button = item.locator("button:has-text('Remove')")
+            const button = item.locator(`button:has-text(${t.remove})`)
             await button.click();
         }catch(error){
             console.warn(`Failed to remove item at index ${index}:`, error)

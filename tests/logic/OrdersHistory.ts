@@ -1,5 +1,12 @@
 import { Page, Locator } from "@playwright/test";
 import { BasePage } from "./BasePage";
+import en from '@/locales/en/translation.json'
+import ar from '@/locales/ar/translation.json'
+import he from '@/locales/he/translation.json'
+const translations = { en, ar, he}
+type LangCode = keyof typeof translations;
+const currentLang: LangCode = 'en'; // or 'ar', 'he'
+const t = translations[currentLang]
 
 
 export class OrdersHistoryPage extends BasePage {

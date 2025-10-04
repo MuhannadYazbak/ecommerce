@@ -1,6 +1,13 @@
 import { Item } from "@/types/item";
 import { BasePage } from "./BasePage";
 import { Locator, Page } from "@playwright/test";
+import en from '@/locales/en/translation.json'
+import ar from '@/locales/ar/translation.json'
+import he from '@/locales/he/translation.json'
+const translations = { en, ar, he}
+type LangCode = keyof typeof translations;
+const currentLang: LangCode = 'en'; // or 'ar', 'he'
+const t = translations[currentLang]
 
 
 export class ItemPage extends BasePage {
@@ -25,7 +32,7 @@ export class ItemPage extends BasePage {
         this.itemDescription = this.page.locator(`text="${this.item.description}"`)
         this.itemPrice = this.page.locator(`text="${this.item.price}₪"`)
         this.itemQuantity = this.page.locator('section[aria-label="Purchase Options"] >> span')
-        this.addToCartButton = this.page.locator('button:text("Add to Cart")')
+        this.addToCartButton = this.page.locator(`button:text(${t.addToCart})`)
         this.soldout = this.page.locator('text=Sold Out')
         this.quantityIncrease = this.page.locator('text=+')
         this.quantityDecrease = this.page.locator('text=-')

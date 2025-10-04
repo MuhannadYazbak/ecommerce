@@ -1,5 +1,12 @@
 import { Page, Locator } from '@playwright/test';
 import { BasePage } from './BasePage';
+import en from '@/locales/en/translation.json'
+import ar from '@/locales/ar/translation.json'
+import he from '@/locales/he/translation.json'
+const translations = { en, ar, he}
+type LangCode = keyof typeof translations;
+const currentLang: LangCode = 'en'; // or 'ar', 'he'
+const t = translations[currentLang]
 
 export class HomePage extends BasePage {
   readonly itemCards: Locator;
@@ -10,16 +17,17 @@ export class HomePage extends BasePage {
   readonly ordersHistoryButton: Locator;
   readonly searchInput: Locator;
   readonly sortOption: Locator;
+  
 
   constructor(page: Page) {
     super(page, '/home');
     this.itemCards = page.locator('article');
-    this.header = page.locator('h1:has-text("Welcome to Your TechMart Dashboard")');
+    this.header = page.locator(`h1:has-text(${t.homeUserDashboard})`);
     this.article = page.locator('article');
     this.cartCount = page.getByTestId('cart-count');
-    this.wishListButton = page.getByLabel('WishList');
-    this.ordersHistoryButton = page.getByLabel('Orders History');
-    this.searchInput = page.getByLabel('search keyword');
+    this.wishListButton = page.getByLabel(`${t.wishlist}`);
+    this.ordersHistoryButton = page.getByLabel(`${t.ordersHistory}`);
+    this.searchInput = page.getByLabel(`${t.searchPlaceholder}`);
     this.sortOption = page.getByLabel('sort results');
   }
 
@@ -56,11 +64,11 @@ export class HomePage extends BasePage {
   }
 
   getItemViewDetailsBtn(item: Locator): Locator {
-    return item.getByRole('button', { name: /View Details/i });
+    return item.getByRole('button', { name: t.viewDetails});
   }
 
   getItemWishBtn(item: Locator): Locator {
-    return item.getByRole('button', { name: /Wish/i });
+    return item.getByRole('button', { name: t.wish });
   }
 
   getCart(): Locator {
