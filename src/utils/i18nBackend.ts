@@ -10,3 +10,8 @@ export function getTranslation(req: Request | NextRequest) {
   const lang = req.headers.get('Accept-Language')?.split('-')[0] as LangCode;
   return translations[lang] || translations['en'];
 }
+
+export function getTranslationByLang(lang: string) {
+  const code = lang.split('-')[0] as LangCode;
+  return translations[code] || translations['en'];
+}
