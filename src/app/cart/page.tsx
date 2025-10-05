@@ -1,10 +1,30 @@
 import Cart from '@/components/cart/Cart';
-// Page-specific metadata for SEO
-export const metadata = {
-  title: "TechMart | Your Cart",
-  description: "Review your selected items, update quantities, and proceed to secure checkout. Your TechMart cart is ready when you are.",
-};
+import { headers } from 'next/headers';
+import { getTranslationByLang } from '@/utils/i18nBackend';
 
-export default function LoginPage(){
-  return <Cart />
+export const dynamic = 'force-dynamic';
+
+export async function generateMetadata() {
+  const requestHeaders = await headers()
+  const acceptLang = requestHeaders.get('accept-language') || 'en'
+  console.log('acceptLang: ', acceptLang); 
+  const lang = acceptLang.split(',')[0].split('-')[0];
+  const t = getTranslationByLang(lang);
+
+  return {
+    title: t.metadata.cartTitle,
+    description: t.metadata.cartDescription,
+    keywords: [
+      'TechMart', 'تيك مارت', 'טקמארט',
+      'cart', 'عربة تسوق', 'סל קניות',
+      'manage your items before secured checkout',
+      'تحكم بمنتجاتك قبل الانتقال الى عملية الشراء الآمنة',
+      'תשלוט במוצרים שלך לפני מעבר לתהליך רכשיה מאובטח'
+    ].join(', ')
+
+  };
+}
+
+export default function CartPage() {
+  return <Cart />;
 }

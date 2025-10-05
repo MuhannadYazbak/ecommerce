@@ -1,30 +1,48 @@
 import AdminEditItem from "@/components/admin/AdminEditItem";
+import { headers } from 'next/headers';
+import { getTranslationByLang } from '@/utils/i18nBackend';
+import { Metadata } from "next";
 
-export const metadata = {
-  title: "TechMart Admin | Edit Item",
-  description: "TechMart admin's view and update current item",
-  keywords: [
-    "admin dashboard",
-    "TechMart inventory",
-    "manage products",
-    "ecommerce analytics",
-    "admin panel",
-    "store management"
-  ],
-  robots: {
-    index: false, // prevent search engines from indexing admin page
-    follow: false
-  },
-  openGraph: {
-    title: "TechMart Admin | Edit Item",
-    description: "Manage product, view or update the cuttent product",
-    url: "https://techmart.com/admin/items/[id]",
-    siteName: "TechMart",
-  },
-  alternates: {
-    canonical: "https://techmart.com/admin/items/[id]"
-  }
-};
+export const dynamic = 'force-dynamic';
+
+type Params = { params: Promise<{ id: string }> };
+
+export async function generateMetadata({params}: Params): Promise<Metadata> {
+  const requestHeaders = await headers()
+  const acceptLang = requestHeaders.get('accept-language') || 'en'
+  console.log('acceptLang: ', acceptLang); 
+  const lang = acceptLang.split(',')[0].split('-')[0];
+  const t = getTranslationByLang(lang);
+  const id = (await params).id
+  const res = await fetch(`${process.env.BASE_URL}/api/items/${id}`, {
+    headers: {
+      'Accept-Language': lang
+    }
+  })
+  const item = await res.json();
+  
+  return {
+    title: `${t.metadata.editItemTitle} | ${item.name}`,
+    description: t.metadata.editItemDescription,
+    keywords: [
+      'TechMart', 'Admin Dashboard', 'manage products', 'ecommerce analytics','store management','تيك مارت', 'لوحة تحكم الادمين', 'التحكم بالمنتجات', 'تحليل بيانات التسوق الالكتروني', 'ادارة المتجر الالكتروني', 'טקמארט', 'דשבורד של האדמן', 'ניהול המוצרים', 'ניתוח נתוני קניות אונליין','ניהול חנות אלקטרונית'
+    ].join(', '),
+    robots: {
+      index: false,
+      follow: false,
+    },
+    openGraph : {
+      title: `${t.metadata.editItemTitle} ${id}`,
+      description: t.metadata.editItemDescription,
+      url: `https://techmart.com/admin/items/${id}`,
+      siteName: 'TechMart'
+    },
+    alternates: {
+      canonical: `https://techmart.com/admin/items/${id}`
+    }
+
+  };
+}
 
 export default function AdminEditItemPage(){
   return <AdminEditItem />

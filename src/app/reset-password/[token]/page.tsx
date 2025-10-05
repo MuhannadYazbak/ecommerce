@@ -1,36 +1,17 @@
 import type { Metadata } from 'next';
 import ResetPassword from '@/components/reset-password/ResetPassword';
-import { cache } from 'react';
+import { headers } from 'next/headers';
+import { getTranslationByLang } from '@/utils/i18nBackend';
 
 type Params = { params: Promise<{ tokenId: string }> };
 
-// export async function generateMetadata({ params }: Params): Promise<Metadata> {
-//   if (process.env.SKIP_DB === 'true') {
-//     return {
-//       title: `TechMart | Reset Password ${(await params).tokenId}`,
-//       description: 'Reset your password securely',
-//     };
-//   }
-//   try {
-//     const res = await fetch(`${process.env.BASE_URL}/api/auth/reset-password/${(await params).tokenId}`, { cache: 'no-store' });
-//     const item = await res.json();
-//     console.log('Metadata response: ', item);
-
-//     return {
-//       title: `TechMart | Reset Password ${(await params).tokenId}`,
-//       description: 'Reset your password securely',
-//     };
-//   } catch (err) {
-//     console.error("Failed to fetch email metadata:", err);
-//     return {
-//       title: `TechMart | Email Not Found`,
-//       description: `Sorry, this email doesn't seem to exist. Please check back later.`,
-//     };
-//   }
-// }
-
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-    if (process.env.SKIP_DB === 'true') {
+  const requestHeaders = await headers()
+    const acceptLang = requestHeaders.get('accept-language') || 'en'
+    console.log('acceptLang: ', acceptLang); 
+    const lang = acceptLang.split(',')[0].split('-')[0];
+    const t = getTranslationByLang(lang);  
+  if (process.env.SKIP_DB === 'true') {
     return {
       title: `TechMart | Reset Password ${(await params).tokenId}`,
       description: 'Reset your password securely',
@@ -40,17 +21,20 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     const res = await fetch(`${process.env.API_URL}/api/auth/metadata/${(await params).tokenId}`);
     if (!res.ok) {
       console.error('Metadata fetch failed:', res.status);
-      return { title: 'Reset Password' }; // fallback metadata
+      return { 
+        title: t.metadata.resetPasswordTitle,
+        description: t.metadata.resetPasswordDescription
+       }
     }
 
     const data = await res.json();
     return {
-      title: `Reset Password for ${data.email}`,
-      description: 'Securely reset your password',
+      title: `${t.metadata.resetPasswordTitle} for ${data.email}`,
+      description: t.metadata.resetPasswordDescription,
     };
   } catch (err) {
     console.error('Failed to fetch metadata:', err);
-    return { title: 'Reset Password' }; // fallback
+    return { title: t.metadata.registerTitle, description: t.metadata.resetPasswordDescription }; // fallback
   }
 }
 
