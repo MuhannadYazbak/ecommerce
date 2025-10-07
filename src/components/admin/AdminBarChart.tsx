@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import type { ChartData } from '@/components/BarChart'
+import { useAuth } from '@/context/AuthContext';
 import BackButton from '@/components/ui/BackButton';
 
 
@@ -14,6 +15,7 @@ export default function AdminBarChart() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { t, i18n } = useTranslation();
+  const { user } = useAuth();
 
   useEffect(() => {
     fetch('/api/admin/chart') // ← Replace with your actual chart API route
@@ -23,15 +25,19 @@ export default function AdminBarChart() {
       .finally(() => setLoading(false));
   }, []);
 
+  if (!user || user.role !== 'admin') {
+    return <p role='adminOnly' className="text-red-600">{t('adminOnly')}</p>;
+  }
+
   return (
     <main className="container p-6" dir={i18n.language === 'en' ? 'ltr' : 'rtl'}>
       <header>
-        <h1 className="text-2xl font-semibold mb-4 text-indigo-500">📊 {t('adminBarChartTitle')}</h1>
+        <h1 role='adminBarChartTitle' className="text-2xl font-semibold mb-4 text-indigo-500">📊 {t('adminBarChartTitle')}</h1>
       </header>
       <nav>
         <BackButton />
       </nav>
-      {loading ? <p>{t('loading')}</p> : <OrderBarChart data={data} />}
+      {loading ? <p role='loading'>{t('loading')}</p> : <OrderBarChart data={data} />}
     </main>
   );
 }

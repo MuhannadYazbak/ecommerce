@@ -61,7 +61,7 @@ export default function HomeLanding() {
       <header className="text-center mb-4">
         <h1 id='header' className="text-4xl font-bold text-indigo-500">{t('techMart')}</h1>
         <h2 className="text-xl mt-2">{t('welcome')}</h2>
-        <p className="mt-2 text-gray-700">
+        <p className="mt-2 text-gray-700" role='homeLandingText'>
           {t('homeLandingText')}
         </p>
       </header>
@@ -98,8 +98,8 @@ export default function HomeLanding() {
       <footer className="mt-8 text-center">
         <Trans i18nKey="guestPrompt" className="text-gray-600">
           <Link href="/home" className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1" onClick={handleGuestEntry} id="guest">Guest</Link>
-          <Link href="/login" className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1">login</Link>
-          <Link href="/register" className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1">register</Link>
+          <Link href="/login" className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1" role='login'>login</Link>
+          <Link href="/register" className="text-blue-600 italic hover:underline hover:text-blue-800 mr-1" role='register'>register</Link>
         </Trans>
       </footer>
     </main>

@@ -11,16 +11,14 @@ const t = translations[currentLang]
 
 export class AdminBarChartPage extends BasePage {
     readonly heading: Locator;
-    readonly backButton: Locator;
     readonly chartBars: Locator;
     readonly loadingText: Locator;
 
     constructor(page: Page) {
         super(page, '/admin/chart')
-        this.heading = page.locator('h1', { hasText: t.adminBarChartTitle });
-        this.backButton = page.locator('button', { hasText: en.back });
+        this.heading = page.locator('h1[role="adminBarChartTitle"]');
         this.chartBars = page.locator('canvas');
-        this.loadingText = page.locator(`text=${t.loading}`);
+        this.loadingText = page.locator(`p[role='loading']`);
     }
 
     async waitForChart() {

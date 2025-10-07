@@ -22,13 +22,18 @@ const itemId = '1'
 test.use({ storageState: 'auth.json' })
 
 test.beforeEach(async ({ page }) => {
+    await page.context().addInitScript(() => {
+        localStorage.setItem('i18nextLng', 'en');
+    });
     cartPage = new CartPage(page)
+    await cartPage.translatePage('he')
     await cartPage.navigate()
     //await page.waitForLoadState('networkidle')
 })
 
 test('Empty Cart validation', async ({ page }) => {
     annotateTest({ feature: 'CartPage' })
+    console.log('this cart emptyCart: ', cartPage.emptyCart, ' cartTitle ',cartPage.getTitle())
     const isEmpty = await cartPage.isCartEmpty()
     await expect(isEmpty).toBeTruthy()
 })
@@ -136,3 +141,4 @@ test('🔙 Back button on Cart page redirects to landing', async ({ page }) => {
     //expect(page.url()).toBe(`${process.env.BASE_URL}/home`);
     await expect(page).toHaveURL(/.*\/home/);
 });
+

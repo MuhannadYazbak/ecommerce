@@ -37,7 +37,7 @@ export class CheckoutPage extends BasePage {
     this.cityInput = page.locator('input[name="city"]');
     this.streetInput = page.locator('input[name="street"]');
     this.postalCodeInput = page.locator('input[name="postalcode"]');
-    this.locateMeButton = page.locator(`button:has-text(${t.useMyLocation})`);
+    this.locateMeButton = page.locator(`button[role='useMyLocation']`);
     this.submitButton = page.locator('#pay-now');
   }
 

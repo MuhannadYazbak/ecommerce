@@ -5,9 +5,9 @@ import ar from '@/locales/ar/translation.json'
 import he from '@/locales/he/translation.json'
 const translations = { en, ar, he}
 type LangCode = keyof typeof translations;
-const currentLang: LangCode = 'en'; // or 'ar', 'he'
+const currentLang: LangCode = 'he'; // or 'ar', 'he'
 const t = translations[currentLang]
-
+//console.log('what do t see? ', t);
 export class CartPage extends BasePage {
     readonly cartItems: Locator
     readonly emptyCart : Locator
@@ -15,7 +15,7 @@ export class CartPage extends BasePage {
     constructor(page: Page) {
         super(page, '/cart')
         this.cartItems = page.locator("ul[role='list'] > li[role='listitem']")
-        this.emptyCart = this.page.locator(`text=${t.emptyCart}`)
+        this.emptyCart = this.page.locator('[role="empty cart"]')
         this.checkoutButton = this.page.locator('#checkout')
     }
 

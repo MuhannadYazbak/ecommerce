@@ -16,23 +16,25 @@ export class AdminItemsPage extends BasePage {
   readonly barChartLink : Locator
   readonly pieChartLink : Locator
   readonly logoutBtn : Locator
+  readonly byFullNameLink: Locator
   constructor(page : Page){
     super(page,'/admin/items')
     this.removeItemBtn = page.locator('.btn-remove');
     this.viewItemBtn = page.locator('.btn-view');
-    this.addItemBtn = page.locator(`button:has-text(${t.addNewItem})`);
-    this.ordersListLink = page.locator(`button:has-text(${t.ordersList})`);
-    this.barChartLink = page.locator(`button:has-text(${t.barChart})`);
-    this.pieChartLink = page.locator(`button:has-text(${t.pieChart})`);
+    this.addItemBtn = page.locator(`button[role='addNewItem']`);
+    this.ordersListLink = page.locator(`button[role='ordersList']`);
+    this.barChartLink = page.locator(`button[role='barChart']`);
+    this.pieChartLink = page.locator(`button[role='pieChart']`);
+    this.byFullNameLink = page.locator(`button[role='byFullName']`);
     this.logoutBtn = page.locator('button#logout');
   }
 
   async removeItem(index: number): Promise<void> {
-    await this.page.locator(`button:has-text(${t.deleteItem})`).nth(index).click();
+    await this.page.locator(`button[role='deleteItem']`).nth(index).click();
   }
 
   async viewItem(index: number): Promise<void> {
-    await this.page.locator(`button:has-text(${t.viewItem})`).nth(index).click()
+    await this.page.locator(`button[role='viewItem']`).nth(index).click()
   }
 
   async addItem() : Promise<void>{
@@ -49,5 +51,9 @@ export class AdminItemsPage extends BasePage {
 
   async goToPieChart() : Promise<void> {
     await this.pieChartLink.click();
+  }
+
+  async goToByFullName() : Promise<void> {
+    await this.byFullNameLink.click();
   }
 }

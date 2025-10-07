@@ -45,11 +45,17 @@ test('Back button navigates correctly', async ({ page }) => {
   const adminDashboard = new AdminItemsPage(page)
   await adminDashboard.navigate()
   //await page.waitForLoadState('networkidle')
+  await page.screenshot({path: './test-screenshots/new/beforeBackFromBarChart.png'})
   await adminDashboard.goToBarChart()
   chartPage = new AdminBarChartPage(page);
   await chartPage.navigate();
   await chartPage.waitForChart();
+  await page.screenshot({path: './test-screenshots/new/midBackFromBarChart.png'})
   await chartPage.back('/admin/items')
+  //await page.waitForTimeout(200)
+  await page.screenshot({path: './test-screenshots/new/afterBackFromBarChart.png'})
+  await expect(page).toHaveURL(/\/admin\/items$/);
+  //expect(page.url()).toBe(`${process.env.BASE_URL}/admin/items`);
   //expect(page.url()).not.toContain('/admin/chart');
-  await expect(page).toHaveURL(/\/admin\/items/);
+  //await expect(page).toHaveURL(/\/admin\/items/);
 });

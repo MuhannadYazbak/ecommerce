@@ -94,10 +94,14 @@ export default function AdminEditItem() {
   if (loading) return <p className="p-6">{t('loading')}</p>
   if (!item)   return <p className="p-6">Item not found</p>
 
+  if (!user || user.role !== 'admin') {
+    return <p role='adminOnly' className="text-red-600">{t('adminOnly')}</p>;
+  }
+
   return (
     <main className="max-w-xl mx-auto p-6" dir={i18n.language === 'en' ? 'ltr': 'rtl'}>
       <header className='flex w-full justify-center' id='admin item header'>
-        <h1 className='text-2xl font-bold mb-4 text-indigo-500'>
+        <h1 role='editItemTitle' className='text-2xl font-bold mb-4 text-indigo-500'>
           <Trans i18nKey="adminEditTitle" values={{ id: item.id }}>
                                       Image of {{ id: item.id }}
                                   </Trans>
@@ -170,6 +174,7 @@ export default function AdminEditItem() {
             type="button"
             onClick={() => router.back()}
             className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded"
+            role='cancel'
           >
             {t('cancel')}
           </button>

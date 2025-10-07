@@ -134,8 +134,8 @@ export default function WishList() {
                   </p>
                 </div>
                 <p className="font-bold">{t('itemID')}: {item.item_id}</p>
-                <button className='bg-green-400 hover:bg-green-600 text-white rounded mr-4' onClick={()=>router.push(`/items/${item.item_id}`)}> {t('viewPurchase')} </button>
-                <button className='bg-red-400 hover:bg-red-600 text-white' onClick={()=>handleRemove(item.item_id)}>{t('remove')} <TrashIcon /></button>
+                <button className='bg-green-400 hover:bg-green-600 text-white rounded mr-4' onClick={()=>router.push(`/items/${item.item_id}`)} role='viewPurchase'> {t('viewPurchase')} </button>
+                <button className='bg-red-400 hover:bg-red-600 text-white' onClick={()=>handleRemove(item.item_id)} role='remove'>{t('remove')} <TrashIcon /></button>
               </div>
             </article>
           ))}

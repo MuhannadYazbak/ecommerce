@@ -46,7 +46,7 @@ test.describe('Forgot My Password Page validations', () => {
         annotateTest({ feature: 'ForgotPasswordPage' })
         // Intercept alert
         page.on('dialog', async error => {
-            expect(error.message()).toContain('Email not found');
+            expect(error.message()).toContain('Email Not Found');
             await error.dismiss();
         });
         await page.screenshot({ path: 'test-screenshots/new/ForgotWithinvalidEmail.png' })

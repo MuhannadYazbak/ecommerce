@@ -21,8 +21,8 @@ export class WishlistPage extends BasePage {
         this.heading = page.locator('[aria-label="wish-heading"]');
         this.emptyMessage = page.locator('[aria-label="Empty Wishlist"]');
         this.wishlistItems = page.locator('[role="wishlist item"]'); // Each item card
-        this.viewButtons = page.locator(`button:has-text(${t.viewPurchase})`);
-        this.removeButtons = page.locator(`button:has-text(${t.remove})`);
+        this.viewButtons = page.locator(`button[role='viewPurchase']`);
+        this.removeButtons = page.locator(`button[role='remove']`);
     }
 
     async getHeadingText(): Promise<string> {

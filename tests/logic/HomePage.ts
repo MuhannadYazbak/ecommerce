@@ -22,13 +22,13 @@ export class HomePage extends BasePage {
   constructor(page: Page) {
     super(page, '/home');
     this.itemCards = page.locator('article');
-    this.header = page.locator(`h1:has-text(${t.homeUserDashboard})`);
+    this.header = page.locator(`h1[role='homeUserDashboard']`);
     this.article = page.locator('article');
     this.cartCount = page.getByTestId('cart-count');
-    this.wishListButton = page.getByLabel(`${t.wishlist}`);
-    this.ordersHistoryButton = page.getByLabel(`${t.ordersHistory}`);
-    this.searchInput = page.getByLabel(`${t.searchPlaceholder}`);
-    this.sortOption = page.getByLabel('sort results');
+    this.wishListButton = page.locator(`button[role=['wishlist']`);
+    this.ordersHistoryButton = page.locator(`button[role='orders']`);
+    this.searchInput = page.locator(`input[role='searchPlaceholder']`);
+    this.sortOption = page.locator(`select[role=['sort results']`);
   }
 
   async waitForHeader(): Promise<void> {
@@ -64,11 +64,13 @@ export class HomePage extends BasePage {
   }
 
   getItemViewDetailsBtn(item: Locator): Locator {
-    return item.getByRole('button', { name: t.viewDetails});
+    return item.locator(`button[role='viewDetails']`)
+    //return item.getByRole('button', { name: t.viewDetails});
   }
 
   getItemWishBtn(item: Locator): Locator {
-    return item.getByRole('button', { name: t.wish });
+    return item.locator(`button[role='wish']`)
+    //return item.getByRole('button', { name: t.wish });
   }
 
   getCart(): Locator {

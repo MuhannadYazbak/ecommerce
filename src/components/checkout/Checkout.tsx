@@ -237,6 +237,7 @@ export default function Checkout() {
             <button
               onClick={handleLocateMe}
               className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700"
+              role='useMyLocation'
             >
               {t('useMyLocation')}
             </button>

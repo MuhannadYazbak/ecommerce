@@ -18,7 +18,7 @@ export class AdminItemEditPage extends BasePage {
     super(page, `/admin/items/${id}`);
     this.itemId = id
     this.updateButton = page.locator('button[type="submit"]');
-    this.cancelButton = page.locator(`button:has-text(${t.cancel})`);
+    this.cancelButton = page.locator(`button[role='cancel']`);
     this.alertMessage = page.locator('.alert-error');
   }
 

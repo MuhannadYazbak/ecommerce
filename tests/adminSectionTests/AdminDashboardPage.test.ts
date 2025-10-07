@@ -10,7 +10,7 @@ test.describe('Admin Items Dashboard', () => {
     ];
     test.use({ storageState: 'auth.admin.json' })
     test.beforeEach(async ({ page }) => {
-        await page.route('**/api/items**', async route => {
+        await page.route('**/api/items', async route => {
             await route.fulfill({
                 status: 200,
                 contentType: 'application/json',
@@ -62,7 +62,8 @@ test.describe('Admin Items Dashboard', () => {
         const totalCountBefore = await page.locator('#item-article').count();
         await page.screenshot({ path: './test-screenshots/before-delete.png' })
         await adminPage.removeItem(0);
-        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(200);
+        //await page.waitForLoadState('networkidle');
         await page.screenshot({ path: './test-screenshots/after-delete.png' })
         const totalCountAfter = await page.locator('#item-article').count();
         expect(Number(totalCountAfter)).toBeLessThan(Number(totalCountBefore));

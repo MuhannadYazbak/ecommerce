@@ -142,6 +142,7 @@ export default function ItemView({ itemId }: Props) {
                     <button
                         onClick = {handleAddToCart}
                         className = "px-3 py-1 ml-4 bg-green-600 hover:bg-green-700 text-white rounded"
+                        role='addToCart'
                     >
                         {t('addToCart')}
                     </button>

@@ -32,7 +32,7 @@ export class ItemPage extends BasePage {
         this.itemDescription = this.page.locator(`text="${this.item.description}"`)
         this.itemPrice = this.page.locator(`text="${this.item.price}₪"`)
         this.itemQuantity = this.page.locator('section[aria-label="Purchase Options"] >> span')
-        this.addToCartButton = this.page.locator(`button:text(${t.addToCart})`)
+        this.addToCartButton = this.page.locator(`button[role='addToCart']`)
         this.soldout = this.page.locator('text=Sold Out')
         this.quantityIncrease = this.page.locator('text=+')
         this.quantityDecrease = this.page.locator('text=-')

@@ -7,7 +7,7 @@ let registerPage: RegisterPage
 
 let user: User = {
   id: 123,
-  name: 'Test User',
+  fullname: 'Test User',
   email: 'user@newtest.com',
   dateOfBirth: new Date(1991,3,8),
   password: 'User-1234',
@@ -17,7 +17,7 @@ let user: User = {
 test.beforeEach(async ({ page }) => {
     registerPage = new RegisterPage(page)
     await registerPage.navigate()
-    await page.waitForLoadState('networkidle')
+    //await page.waitForLoadState('networkidle')
 })
 
 test('🔐 User can Register with valid credentials', async ({ page }) => {
@@ -28,7 +28,7 @@ test('🔐 User can Register with valid credentials', async ({ page }) => {
             contentType: 'application/json',
             body: JSON.stringify({
                 id: '123',
-                name: 'Test User',
+                fullname: 'Test User',
                 email: 'user@newtest.com',
                 dateOfBirth: new Date(1991,8,3),
                 password: 'user-1234',
@@ -59,7 +59,7 @@ test('❌ Registration fails with already used email', async ({ page }) => {
                 contentType: 'application/json',
                 body: JSON.stringify({
                     id: '456',
-                    name: requestBody.fullname,
+                    fullname: requestBody.fullname,
                     email: 'user@newtest.com',
                     dateOfBirth: new Date(1991,8,3),
                     password: 'user-1234',

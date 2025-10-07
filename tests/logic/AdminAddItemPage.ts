@@ -14,8 +14,8 @@ export default class AddItemPage extends BasePage {
 
     constructor(page: Page) {
         super(page, '/admin/items/new');
-        this.createItemButton = page.locator(`button:has-text(${t.addNewItem})`);
-        this.accessDenied = page.locator(`text=${t.adminOnly}`);
+        this.createItemButton = page.locator(`button[role="addNewItem"]`);
+        this.accessDenied = page.locator(`p[role="adminOnly"]`);
     }
 
     itemField = (fieldName: string): Locator =>

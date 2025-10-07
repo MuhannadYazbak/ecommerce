@@ -18,8 +18,8 @@ export class LandingPage extends BasePage {
     super(page, '/');
     this.header = page.locator('#header')
     this.articles = page.locator('article')
-    this.login = page.locator(`text=${t.login}`)
-    this.register = page.locator(`text=${t.register}`)
+    this.login = page.getByRole('link', {name: 'login'})
+    this.register = page.getByRole('link', {name: 'register'})
     this.continueAsGuest = page.locator('#guest')
   }
 

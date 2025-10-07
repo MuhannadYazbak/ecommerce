@@ -16,6 +16,7 @@ export default function BackButton({ label = "Back", className = "" }: Props) {
     <button
       onClick={() => router.back()}
       id = 'backButton'
+      aria-label='backButton'
       className={`px-4 py-2 bg-silver text-blue-600 rounded hover:bg-gray-300 ${className}`}
     >
       {t('back')}

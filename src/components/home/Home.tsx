@@ -111,6 +111,7 @@ export default function LoggedInHome() {
                     type="text"
                     placeholder={t('searchPlaceholder')}
                     aria-label='search keyword'
+                    role='searchPlaceholder'
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="border border-gray-300 rounded px-4 py-2 w-full sm:w-64"
@@ -118,6 +119,7 @@ export default function LoggedInHome() {
                 <div className="relative w-full sm:w-48">
                     <select
                         aria-label='sort results'
+                        role='sort results'
                         value={sortOption}
                         onChange={(e) => setSortOption(e.target.value as SortOption)}
                         className="block appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500"
@@ -135,8 +137,8 @@ export default function LoggedInHome() {
                     </div>
                 </div>
                 <nav aria-label="User actions" className="flex gap-4" role='cart&wish'>
-                    <button aria-label='Orders History' className='bg-yellow-500 hover:bg-yellow-600 text-white rounded ml-4' onClick={() => router.push('/orders')}>{t('ordersHistory')}</button>
-                    <button aria-label='WishList' className='bg-green-300 hover:bg-green-500 text-black rounded ml-4' onClick={() => router.push('/wish')}>{t('wishlist')}</button>
+                    <button aria-label='Orders History' className='bg-yellow-500 hover:bg-yellow-600 text-white rounded ml-4' role='orders' onClick={() => router.push('/orders')}>{t('ordersHistory')}</button>
+                    <button aria-label='WishList' className='bg-green-300 hover:bg-green-500 text-black rounded ml-4' role='wishlist' onClick={() => router.push('/wish')}>{t('wishlist')}</button>
                 </nav>
             </section>
             {currentItems.length > 0 ? (
@@ -162,6 +164,7 @@ export default function LoggedInHome() {
                                 <button
                                     onClick={() => handleViewItem(item.id)}
                                     className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded"
+                                    role='viewDetails'
                                 >
                                     {t('viewDetails')} <DetailsIcon />
                                 </button>
@@ -171,6 +174,7 @@ export default function LoggedInHome() {
                                         : 'bg-gray-400 hover:bg-gray-500 text-red'
                                         }`}
                                     onClick={() => addWish(item)}
+                                    role='wish'
                                 >
                                     {wishedItems.includes(item.id) ? t('wished') : t('wish')} <WishIcon />
                                 </button>

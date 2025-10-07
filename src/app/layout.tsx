@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar"
 import { AuthProvider } from '@/context/AuthContext'
 import { CartProvider } from "@/context/CartContext";
 import ChatbotUI from "@/components/ChatbotUI";
+import I18nWrapper from "./I18nWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,15 +38,17 @@ export default function RootLayout({
   return (
     <html>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-green-400`}>
-        <AuthProvider>
-          <CartProvider>
-            <Navbar />
-            {children}
-            <div className="fixed bottom-4 right-4 overflow-hidden z-50 shadow-lg bg-white border rounded-lg">
-              <ChatbotUI />
-            </div>
-          </CartProvider>
-        </AuthProvider>
+        <I18nWrapper>
+          <AuthProvider>
+            <CartProvider>
+              <Navbar />
+              {children}
+              <div className="fixed bottom-4 right-4 overflow-hidden z-50 shadow-lg bg-white border rounded-lg">
+                <ChatbotUI />
+              </div>
+            </CartProvider>
+          </AuthProvider>
+        </I18nWrapper>
       </body>
     </html>
   );

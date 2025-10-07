@@ -3,7 +3,6 @@ import { defineConfig, devices } from '@playwright/test';
 // dotenv.config({ path: '.env.docker' });
 import dotenv from 'dotenv';
 import fs from 'fs';
-
 const envPath = fs.existsSync('.env.docker') && process.env.DOCKER_ENV === 'true'
   ? '.env.docker'
   : '.env.production';
@@ -32,7 +31,7 @@ export default defineConfig({
     headless: true,
     trace: 'on',
     screenshot: 'only-on-failure',
-    video: 'retain-on-failure'
+    video: 'retain-on-failure',
   },
   projects: [
   {

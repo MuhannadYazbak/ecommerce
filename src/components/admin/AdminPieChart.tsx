@@ -25,7 +25,7 @@ export default function AdminPieChart() {
   }, [selectedDate]);
 
   if (!user || user.role !== 'admin') {
-    return <p className="text-red-600">{t('adminOnly')}</p>;
+    return <p role='adminOnly' className="text-red-600">{t('adminOnly')}</p>;
   }
 
   return (
@@ -36,9 +36,9 @@ export default function AdminPieChart() {
       <nav className='flex flex-row space-x-4'>
       <BackButton />
       <input type='date' className='border -[3pt] border-solid border-black' value={selectedDate} onChange={(e)=>setSelectedDate(e.target.value)}/>
-      <h2>{t('showingFor')} ${selectedDate}</h2>
+      <h2 role='showingPieFor'>{t('showingFor')} ${selectedDate}</h2>
       </nav>
-      {loading ? <p>{t('loading')}</p> : <ItemsPieChart data={data} />}
+      {loading ? <p role='loading'>{t('loading')}</p> : <ItemsPieChart data={data} />}
     </main>
   );
 }

@@ -13,14 +13,12 @@ export class AdminPieChartPage extends BasePage {
     readonly chartWrapper: Locator
     readonly loadingText: Locator
     readonly tooltip: Locator
-    readonly backButton: Locator
     constructor(page: Page) {
         super(page, '/admin/pieChart');
         this.dateInput = this.page.locator('input[type="date"]');
         this.chartWrapper = this.page.locator('[data-testid="pie-chart-wrapper"]');
-        this.loadingText = this.page.locator(`text=${t.loading}`);
+        this.loadingText = this.page.locator(`p[role='loading']`);
         this.tooltip = this.page.locator('.chartjs-tooltip');
-        this.backButton = this.page.getByRole('button', { name: /back/i });
 
     }
 

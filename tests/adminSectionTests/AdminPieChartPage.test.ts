@@ -58,7 +58,7 @@ test.describe('Admin Pie Chart Page', () => {
         await pieChartPage.selectDate('2020-01-01'); // known empty date
         await page.screenshot({ path: './test-screenshots/new/piechart-noOrdersAtDate.png' })
         await expect(page.locator('text=No chart data available')).toBeHidden();
-        await expect(page.locator('text=showing pie for $2020-01-01')).toBeVisible();
+        await expect(page.locator('h2[role="showingPieFor"]')).toBeVisible();
         await expect(page.locator('[data-testid="empty-chart-message"]')).toBeVisible();
     });
 

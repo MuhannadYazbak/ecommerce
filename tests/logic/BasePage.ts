@@ -7,7 +7,12 @@ export class BasePage {
     constructor(page: Page, url: string) {
         this.page = page;
         this.url = url;
-        this.backButton = this.page.locator('#backButton');
+        this.backButton = this.page.getByRole('button',{name:'backButton'});
+    }
+    async translatePage(lang: string){
+        await this.page.setExtraHTTPHeaders({
+            'Accept-Language': lang
+        });
     }
     async navigate() {
         await this.page.goto(this.url);
@@ -17,7 +22,7 @@ export class BasePage {
         await this.backButton.waitFor({ state: 'visible' });
         await expect(this.backButton).toBeAttached();
         await this.backButton.click();
-        //await this.page.waitForURL(former);
+        //await this.page.waitForTimeout(500)
     }
 
 
