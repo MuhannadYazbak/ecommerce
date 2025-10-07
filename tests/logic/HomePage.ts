@@ -25,10 +25,10 @@ export class HomePage extends BasePage {
     this.header = page.locator(`h1[role='homeUserDashboard']`);
     this.article = page.locator('article');
     this.cartCount = page.getByTestId('cart-count');
-    this.wishListButton = page.locator(`button[role=['wishlist']`);
+    this.wishListButton = page.locator(`button[role='wishlist']`);
     this.ordersHistoryButton = page.locator(`button[role='orders']`);
     this.searchInput = page.locator(`input[role='searchPlaceholder']`);
-    this.sortOption = page.locator(`select[role=['sort results']`);
+    this.sortOption = page.locator(`select[role='sort results']`);
   }
 
   async waitForHeader(): Promise<void> {

@@ -111,8 +111,7 @@ test.describe('guest actions with beforeEach', async () => {
         homePage = new HomePage(page)
         await homePage.navigate()
         await homePage.waitForItemsToLoad()
-        const wishListButton = homePage.getWishListButton()
-        await wishListButton.click();
+        await homePage.wishListButton.click();
         await expect(page).toHaveURL(/\/home$/);
     });
 
