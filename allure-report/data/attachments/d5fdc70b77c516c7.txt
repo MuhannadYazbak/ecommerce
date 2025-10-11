@@ -1,0 +1,1 @@
+before delete page had  6  items, but after delete it is  6

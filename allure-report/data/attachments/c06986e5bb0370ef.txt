@@ -1,0 +1,4 @@
+📦 Wishlist items are visible
+🧮 Initial count: 2
+📦 Wishlist items are visible
+🧮 New count: 1

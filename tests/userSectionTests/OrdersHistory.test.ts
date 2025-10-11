@@ -72,7 +72,7 @@ test('Orders history initial test', async ({ page }) => {
             console.log('Intercepted orders API:', request.url());
         }
     });
-    await expect(ordersHistoryPage.waitforHeaderNotEmpty()).toHaveText('List of previous orders')
+    await expect(ordersHistoryPage.waitforHeaderNotEmpty()).toHaveText('List of Previous Orders')
 
     const orders = await ordersHistoryPage.getOrders()
     await expect(orders).toHaveCount(2)
@@ -92,10 +92,10 @@ test('Orders history shows empty state when no orders exist', async ({ page }) =
     await ordersHistoryPage.navigate()
 
     // Confirm header is present
-    await expect(ordersHistoryPage.waitforHeaderEmpty()).toHaveText('Order History')
+    await expect(ordersHistoryPage.waitforHeaderEmpty()).toHaveText('Orders History')
 
     // Confirm empty message is shown
-    await expect(page.locator('text=No orders found.')).toBeVisible()
+    await expect(page.locator('text=No Previous Orders to Show')).toBeVisible()
 
     // Confirm BackButton is rendered
     await expect(page.getByRole('navigation', { name: 'Go-Back' })).toBeVisible()

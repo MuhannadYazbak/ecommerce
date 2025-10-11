@@ -4,6 +4,7 @@ import { Locator, Page } from "@playwright/test";
 import en from '@/locales/en/translation.json'
 import ar from '@/locales/ar/translation.json'
 import he from '@/locales/he/translation.json'
+import { TranslatedItem } from "@/types/translatedItem";
 const translations = { en, ar, he}
 type LangCode = keyof typeof translations;
 const currentLang: LangCode = 'en'; // or 'ar', 'he'
@@ -11,7 +12,7 @@ const t = translations[currentLang]
 
 
 export class ItemPage extends BasePage {
-    item: Item;
+    item: TranslatedItem;
     readonly itemHeading: Locator
     readonly itemName: Locator
     readonly itemPhoto: Locator
@@ -23,10 +24,10 @@ export class ItemPage extends BasePage {
     readonly quantityIncrease: Locator
     readonly quantityDecrease: Locator
     readonly cartCount: Locator
-    constructor(page: Page, item: Item) {
-        super(page, `${process.env.BASE_URL}/items/${item.id}`);
+    constructor(page: Page, item: TranslatedItem) {
+        super(page, `${process.env.BASE_URL}/items/${item.item_id}`);
         this.item = item;
-        this.itemHeading = this.page.locator('#item-heading')
+        this.itemHeading = this.page.locator('h1[role="item-heading"]')
         this.itemName = this.page.locator('#item-name')
         this.itemPhoto = this.page.locator(`img[alt="Photo of ${this.item.name}"]`)
         this.itemDescription = this.page.locator(`text="${this.item.description}"`)
@@ -45,7 +46,7 @@ export class ItemPage extends BasePage {
     }
 
     async waitForItemsToLoad(): Promise<void> {
-        await this.itemHeading.waitFor({ state: 'visible' });
+        await this.itemName.waitFor({ state: 'visible' });
     }
 
     async getName() : Promise<Locator> {
@@ -94,7 +95,7 @@ export class ItemPage extends BasePage {
         return this.cartCount
     }
 
-    validateItem() : Item{
+    validateItem() : TranslatedItem{
         return this.item
     }
 }

@@ -16,7 +16,12 @@ export class HomePage extends BasePage {
   readonly wishListButton: Locator;
   readonly ordersHistoryButton: Locator;
   readonly searchInput: Locator;
-  readonly sortOption: Locator;
+  readonly sort: Locator;
+  readonly byItemID: Locator;
+  readonly byPrice: Locator;
+  readonly byPriceDesc: Locator;
+  readonly byName: Locator;
+  readonly byNameDesc: Locator;
   
 
   constructor(page: Page) {
@@ -28,7 +33,13 @@ export class HomePage extends BasePage {
     this.wishListButton = page.locator(`button[role='wishlist']`);
     this.ordersHistoryButton = page.locator(`button[role='orders']`);
     this.searchInput = page.locator(`input[role='searchPlaceholder']`);
-    this.sortOption = page.locator(`select[role='sort results']`);
+    this.sort = page.locator(`select[role='sort results']`);
+    this.byItemID = page.getByRole('option',{name:'byItemID'})
+    this.byPrice = page.getByRole('option', {name: 'byPrice'})
+    this.byPriceDesc = page.getByRole('option', {name: 'byPriceDesc'})
+    this.byName = page.getByRole('option', {name: 'byName'})
+    this.byNameDesc = page.getByRole('option', {name: 'byNameDesc'})
+
   }
 
   async waitForHeader(): Promise<void> {
@@ -106,10 +117,11 @@ export class HomePage extends BasePage {
   }
 
   getSortOption(): Locator {
-    return this.sortOption;
+    return this.sort;
   }
 
-  async sortByOption(option: string): Promise<void> {
-    await this.sortOption.selectOption(option);
+  async sortByOption(optionValue: string): Promise<void> {
+    
+    await this.sort.selectOption({value: optionValue});
   }
 }

@@ -124,11 +124,11 @@ export default function LoggedInHome() {
                         onChange={(e) => setSortOption(e.target.value as SortOption)}
                         className="block appearance-none bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500"
                     >
-                        <option value="id">{t('itemID')}</option>
-                        <option value="price-low-high">{t('priceInc')}</option>
-                        <option value="price-high-low">{t('priceDesc')}</option>
-                        <option value="name-a-z">{t('nameAZ')}</option>
-                        <option value="name-z-a">{t('nameZA')}</option>
+                        <option role='byIemID' value="byItemID">{t('itemID')}</option>
+                        <option role='byPrice' value="byPrice">{t('priceInc')}</option>
+                        <option role='byPriceDesc' value="byPriceDesc">{t('priceDesc')}</option>
+                        <option role='byName' value="byName">{t('nameAZ')}</option>
+                        <option role='byNameDesc' value="byNameDesc">{t('nameZA')}</option>
                     </select>
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                         <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">

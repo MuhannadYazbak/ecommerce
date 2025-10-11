@@ -15,7 +15,7 @@ type Props = {
 
 
 export default function ItemView({ itemId }: Props) {
-    const { id } = useParams();
+    const { item_id } = useParams();
     const { user, guest } = useAuth();
     const { t, i18n } = useTranslation();
     const [item, setItem] = useState<Item | null>(null);
@@ -84,7 +84,7 @@ export default function ItemView({ itemId }: Props) {
 
     useEffect(() => {
         const fetchItem = async () => {
-            const res = await fetch(`/api/items/${id}`, {
+            const res = await fetch(`/api/items/${item_id}`, {
                 headers: {
                     'Accept-Language': i18n.language.split('-')[0] || 'en'
                 }
@@ -105,16 +105,16 @@ export default function ItemView({ itemId }: Props) {
             }
         };
 
-        if (id) fetchItem();
-    }, [id]);
+        if (item_id) fetchItem();
+    }, [item_id]);
 
 
-    if (!item) return <p>Loading item...</p>;
+    if (!item) return <p role='loading'>{t('loading')}</p>;
     return (
         <main className="p-6" >
             <article aria-labelledby="item-heading" className="max-w-3xl mx-auto">
                 <header>
-                    <h1 id="item-heading" className="text-2xl font-bold">{item.name}</h1>
+                    <h1 role='item-heading' id="item-heading" className="text-2xl font-bold">{item.name}</h1>
                 </header>
 
                 <figure className="my-4">

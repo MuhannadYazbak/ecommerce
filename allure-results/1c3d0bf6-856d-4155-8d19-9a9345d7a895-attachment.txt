@@ -1,0 +1,10 @@
+should delete first item, mockItems after deletion:  [
+  {
+    id: 2,
+    name: 'Another Item',
+    description: 'Test 2',
+    price: 150,
+    quantity: 3,
+    photo: '/mock2.jpg'
+  }
+]

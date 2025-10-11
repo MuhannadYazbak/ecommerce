@@ -57,7 +57,12 @@ test('Mocking non-empty cart, validate', async ({ page }) => {
 
 test('Mocked cart validate remove item', async ({ page }) => {
     annotateTest({ feature: 'CartPage' })
-    await page.unroute('**')
+    let cartItems: CartItem[] = [
+        { item_id: 1, name: 'Wireless Mouse', quantity: 2, price: 29.99, photo: '' },
+        { item_id: 2, name: 'Mechanical Keyboard', quantity: 1, price: 89.99, photo: '' },
+        { item_id: 3, name: 'Xiaomi Redmi 14C', quantity: 2, price: 499, photo: '' }
+    ];
+    //await page.unroute('**')
     // await page.route('**', route => {
     //     console.log('Intercepted:', route.request().method(), route.request().url());
     //     route.continue();

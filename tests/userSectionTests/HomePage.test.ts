@@ -128,15 +128,15 @@ test('💙 Clicking WishList navigates and renders', async ({ page }) => {
       body: JSON.stringify(items)
     });
   });
-  homePage = new HomePage(page)
-  await homePage.navigate()
-  await homePage.waitForItemsToLoad()
+  //homePage = new HomePage(page)
+  //await homePage.navigate()
+  //await homePage.waitForItemsToLoad()
   const wishListButton = homePage.getWishListButton()
   await wishListButton.click();
   await expect(page).toHaveURL(/\/wish$/);
 
   await expect(
-    page.getByLabel(`${en.emptyWishlist}`).or(page.locator('article').first())
+    page.getByLabel('Empty Wishlist').or(page.locator('article').first())
   ).toBeVisible();
   await homePage.back('/home')
   await expect(page).toHaveURL(/\/home$/);
@@ -197,7 +197,7 @@ test('💙 Search for phone and validate results include iphone', async ({ page 
 
 test('💙 Sort by price low to high and validate results are sorted', async ({ page }) => {
   annotateTest({ feature: 'HomePage' })
-  await homePage.sortByOption('price-low-high')
+  await homePage.sortByOption('byPrice')
   const prices = await homePage.getProductPrices()
   for (let i = 0; i < prices.length - 1; i++) {
     expect(prices[i]).toBeLessThanOrEqual(prices[i + 1]);

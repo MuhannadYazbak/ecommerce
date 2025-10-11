@@ -1,0 +1,39 @@
+# Page snapshot
+
+```yaml
+- navigation:
+  - img "Logo"
+  - heading "TechMart" [level=1]
+  - button "Select Language":
+    - img
+  - text: Hello, Muhannad Yazbak
+  - button "Logout"
+- main:
+  - heading "new item heading" [level=1]: Add New Item
+  - heading "Item Details" [level=2]
+  - button "prev"
+  - text: English
+  - textbox "Name"
+  - textbox "Description"
+  - button "next"
+  - list:
+    - listitem:
+      - button "1"
+    - listitem:
+      - button "2"
+    - listitem:
+      - button "3"
+  - spinbutton
+  - textbox "Quantity"
+  - textbox "Photo URL"
+  - button "Add New Item":
+    - text: Add New Item
+    - img
+  - navigation:
+    - button "backButton": Back
+- heading "TechMart Chatbot" [level=1]
+- textbox "Type your message"
+- button "Send"
+- button "⤵️ Minimize"
+- alert
+```

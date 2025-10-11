@@ -11,6 +11,8 @@ const t = translations[currentLang]
 export class RegisterPage extends BasePage {
     readonly h1: Locator
     readonly nameLocator: Locator
+    readonly arNameLocator: Locator
+    readonly heNameLocator: Locator
     readonly emailLocator: Locator
     readonly passwordLocator: Locator
     readonly dobLocator: Locator
@@ -19,6 +21,8 @@ export class RegisterPage extends BasePage {
         super(page, '/register')
         this.h1 = page.locator('#register-heading')
         this.nameLocator = page.locator('#register-name')
+        this.arNameLocator = page.locator('#register-name-arabic')
+        this.heNameLocator = page.locator('#register-name-hebrew')
         this.emailLocator = page.locator('#register-email')
         this.passwordLocator = page.locator('#register-password')
         this.dobLocator = page.locator('#register-dob')
@@ -31,6 +35,16 @@ export class RegisterPage extends BasePage {
 
     async fillName(name: string): Promise<void> {
         const nameInput = this.nameLocator
+        await nameInput.fill(name)
+    }
+
+    async fillArName(name: string): Promise<void> {
+        const nameInput = this.arNameLocator
+        await nameInput.fill(name)
+    }
+
+    async fillHeName(name: string): Promise<void> {
+        const nameInput = this.heNameLocator
         await nameInput.fill(name)
     }
 
@@ -49,8 +63,10 @@ export class RegisterPage extends BasePage {
         await dobInput.fill(dob.toISOString().split('T')[0])
     }
 
-    async registerAs(name: string, email: string, password: string, dob: Date, shouldRedirect = true): Promise<void> {
+    async registerAs(name: string, arName: string, heName: string, email: string, password: string, dob: Date, shouldRedirect = true): Promise<void> {
         await this.fillName(name)
+        await this.fillArName(arName)
+        await this.fillHeName(heName)
         await this.fillEmail(email)
         await this.fillPassword(password)
         await this.fillDOB(dob)

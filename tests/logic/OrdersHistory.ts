@@ -15,8 +15,8 @@ export class OrdersHistoryPage extends BasePage {
     readonly articles: Locator
     constructor(page: Page) {
         super(page, '/orders')
-        this.noOrdersHeading = page.locator('h2#no-orders-heading')
-        this.ordersListHeading = page.locator('h2#orders-list-heading')
+        this.noOrdersHeading = page.locator('#no-orders-heading')
+        this.ordersListHeading = page.locator('#orders-list-heading')
         this.articles = page.locator('article')
     }
 

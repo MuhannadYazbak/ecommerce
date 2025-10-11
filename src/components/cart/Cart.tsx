@@ -83,6 +83,7 @@ export default function Cart() {
                                 <button
                                     onClick={() => removeFromCart(item.item_id)}
                                     className="text-red-500 hover:underline transition-all duration-300 ease-in-out hover:shadow-md"
+                                    role='removeFromCart'
                                 >
                                     {t('remove')} <TrashIcon />
                                 </button>

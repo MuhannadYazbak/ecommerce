@@ -1,0 +1,46 @@
+# Page snapshot
+
+```yaml
+- navigation:
+  - img "Logo"
+  - heading "TechMart" [level=1]
+  - button "Select Language":
+    - img
+  - text: Hello, Guest
+  - button "Logout"
+  - link:
+    - /url: /cart
+    - img
+- main:
+  - heading "My Orders" [level=1]
+  - region "List of Previous Orders":
+    - heading "List of Previous Orders" [level=2]
+    - article "Order 101":
+      - 'heading "Order #101" [level=3]'
+      - 'heading "Status: Shipped" [level=3]'
+      - paragraph: August 1, 2025
+      - paragraph: 299.99₪
+      - list:
+        - listitem:
+          - img "Wireless Keyboard"
+          - text: Wireless Keyboard (x1) 99.99₪
+        - listitem:
+          - img "Gaming Mouse"
+          - text: Gaming Mouse (x1) 200.00₪
+    - article "Order 102":
+      - 'heading "Order #102" [level=3]'
+      - 'heading "Status: Delivered" [level=3]'
+      - paragraph: August 2, 2025
+      - paragraph: 89.99₪
+      - list:
+        - listitem:
+          - img "USB-C Hub"
+          - text: USB-C Hub (x1) 89.99₪
+    - navigation "Go-Back":
+      - button "backButton": Back
+- heading "TechMart Chatbot" [level=1]
+- textbox "Type your message"
+- button "Send"
+- button "⤵️ Minimize"
+- alert
+```

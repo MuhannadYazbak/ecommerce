@@ -1,0 +1,56 @@
+# Page snapshot
+
+```yaml
+- navigation:
+  - img "Logo"
+  - heading "TechMart" [level=1]
+  - button "Select Language":
+    - img
+  - text: Hello, Muhannad Yazbak
+  - button "Logout"
+- main:
+  - heading "Admin Dashboard" [level=1]
+  - navigation:
+    - button "Add New Item"
+    - button "Orders List"
+    - button "Bar Chart"
+    - button "Pie Chart"
+    - button "By FullName"
+  - article:
+    - img "Mock Item"
+    - heading "Mock Item" [level=2]
+    - paragraph: Test
+    - paragraph: 100₪
+    - paragraph: "Quantity: 5"
+    - button "Delete Item remove item":
+      - text: Delete Item
+      - img "remove item"
+    - button "View Item details-line":
+      - text: View Item
+      - img "details-line"
+  - article:
+    - img "Another Item"
+    - heading "Another Item" [level=2]
+    - paragraph: Test 2
+    - paragraph: 150₪
+    - paragraph: "Quantity: 3"
+    - button "Delete Item remove item":
+      - text: Delete Item
+      - img "remove item"
+    - button "View Item details-line":
+      - text: View Item
+      - img "details-line"
+  - navigation:
+    - button "«" [disabled]
+    - button "‹" [disabled]
+    - button "1"
+    - button "›" [disabled]
+    - button "»" [disabled]
+  - navigation:
+    - button "backButton": Back
+- heading "TechMart Chatbot" [level=1]
+- textbox "Type your message"
+- button "Send"
+- button "⤵️ Minimize"
+- alert
+```

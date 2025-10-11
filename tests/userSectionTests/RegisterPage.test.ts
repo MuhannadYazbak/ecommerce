@@ -37,7 +37,7 @@ test('🔐 User can Register with valid credentials', async ({ page }) => {
             })
         });
     });
-    await registerPage.registerAs('Automation Test', 'test@gmail.com', 'ABCdef1234', new Date("2012-08-13"))
+    await registerPage.registerAs('Automation Test', 'اختبار اتمتة','בדיקת אוטומציה', 'test@gmail.com', 'ABCdef1234', new Date("2012-08-13"))
     await page.waitForURL('**/home', { timeout: 5000 });
     await expect(page).toHaveURL('/home');
 });
@@ -69,7 +69,7 @@ test('❌ Registration fails with already used email', async ({ page }) => {
             });
         }
     });
-    await registerPage.registerAs('Test User', 'Notalready@used.com', 'SecureP@ssw0rd', new Date("2000-05-15"))
+    await registerPage.registerAs('Test User','مستخدم تجريبي','משתמש בדיקה', 'Notalready@used.com', 'SecureP@ssw0rd', new Date("2000-05-15"))
 
     page.once('dialog', async dialog => {
         expect(dialog.message()).toContain('Something went wrong');
@@ -87,7 +87,7 @@ test('❌ Future Date Failed Registration', async ({ page }) => {
             body: JSON.stringify({ error: 'Email already in use' })
         });
     });
-    await registerPage.registerAs('Test User', 'Notalready@used.com', 'SecureP@ssw0rd', new Date("2030-05-15"), false)
+    await registerPage.registerAs('Test User', 'مستخدم تجريبي', 'משתמש בדיקה', 'Notalready@used.com', 'SecureP@ssw0rd', new Date("2030-05-15"), false)
     page.once('dialog', async dialog => {
         expect(dialog.message()).toContain("Date can't be in the future.");
         await dialog.dismiss();

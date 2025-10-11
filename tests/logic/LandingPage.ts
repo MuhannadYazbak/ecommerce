@@ -29,6 +29,7 @@ export class LandingPage extends BasePage {
 
   async getItemCards(): Promise<number> {
     const items = this.articles
+    console.log('Iem cards: ', this.articles);
     await expect(items).toHaveCount(5); // optional assertion inside class
     return await items.count();
   }

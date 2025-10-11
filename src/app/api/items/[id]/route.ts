@@ -47,34 +47,76 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
   }
 }
 
-export async function DELETE(
-  request: NextRequest,
-  context: { params: Promise<{ id: string }> }
-) {
-  const itemId = Number((await context.params).id);
-  const t = getTranslation(request)
-  if (isNaN(itemId)) {
-    return NextResponse.json({ error: `${t.invalidParam}` }, { status: 400 });
-  }
-
+export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
+  const t = getTranslation(req);
   try {
-    const pool = getPool();
-    const [result] = await pool.query(
-      'DELETE FROM itemtable WHERE id = ?',
-      [itemId]
-    );
+    const body = await req.json();
+    const item_id = Number((await context.params).id);
 
-    if ((result as any).affectedRows === 0) {
-      console.warn(`🧨 ${t.itemDeleteFailed} for item_id=${itemId}`);
-      return NextResponse.json({ message: `${t.itemDeleteFailed}` }, { status: 404 });
+    if (!item_id) {
+      return NextResponse.json({ error: `${t.missingFields}` }, { status: 400 });
     }
 
-    return NextResponse.json({ message: `${t.itemDeleted}` });
+    const pool = getPool();
+    const conn = await pool.getConnection();
+
+    try {
+      await conn.beginTransaction();
+
+      // Delete translations first
+      await conn.query(
+        `DELETE FROM item_translation WHERE item_id = ?`,
+        [item_id]
+      );
+
+      // Then delete the item
+      await conn.query(
+        `DELETE FROM itemtable WHERE id = ?`,
+        [item_id]
+      );
+
+      await conn.commit();
+      return NextResponse.json({ message: `${t.itemDeleted}` }, { status: 200 });
+    } catch (err) {
+      await conn.rollback();
+      throw err;
+    } finally {
+      conn.release();
+    }
   } catch (err) {
-    console.error(`${t.deleteError}:`, err);
+    console.error('Item DELETE error:', err);
     return NextResponse.json({ error: `${t.serverError}` }, { status: 500 });
   }
 }
+
+// export async function DELETE2(
+//   request: NextRequest,
+//   context: { params: Promise<{ id: string }> }
+// ) {
+//   const itemId = Number((await context.params).id);
+//   const t = getTranslation(request)
+//   if (isNaN(itemId)) {
+//     return NextResponse.json({ error: `${t.invalidParam}` }, { status: 400 });
+//   }
+
+//   try {
+//     const pool = getPool();
+//     const [result] = await pool.query(
+//       'DELETE FROM itemtable WHERE id = ?',
+//       [itemId]
+//     );
+
+//     if ((result as any).affectedRows === 0) {
+//       console.warn(`🧨 ${t.itemDeleteFailed} for item_id=${itemId}`);
+//       return NextResponse.json({ message: `${t.itemDeleteFailed}` }, { status: 404 });
+//     }
+
+//     return NextResponse.json({ message: `${t.itemDeleted}` });
+//   } catch (err) {
+//     console.error(`${t.deleteError}:`, err);
+//     return NextResponse.json({ error: `${t.serverError}` }, { status: 500 });
+//   }
+// }
 
 export async function PUT(
   request: NextRequest,

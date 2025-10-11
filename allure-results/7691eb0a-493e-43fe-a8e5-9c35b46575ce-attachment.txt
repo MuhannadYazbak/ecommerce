@@ -1,0 +1,6 @@
+this cart emptyCart:  locator('[role="empty cart"]')  cartTitle  Promise {
+  <pending>,
+  [Symbol(async_id_symbol)]: 4764,
+  [Symbol(trigger_async_id_symbol)]: 0,
+  [Symbol(kResourceStore)]: undefined
+}

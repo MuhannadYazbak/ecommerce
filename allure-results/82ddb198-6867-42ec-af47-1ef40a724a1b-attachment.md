@@ -1,0 +1,107 @@
+# Page snapshot
+
+```yaml
+- navigation:
+  - img "Logo"
+  - heading "TechMart" [level=1]
+  - button "Select Language":
+    - img
+  - text: Hello, Muhannad Yazbak
+  - button "Logout"
+- main:
+  - heading "Admin Dashboard" [level=1]
+  - navigation:
+    - button "Add New Item"
+    - button "Orders List"
+    - button "Bar Chart"
+    - button "Pie Chart"
+    - button "By FullName"
+  - article:
+    - img "iPhone 15 Pro"
+    - heading "iPhone 15 Pro" [level=2]
+    - paragraph: Apple's flagship smartphone with A17 chip and titanium body.
+    - paragraph: 1199₪
+    - paragraph: "Quantity: 3"
+    - button "Delete Item remove item":
+      - text: Delete Item
+      - img "remove item"
+    - button "View Item details-line":
+      - text: View Item
+      - img "details-line"
+  - article:
+    - img "Samsung Galaxy S24 Ultra"
+    - heading "Samsung Galaxy S24 Ultra" [level=2]
+    - paragraph: Great High-end Android phone with 200MP camera and S Pen.
+    - paragraph: 1100₪
+    - paragraph: "Quantity: 9"
+    - button "Delete Item remove item":
+      - text: Delete Item
+      - img "remove item"
+    - button "View Item details-line":
+      - text: View Item
+      - img "details-line"
+  - article:
+    - img "MacBook Air M3"
+    - heading "MacBook Air M3" [level=2]
+    - paragraph: Lightweight Apple laptop with M3 chip and Retina display
+    - paragraph: 1300₪
+    - paragraph: "Quantity: 2"
+    - button "Delete Item remove item":
+      - text: Delete Item
+      - img "remove item"
+    - button "View Item details-line":
+      - text: View Item
+      - img "details-line"
+  - article:
+    - img "Dell XPS 13 Plus"
+    - heading "Dell XPS 13 Plus" [level=2]
+    - paragraph: Sleek Windows ultrabook with InfinityEdge display
+    - paragraph: 1399₪
+    - paragraph: "Quantity: 5"
+    - button "Delete Item remove item":
+      - text: Delete Item
+      - img "remove item"
+    - button "View Item details-line":
+      - text: View Item
+      - img "details-line"
+  - article:
+    - img
+    - img "Lenovo ThinkPad X1 Carbon"
+    - heading "Lenovo ThinkPad X1 Carbon" [level=2]
+    - paragraph: Business-class laptop with legendary keyboard and durability
+    - paragraph: 1499₪
+    - paragraph: "Quantity: 0"
+    - button "Delete Item remove item":
+      - text: Delete Item
+      - img "remove item"
+    - button "View Item details-line":
+      - text: View Item
+      - img "details-line"
+  - article:
+    - img
+    - img "Sony Playstation 5"
+    - heading "Sony Playstation 5" [level=2]
+    - paragraph: Gaming console with two wireless controls
+    - paragraph: 2240₪
+    - paragraph: "Quantity: 0"
+    - button "Delete Item remove item":
+      - text: Delete Item
+      - img "remove item"
+    - button "View Item details-line":
+      - text: View Item
+      - img "details-line"
+  - navigation:
+    - button "«" [disabled]
+    - button "‹" [disabled]
+    - button "1"
+    - button "2"
+    - button "›"
+    - button "»"
+  - navigation:
+    - button "backButton": Back
+- heading "TechMart Chatbot" [level=1]
+- textbox "Type your message"
+- button "Send"
+- button "⤵️ Minimize"
+- alert
+```

@@ -124,7 +124,7 @@ export default function AdminDashboard() {
             <div role='itemButtons' className='flex flex-row-reverse space-x-reverse space-x-2'>
               <button
                 onClick={() => ItemDelete(item.id)}
-                className="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded" role='deleteItem'
+                className="mt-2 bg-blue-600 hover:bg-red-700 text-white px-3 py-1 rounded" role='deleteItem'
               >
                 {t('deleteItem')} <TrashIcon />
               </button>

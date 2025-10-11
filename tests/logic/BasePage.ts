@@ -22,7 +22,7 @@ export class BasePage {
         await this.backButton.waitFor({ state: 'visible' });
         await expect(this.backButton).toBeAttached();
         await this.backButton.click();
-        //await this.page.waitForTimeout(500)
+        await this.page.waitForTimeout(250)
     }
 
 

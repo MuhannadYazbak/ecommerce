@@ -108,9 +108,9 @@ test.describe('guest actions with beforeEach', async () => {
                 body: JSON.stringify(items)
             });
         });
-        homePage = new HomePage(page)
-        await homePage.navigate()
-        await homePage.waitForItemsToLoad()
+        //homePage = new HomePage(page)
+        //await homePage.navigate()
+        //await homePage.waitForItemsToLoad()
         await homePage.wishListButton.click();
         await expect(page).toHaveURL(/\/home$/);
     });
@@ -165,7 +165,7 @@ test.describe('guest actions with beforeEach', async () => {
 
     test('💙 Sort by price low to high and validate results are sorted', async ({ page }) => {
         annotateTest({ feature: 'GuestHomePage' })
-        await homePage.sortByOption('price-low-high')
+        await homePage.sortByOption('byPrice')
         const prices = await homePage.getProductPrices()
         for (let i = 0; i < prices.length - 1; i++) {
             expect(prices[i]).toBeLessThanOrEqual(prices[i + 1]);

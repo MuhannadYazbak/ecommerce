@@ -9,13 +9,13 @@ test.describe('AddItemPage', () => {
         // Mock access control and item creation endpoint
         await page.route('**/api/items', async (route, request) => {
             const body = await request.postDataJSON();
-            if (body.name === 'fail') {
+            if (body.enName === 'fail') {
                 return route.abort(); // Simulate failure
             }
             return route.fulfill({
                 status: 201,
                 contentType: 'application/json',
-                body: JSON.stringify({ id: 123, ...body }),
+                body: JSON.stringify({ message:  'Item created'}),
             });
         });
         addItemPage = new AddItemPage(page);
@@ -25,9 +25,13 @@ test.describe('AddItemPage', () => {
 
     test('should create item successfully and redirect', async ({ page }) => {
         annotateTest({ feature: 'AdminAddItemPage' })
-        await addItemPage.fillName('New Item');
+        await addItemPage.fillenName('New Item');
+        await addItemPage.fillenDescription('A great item');
+        await addItemPage.fillArName('منتج جديد')
+        await addItemPage.fillHeDescription('منتج رائع')
+        await addItemPage.fillHeName('מוצר חדש')
+        await addItemPage.fillArDescription('מוצר מדהים')
         await addItemPage.fillPrice(99.99);
-        await addItemPage.fillDescription('A great item');
         await addItemPage.fillQuantity(10);
         await addItemPage.fillPhoto('https://example.com/photo.jpg');
         await addItemPage.clickCreateItem();
@@ -42,7 +46,7 @@ test.describe('AddItemPage', () => {
             expect(dialog.message()).toContain('Update failed');
             await dialog.dismiss();
         });
-        await addItemPage.fillName('fail');
+        await addItemPage.fillenName('fail');
         await addItemPage.clickCreateItem();
     });
 });

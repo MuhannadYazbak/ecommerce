@@ -39,7 +39,7 @@ export class CartPage extends BasePage {
     async removeItemAt(index: number): Promise<void> {
         try {
             const item = this.cartItems.nth(index)
-            const button = item.locator(`button:has-text(${t.remove})`)
+            const button = item.locator(`button[role='removeFromCart']`)
             await button.click();
         }catch(error){
             console.warn(`Failed to remove item at index ${index}:`, error)

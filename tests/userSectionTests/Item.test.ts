@@ -3,21 +3,29 @@ import { ItemPage } from '../logic/Item';
 import { Item } from '@/types/item';
 import { HomePage } from '../logic/HomePage';
 import { annotateTest } from '../utils/annotate';
+import en from '@/locales/en/translation.json'
+import { TranslatedItem } from '@/types/translatedItem';
+import { request } from 'http';
 
 let itemPage: ItemPage
-const item: Item = {
-  id: 2,
+const item: TranslatedItem = {
+  item_id: 2,
   name: 'Samsung Galaxy S24 Ultra',
+  arName: 'سامسونج جلاكسي اس24 الترا',
+  heName: 'סמסונג גלקסי אס24 אולטרא',
   price: 1100,
   description: 'Great High-end Android phone with 200MP camera and S Pen.',
+  arDescription: 'هاتف اندرويد فخم ومتطور بكاميرا 200 ميجا بيكسل وقلم اس',
+  heDescription: 'מכשיר אנדרויד מתקדם עם מצלמת 200 מיגה פיקסל ועט אס',
   photo: '/images/s24ultra.jpg',
   quantity: 1
 }
 
 test.use({ storageState: 'auth.json' });
 test.beforeEach(async ({ page }) => {
-  await page.route('**/api/items/**', async route => {
-    if (route.request().url().includes(`/api/items/${item.id}`)) {
+  await page.route('**/api/items/*', async route => {
+    if (route.request().method() === 'GET'){
+   // if (route.request().url().includes(`/api/items/${item.item_id}`)) {
       await route.fulfill({
         status: 200,
         contentType: 'application/json',

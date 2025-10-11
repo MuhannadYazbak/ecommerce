@@ -54,6 +54,11 @@ test.describe('Guest - non emtpy cart', () => {
 
     test('Mocked cart validate remove item', async ({ page }) => {
         annotateTest({ feature: 'GuestCartPage' })
+        let cartItems: CartItem[] = [
+            { item_id: 1, name: 'Wireless Mouse', quantity: 2, price: 29.99, photo: '' },
+            { item_id: 2, name: 'Mechanical Keyboard', quantity: 1, price: 89.99, photo: '' },
+            { item_id: 3, name: 'Xiaomi Redmi 14C', quantity: 2, price: 499, photo: '' }
+        ];
         await page.route(`**/api/cart/${guestId}`, route => {
             if (route.request().method() === 'GET') {
                 route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(cartItems) });

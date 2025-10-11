@@ -30,7 +30,7 @@ test.beforeEach(async ({ page })=>{
 test('should display heading and check if wishlist is empty', async ({ page }) => {
     annotateTest({ feature: 'WishlistPage' })
     const headingText = await wishlistPage.getHeadingText();
-    expect(headingText).toContain('Your Wishlist');
+    expect(headingText).toContain('My Wishlist');
     if (await wishlistPage.isWishlistEmpty()) {
         console.log('✅ Wishlist is empty');
     } else {

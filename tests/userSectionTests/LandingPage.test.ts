@@ -36,7 +36,7 @@ test.beforeEach(async ({ page }) => {
 
 test('💚 Landing page loads and displays top 5 items', async ({ page }) => {
   annotateTest({ feature: 'LandingPage' })
-  const landingPage = new LandingPage(page);
+  //const landingPage = new LandingPage(page);
   await expect(page).toHaveURL(/\/$/);
   await landingPage.waitForHeader();
   const itemCount = await landingPage.getItemCards();
