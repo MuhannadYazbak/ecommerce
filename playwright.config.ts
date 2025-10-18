@@ -17,7 +17,7 @@ console.log('🔧 Loaded env file:', envPath);
 console.log('🌐 BASE_URL:', process.env.BASE_URL);
 
 export default defineConfig({
-  workers: 2,
+  workers: 3,
   reporter: [['allure-playwright']],
   testDir: './tests',
   timeout: 30 * 1000,

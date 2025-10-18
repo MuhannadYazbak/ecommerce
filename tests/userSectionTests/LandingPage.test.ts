@@ -27,7 +27,7 @@ test.beforeEach(async ({ page }) => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify(mockTop5Orders)
+      body: JSON.stringify(mockTop5Orders[0].items_json)
     });
   });
   landingPage = new LandingPage(page);
@@ -39,6 +39,7 @@ test('💚 Landing page loads and displays top 5 items', async ({ page }) => {
   //const landingPage = new LandingPage(page);
   await expect(page).toHaveURL(/\/$/);
   await landingPage.waitForHeader();
+  await page.screenshot({path: 'test-screenshots/landing5.png'});
   const itemCount = await landingPage.getItemCards();
   expect(itemCount).toBe(5);
 });

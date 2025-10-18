@@ -1,15 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
 import { getTranslation } from '@/utils/i18nBackend';
+import { Item } from '@/types/item';
 
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;
   const t = getTranslation(req)
-  const mockItem = {
+  const mockItem : Item = {
     id: 2,
     name: 'Samsung Galaxy S24 Ultra',
     price: 1100,
     description: 'Great High-end Android phone with 200MP camera and S Pen.',
+    // arName: '',
+    // arDescription:'',
+    // heName: '',
+    // heDescription: '',
     photo: '/images/s24ultra.jpg',
     quantity: 1
   };
@@ -50,10 +55,11 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
 export async function DELETE(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const t = getTranslation(req);
   try {
-    const body = await req.json();
-    const item_id = Number((await context.params).id);
+    //const body = await req.json();
+    const id = Number((await context.params).id);
+    console.log('Called DELETE on item_id: ', id)
 
-    if (!item_id) {
+    if (!id) {
       return NextResponse.json({ error: `${t.missingFields}` }, { status: 400 });
     }
 
@@ -65,14 +71,14 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
 
       // Delete translations first
       await conn.query(
-        `DELETE FROM item_translation WHERE item_id = ?`,
-        [item_id]
+        `DELETE FROM item_translations WHERE item_id = ?`,
+        [id]
       );
 
       // Then delete the item
       await conn.query(
         `DELETE FROM itemtable WHERE id = ?`,
-        [item_id]
+        [id]
       );
 
       await conn.commit();
@@ -85,7 +91,7 @@ export async function DELETE(req: NextRequest, context: { params: Promise<{ id: 
     }
   } catch (err) {
     console.error('Item DELETE error:', err);
-    return NextResponse.json({ error: `${t.serverError}` }, { status: 500 });
+    return NextResponse.json({ error: `${t.serverError}` }, { status: 503 });
   }
 }
 

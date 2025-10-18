@@ -1,0 +1,14 @@
+➡️ GET http://localhost:3000/api/navbar
+➡️ GET http://localhost:3000/api/items?page=1&limit=6
+➡️ GET http://localhost:3000/api/cart/1
+⬅️ 200 http://localhost:3000/api/items?page=1&limit=6
+⬅️ 200 http://localhost:3000/api/navbar
+⬅️ 200 http://localhost:3000/api/cart/1
+➡️ GET http://localhost:3000/_next/image?url=%2Fmock.jpg&w=384&q=75
+➡️ GET http://localhost:3000/_next/image?url=%2Fmock2.jpg&w=384&q=75
+⬅️ 400 http://localhost:3000/_next/image?url=%2Fmock.jpg&w=384&q=75
+⬅️ 400 http://localhost:3000/_next/image?url=%2Fmock2.jpg&w=384&q=75
+➡️ DELETE http://localhost:3000/api/items/1
+⬅️ 500 http://localhost:3000/api/items/1
+➡️ GET http://localhost:3000/api/items?page=1&limit=6
+⬅️ 200 http://localhost:3000/api/items?page=1&limit=6

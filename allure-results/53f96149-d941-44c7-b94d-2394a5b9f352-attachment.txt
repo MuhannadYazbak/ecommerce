@@ -1,4 +1,0 @@
-✅ GET /api/items intercepted
-DELETE is Called !!!!
-✅ GET /api/items intercepted
-before delete page had  2  items, but after delete it is  2

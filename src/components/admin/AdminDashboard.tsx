@@ -12,13 +12,13 @@ import DetailsIcon from '@/components/ui/DetailsIcon';
 import BackButton from '@/components/ui/BackButton';
 import SoldOut from '../ui/SoldOut';
 import { TranslatedItem } from '@/types/translatedItem';
+import { headers } from 'next/headers';
 
 export default function AdminDashboard() {
   const { user } = useAuth();
-  const { item } = useParams();
   const router = useRouter();
   const { t, i18n } = useTranslation()
-  const [items, setItems] = useState<any[]>([]);
+  const [items, setItems] = useState<Item[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   //const [totalPages, setTotalPages] = useState(5);
   const [itemsPerPage] = useState(6);
@@ -28,17 +28,18 @@ export default function AdminDashboard() {
   const totalPages = Math.ceil(items.length / itemsPerPage);
   const [refreshTrigger, setRefreshTrigger] = useState(0)
 
-   useEffect(() => {
-    if (!user || user.role !== 'admin') return;
-    setCurrentPage(1);
-  }, [items.length]);
+  //  useEffect(() => {
+  //   if (!user || user.role !== 'admin') return;
+  //   setCurrentPage(1);
+  // }, [items.length]);
+  
 
   useEffect(() => {
     if (!user || user.role !== 'admin') return;
     console.log('FETCHING ITEMS !!!')
     fetchItems();
-    console.log('Items: ', items)
-  }, [user, refreshTrigger, currentPage, i18n.language]);
+    //console.log('Items: ', items)
+  }, [user,refreshTrigger, currentPage, i18n.language]);
   
 
   const fetchItems = async (page = currentPage) => {
@@ -51,8 +52,16 @@ export default function AdminDashboard() {
     const data = await res.json();
     setItems(data);
   };
-  const handleViewItem = (id: number) => {
+  const handleViewItem = async (id: number) => {
+    try{
+    await fetch(`/api/items/${id}`, { headers: {
+      'Accept-Language': i18n.language.split('-')[0] || 'en'
+    }})
     router.push(`/admin/items/${id}`);
+    }catch(err){
+      console.error('failed to fetch item ', err)
+    }
+    //router.push(`/admin/items/${id}`);
   };
 
   const changeLanguage = (lng: 'en' | 'ar' | 'he') => {
@@ -62,10 +71,15 @@ export default function AdminDashboard() {
 
     try {
       await fetch(`/api/items/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE', 
+        headers: {
+          'Accept-Language': i18n.language.split('-')[0] || 'en'
+        }
       });
-      console.log(`🗑️ Deleted item (item_id: ${id})`);
       setRefreshTrigger(prev => prev + 1)
+      console.log('Current page:', currentPage);
+      console.log('Items after delete:', items);
+      console.log(`🗑️ Deleted item (item_id: ${id})`);
     } catch (err) {
       console.error('❌ Failed to delete from backend:', err);
     }
@@ -123,7 +137,7 @@ export default function AdminDashboard() {
             <p className='font-italic text-lg'>{t('quantity')}: {item.quantity}</p>
             <div role='itemButtons' className='flex flex-row-reverse space-x-reverse space-x-2'>
               <button
-                onClick={() => ItemDelete(item.id)}
+                onClick={() => {ItemDelete(item.id); }}
                 className="mt-2 bg-blue-600 hover:bg-red-700 text-white px-3 py-1 rounded" role='deleteItem'
               >
                 {t('deleteItem')} <TrashIcon />

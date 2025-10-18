@@ -69,7 +69,7 @@ export default function LoggedInHome() {
             setItems(data);
         };
         fetchItems();
-    }, [i18n.language]);
+    }, [i18n.language, sortOption]);
 
     const changeLanguage = (lng: 'en' | 'ar' | 'he') => {
         i18n.changeLanguage(lng);

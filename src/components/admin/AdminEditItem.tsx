@@ -7,6 +7,7 @@ import { Trans, useTranslation } from 'react-i18next'
 import { Item } from '@/types/item'
 import BackButton from '@/components/ui/BackButton'
 import { error } from 'console'
+import { TranslatedItem } from '@/types/translatedItem'
 
 export default function AdminEditItem() {
   const { user } = useAuth()
@@ -14,10 +15,14 @@ export default function AdminEditItem() {
   const { id } = useParams()
   const { t, i18n } = useTranslation()
   const [loading, setLoading] = useState(true)
-  const [item, setItem] = useState<Item | null>(null)
+  const [item, setItem] = useState<TranslatedItem | null>(null)
   const [form, setForm] = useState({
-    name:       '',
-    description:'',
+    enName:       '',
+    enDescription:'',
+    arName:       '',
+    arDescription:'',
+    heName:       '',
+    heDescription:'',
     price:      '',
     photo:      '',
     quantity: ''
@@ -40,11 +45,15 @@ export default function AdminEditItem() {
           }
         })
         if (!res.ok) throw new Error('Item not found')
-        const data: Item = await res.json()
+        const data: TranslatedItem = await res.json()
         setItem(data)
         setForm({
-          name: data.name,
-          description: data.description,
+          enName:       data.name,
+          enDescription: data.description,
+          arName:       data.arName,
+          arDescription: data.arDescription,
+          heName:       data.heName,
+          heDescription: data.heDescription,
           price: data.price.toString(),
           photo: data.photo,
           quantity: data.quantity.toString()
@@ -71,8 +80,12 @@ export default function AdminEditItem() {
         method:  'PUT',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({
-          name:        form.name,
-          description: form.description,
+          name:        form.enName,
+          description: form.enDescription,
+          arName: form.arName,
+          arDescription: form.arDescription,
+          heName: form.heName,
+          heDescription: form.heDescription,
           price:       Number(form.price),
           photo:       form.photo,
           quantity:    Number(form.quantity)
@@ -102,8 +115,8 @@ export default function AdminEditItem() {
     <main className="max-w-xl mx-auto p-6" dir={i18n.language === 'en' ? 'ltr': 'rtl'}>
       <header className='flex w-full justify-center' id='admin item header'>
         <h1 role='editItemTitle' className='text-2xl font-bold mb-4 text-indigo-500'>
-          <Trans i18nKey="adminEditTitle" values={{ id: item.id }}>
-                                      Image of {{ id: item.id }}
+          <Trans i18nKey="adminEditTitle" values={{ id: item.item_id }}>
+                                      Image of {{ id: item.item_id }}
                                   </Trans>
         </h1>
       </header>
@@ -113,7 +126,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('name')}</label>
           <input
             name="name"
-            value={form.name}
+            value={form.enName}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
           />
@@ -123,7 +136,45 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('description')}</label>
           <textarea
             name="description"
-            value={form.description}
+            value={form.enDescription}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+          />
+        </div>
+        <div id='arName'>
+          <label className="block font-medium">{t('name')}</label>
+          <input
+            name="arName"
+            value={form.arName}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+          />
+        </div>
+
+        <div id='arDescription'>
+          <label className="block font-medium">{t('description')}</label>
+          <textarea
+            name="arDescription"
+            value={form.arDescription}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+          />
+        </div>
+        <div id='heName'>
+          <label className="block font-medium">{t('name')}</label>
+          <input
+            name="heName"
+            value={form.heName}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+          />
+        </div>
+
+        <div id='heDescription'>
+          <label className="block font-medium">{t('description')}</label>
+          <textarea
+            name="heDescription"
+            value={form.heDescription}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
           />

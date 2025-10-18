@@ -30,8 +30,16 @@ export class AdminItemsPage extends BasePage {
   }
 
   async removeItem(index: number): Promise<void> {
-    await this.page.locator(`button[role='deleteItem']`).nth(index).click();
+    try{
+      const item = this.page.locator('#item-article').nth(index)
+      const button = item.locator(`button[role='deleteItem']`);
+      await button.click({ force: true});
+    }catch(err){
+      console.error('failed to delete item ', err);
+    }
   }
+
+
 
   async viewItem(index: number): Promise<void> {
     await this.page.locator(`button[role='viewItem']`).nth(index).click()
