@@ -44,7 +44,7 @@ test('Back button navigates correctly', async ({ page }) => {
   annotateTest({ feature: 'AdminBarChartPage'});
   const adminDashboard = new AdminItemsPage(page)
   await adminDashboard.navigate()
-  await page.waitForLoadState('networkidle')
+  //await page.waitForLoadState('networkidle')
   await page.screenshot({path: './test-screenshots/new/beforeBackFromBarChart.png'})
   await adminDashboard.goToBarChart()
   chartPage = new AdminBarChartPage(page);
@@ -52,7 +52,7 @@ test('Back button navigates correctly', async ({ page }) => {
   await chartPage.waitForChart();
   await page.screenshot({path: './test-screenshots/new/midBackFromBarChart.png'})
   await chartPage.back('/admin/items')
-  await page.waitForTimeout(200)
+  await page.waitForTimeout(500)
   await page.screenshot({path: './test-screenshots/new/afterBackFromBarChart.png'})
   await expect(page).toHaveURL(/\/admin\/items$/);
 });

@@ -23,7 +23,7 @@ const item: TranslatedItem = {
 
 test.use({ storageState: 'auth.json' });
 test.beforeEach(async ({ page }) => {
-  await page.route('**/api/items/*', async route => {
+  await page.route('**/api/items*', async route => {
     if (route.request().method() === 'GET'){
    // if (route.request().url().includes(`/api/items/${item.item_id}`)) {
       await route.fulfill({
