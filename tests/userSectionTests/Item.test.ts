@@ -37,7 +37,7 @@ test.beforeEach(async ({ page }) => {
   });
   itemPage = new ItemPage(page, item)
   await itemPage.navigate()
-  await itemPage.waitForItemsToLoad()
+  await itemPage.waitForHeader()
 })
 
 test('📦 Authenticated user can view item details', async ({ page }) => {

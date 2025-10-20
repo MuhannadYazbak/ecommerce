@@ -54,9 +54,9 @@ export class ItemPage extends BasePage {
         await this.itemHeading.waitFor({ state: 'visible' });  
     }
 
-    async waitForItemsToLoad(): Promise<void> {
-        await this.itemName.waitFor({ state: 'visible' });
-    }
+    // async waitForItemsToLoad(): Promise<void> {
+    //     await this.itemName.waitFor({ state: 'visible' });
+    // }
 
     async getName() : Promise<Locator> {
         return this.itemName

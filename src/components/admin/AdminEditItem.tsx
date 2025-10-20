@@ -124,6 +124,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('name')}</label>
           <input
             name="name"
+            role="enName"
             value={form.enName}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
@@ -134,6 +135,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('description')}</label>
           <textarea
             name="description"
+            role="enDescription"
             value={form.enDescription}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
@@ -143,6 +145,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('name')}</label>
           <input
             name="arName"
+            role="arName"
             value={form.arName}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
@@ -153,6 +156,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('description')}</label>
           <textarea
             name="arDescription"
+            role="arDescription"
             value={form.arDescription}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
@@ -162,6 +166,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('name')}</label>
           <input
             name="heName"
+            role="enName"
             value={form.heName}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
@@ -172,6 +177,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('description')}</label>
           <textarea
             name="heDescription"
+            role="heDescription"
             value={form.heDescription}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
@@ -182,6 +188,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('price')}</label>
           <input
             name="price"
+            role="price"
             type="number"
             step="0.01"
             value={form.price}

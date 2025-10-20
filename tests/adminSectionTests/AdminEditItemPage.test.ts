@@ -31,11 +31,15 @@ test.describe('Admin Item Edit Page', () => {
                 });
             } else if (method === 'PUT') {
                 const body = await route.request().postDataJSON();
-                const { name, description, price, photo, quantity } = body;
+                const { name, description, arName, arDescription, heName, heDescription, price, photo, quantity } = body;
 
                 if (
                     typeof name !== 'string' ||
                     typeof description !== 'string' ||
+                    typeof arName !== 'string' ||
+                    typeof arDescription !== 'string' ||
+                    typeof heName !== 'string' ||
+                    typeof heDescription !== 'string' ||
                     typeof price !== 'number' ||
                     typeof photo !== 'string' ||
                     typeof quantity !== 'number'
@@ -75,7 +79,7 @@ test.describe('Admin Item Edit Page', () => {
     test('should load item details correctly', async ({ page }) => {
         annotateTest({ feature: 'AdminEditItemPage' });
         await page.screenshot({ path: './test-screenshots/adminEditIem.png' })
-        const nameInput = adminEditItemPage.itemField('name');
+        const nameInput = adminEditItemPage.enName
         await expect(nameInput).toHaveValue('Test Item');
     });
 
