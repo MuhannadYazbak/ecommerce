@@ -1,6 +1,13 @@
 // /src/app/api/cart/[user_id]/[item_id]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
+import en from '@/locales/en/translation.json'
+import ar from '@/locales/ar/translation.json'
+import he from '@/locales/he/translation.json'
+const translations = { en, ar, he}
+type LangCode = keyof typeof translations;
+const currentLang: LangCode = 'en'; // or 'ar', 'he'
+const t = translations[currentLang]
 
 export async function DELETE(
   request: NextRequest,
@@ -10,7 +17,7 @@ export async function DELETE(
   const itemId = Number((await context.params).item_id);
 
   if (isNaN(userId) || isNaN(itemId)) {
-    return NextResponse.json({ error: 'Invalid parameters' }, { status: 400 });
+    return NextResponse.json({ error: `${t.invalidParam}` }, { status: 400 });
   }
 
   try {
@@ -21,13 +28,13 @@ export async function DELETE(
     );
 
     if ((result as any).affectedRows === 0) {
-      console.warn(`🧨 No item found to delete for user_id=${userId}, item_id=${itemId}`);
-      return NextResponse.json({ message: 'No item found to delete' }, { status: 404 });
+      console.warn(`🧨 ${t.itemDeleteFailed} for user_id=${userId}, item_id=${itemId}`);
+      return NextResponse.json({ message: `${t.itemDeleteFailed}` }, { status: 404 });
     }
 
-    return NextResponse.json({ message: 'Item removed' });
+    return NextResponse.json({ message: `${t.itemDeleted}` });
   } catch (err) {
-    console.error('💥 Delete error:', err);
-    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+    console.error(`${t.deleteError}:`, err);
+    return NextResponse.json({ error: `${t.serverError}` }, { status: 500 });
   }
 }

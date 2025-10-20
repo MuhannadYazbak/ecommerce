@@ -7,7 +7,7 @@ import { User } from '@/types/user';
 let loginPage: LoginPage
 let user: User = {
   id: 123,
-  name: 'Test User',
+  fullname: 'Test User',
   email: 'user@newtest.com',
   dateOfBirth: new Date(1991,3,8),
   password: 'User-1234',

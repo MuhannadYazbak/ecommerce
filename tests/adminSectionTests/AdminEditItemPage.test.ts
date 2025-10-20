@@ -23,6 +23,10 @@ test.describe('Admin Item Edit Page', () => {
                         price: 100,
                         photo: 'test-photo.jpg',
                         quantity: 10,
+                        arName: 'منتج تجريبي',
+                        arDescription: 'منتج مصتنع للتجربة',
+                        heName: 'מוצר לבדיקה',
+                        heDescription: 'מוצר מדומה לבדיקה'
                     }),
                 });
             } else if (method === 'PUT') {
@@ -77,7 +81,7 @@ test.describe('Admin Item Edit Page', () => {
 
     test('should update item successfully', async ({ page }) => {
         annotateTest({ feature: 'AdminEditItemPage' });
-        await adminEditItemPage.editField('name', 'Updated Item Name');
+        await adminEditItemPage.fillenName('Updated Item Name');
         await adminEditItemPage.clickUpdate();
         await expect(page).toHaveURL('/admin/items');
     });
@@ -90,7 +94,7 @@ test.describe('Admin Item Edit Page', () => {
             await dialog.dismiss();
         });
 
-        await adminEditItemPage.editField('price', '-999');
+        await adminEditItemPage.fillPrice(-999);
         await adminEditItemPage.clickUpdate();
         await page.waitForTimeout(500);
     });

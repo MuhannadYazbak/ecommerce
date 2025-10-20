@@ -17,6 +17,10 @@ export class ItemPage extends BasePage {
     readonly itemName: Locator
     readonly itemPhoto: Locator
     readonly itemDescription: Locator
+    // readonly arName: Locator
+    // readonly arDescription: Locator
+    // readonly heName: Locator
+    // readonly heDescription: Locator
     readonly itemPrice: Locator
     readonly itemQuantity: Locator
     readonly addToCartButton: Locator
@@ -30,7 +34,12 @@ export class ItemPage extends BasePage {
         this.itemHeading = this.page.locator('h1[role="item-heading"]')
         this.itemName = this.page.locator('#item-name')
         this.itemPhoto = this.page.locator(`img[alt="Photo of ${this.item.name}"]`)
-        this.itemDescription = this.page.locator(`text="${this.item.description}"`)
+        this.itemDescription = this.page.locator(`p[role='description']`)
+        //this.itemDescription = this.page.locator(`text="${this.item.description}"`)
+        // this.arName = this.page.locator(`input[role='arName']`)
+        // this.arDescription = this.page.locator(`textarea[role='arDescription']`)
+        // this.heName = this.page.locator(`input[role='heName']`)
+        // this.heDescription = this.page.locator(`textarea[role='heDescription']`)
         this.itemPrice = this.page.locator(`text="${this.item.price}₪"`)
         this.itemQuantity = this.page.locator('section[aria-label="Purchase Options"] >> span')
         this.addToCartButton = this.page.locator(`button[role='addToCart']`)

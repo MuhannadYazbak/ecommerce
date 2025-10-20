@@ -129,7 +129,7 @@ export default function ItemView({ itemId }: Props) {
                 </figure>
 
                 <section aria-label="Description" className='relative'>
-                    <p className="mb-2 font-italic">{item.description}</p>
+                    <p role='description' className="mb-2 font-italic">{item.description}</p>
                     <p className="text-blue-600 font-bold text-xl">{item.price}₪</p>
                 </section>
                 {item.quantity === 0 ? <SoldOut /> : 

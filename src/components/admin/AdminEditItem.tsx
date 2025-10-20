@@ -4,9 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import { Trans, useTranslation } from 'react-i18next'
-import { Item } from '@/types/item'
 import BackButton from '@/components/ui/BackButton'
-import { error } from 'console'
 import { TranslatedItem } from '@/types/translatedItem'
 
 export default function AdminEditItem() {
