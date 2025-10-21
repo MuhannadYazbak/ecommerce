@@ -114,11 +114,11 @@ export default function ItemView() {
         <main className="p-6" >
             <article aria-labelledby="item-heading" className="max-w-3xl mx-auto">
                 <header>
-                    <h1 role='itemHeading' id="itemHeading" className="text-2xl font-bold">{item.name}</h1>
+                    <h1 data-testid='itemHeading' role='itemHeading' id="itemHeading" className="text-2xl font-bold">{item.name}</h1>
                 </header>
 
                 <figure className="my-4">
-                    <img src={item.photo} alt={`Photo of ${item.name}`} className="w-80 hover:scale-110" />
+                    <img data-testid='photo' src={item.photo} alt={`Photo of ${item.name}`} className="w-80 hover:scale-110" />
                     <figcaption id='item-name' className="text-sm text-gray-500 mt-1">
                         <Trans i18nKey="imageOf" values={{ name: item.name }}>
                             Image of {{ name: item.name }}
@@ -129,14 +129,14 @@ export default function ItemView() {
                 </figure>
 
                 <section aria-label="Description" className='relative'>
-                    <p role='description' className="mb-2 font-italic">{item.description}</p>
-                    <p className="text-blue-600 font-bold text-xl">{item.price}₪</p>
+                    <p data-testid='description' className="mb-2 font-italic">{item.description}</p>
+                    <p data-testid='price' className="text-blue-600 font-bold text-xl">{item.price}₪</p>
                 </section>
                 {item.quantity === 0 ? <SoldOut /> : 
                 <section aria-label="Purchase Options" className="mt-4 flex" >
                     <div className="flex items-center gap-4">
                         <button onClick={() => setQuantity(q => Math.max(1, q - 1))} className="px-3 py-1 bg-gray-300 hover:bg-gray-400 rounded">–</button>
-                        <span>{quantity}</span>
+                        <span data-testid='quantity'>{quantity}</span>
                         <button onClick={() => setQuantity(q => q + 1)} className="px-3 py-1 bg-gray-300 hover:bg-gray-400 rounded">+</button>
                     </div>
                     <button

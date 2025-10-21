@@ -124,7 +124,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('name')}</label>
           <input
             name="name"
-            role="enName"
+            data-testid="enName"
             value={form.enName}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
@@ -135,7 +135,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('description')}</label>
           <textarea
             name="description"
-            role="enDescription"
+            data-testid="enDescription"
             value={form.enDescription}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
@@ -145,7 +145,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('name')}</label>
           <input
             name="arName"
-            role="arName"
+            data-testid="arName"
             value={form.arName}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
@@ -156,7 +156,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('description')}</label>
           <textarea
             name="arDescription"
-            role="arDescription"
+            data-testid="arDescription"
             value={form.arDescription}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
@@ -166,7 +166,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('name')}</label>
           <input
             name="heName"
-            role="heName"
+            data-testid="heName"
             value={form.heName}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
@@ -177,7 +177,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('description')}</label>
           <textarea
             name="heDescription"
-            role="heDescription"
+            data-testid="heDescription"
             value={form.heDescription}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
@@ -188,7 +188,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('price')}</label>
           <input
             name="price"
-            role="price"
+            data-testid="price"
             type="number"
             step="0.01"
             value={form.price}
@@ -201,6 +201,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('photoURL')}</label>
           <input
             name="photo"
+            data-testid="photo"
             value={form.photo}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
@@ -212,6 +213,7 @@ export default function AdminEditItem() {
             name="quantity"
             type="number"
             step="1"
+            data-testid="quantity"
             value={form.quantity}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"

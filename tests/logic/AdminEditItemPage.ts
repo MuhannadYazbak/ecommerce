@@ -29,15 +29,15 @@ export class AdminItemEditPage extends BasePage {
     this.updateButton = page.locator('button[type="submit"]');
     this.cancelButton = page.locator(`button[role='cancel']`);
     this.alertMessage = page.locator('.alert-error');
-    this.enName = page.locator(`input[role='enName']`)
-    this.arName = page.locator(`input[role='arName']`)
-    this.heName = page.locator(`input[role='heName']`)
-    this.enDescritpion = page.locator(`textarea[role='enDescription']`)
-    this.arDescritpion = page.locator(`textarea[role='arDescription']`)
-    this.heDescritpion = page.locator(`textarea[role='heDescription']`)
-    this.price = page.locator(`input[role='price']`)
-    this.quantity = page.locator(`input[role='quantity']`)
-    this.photo = page.locator(`input[role='photo']`);
+    this.enName = page.locator(`[data-testid='enName']`)
+    this.arName = page.locator(`[data-testid='arName']`)
+    this.heName = page.locator(`[data-testid='heName']`)
+    this.enDescritpion = page.locator(`[data-testid='enDescription']`)
+    this.arDescritpion = page.locator(`[data-testid='arDescription']`)
+    this.heDescritpion = page.locator(`[data-testid='heDescription']`)
+    this.price = page.locator(`[data-testid='price']`)
+    this.quantity = page.locator(`[data-testid='quantity']`)
+    this.photo = page.locator(`[data-testid='photo']`);
   }
 
   //itemField = (fieldName: string) => this.page.locator(`input[name="${fieldName}"], textarea[name="${fieldName}"]`);
