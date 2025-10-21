@@ -31,7 +31,7 @@ export class ItemPage extends BasePage {
     constructor(page: Page, item: Item) {
         super(page, `${process.env.BASE_URL}/items/${item.id}`);
         this.item = item;
-        this.itemHeading = this.page.locator('h1[role="itemHeading"]')
+        this.itemHeading = this.page.locator('#itemHeading')
         this.itemName = this.page.locator('#item-name')
         this.itemPhoto = this.page.locator(`img[alt="Photo of ${this.item.name}"]`)
         this.itemDescription = this.page.locator(`p[role='description']`)

@@ -166,7 +166,7 @@ export default function AdminEditItem() {
           <label className="block font-medium">{t('name')}</label>
           <input
             name="heName"
-            role="enName"
+            role="heName"
             value={form.heName}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"

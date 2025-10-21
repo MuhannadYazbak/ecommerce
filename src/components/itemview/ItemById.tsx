@@ -9,12 +9,12 @@ import BackButton from '../ui/BackButton';
 import SoldOut from '../ui/SoldOut';
 import { Trans, useTranslation } from 'react-i18next';
 
-type Props = {
-    itemId: string;
-};
+// type Props = {
+//     itemId: string;
+// };
 
 
-export default function ItemView({ itemId }: Props) {
+export default function ItemView() {
     const { item_id } = useParams();
     const { user, guest } = useAuth();
     const { t, i18n } = useTranslation();
