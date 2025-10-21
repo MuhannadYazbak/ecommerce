@@ -114,7 +114,7 @@ export default function ItemView({ itemId }: Props) {
         <main className="p-6" >
             <article aria-labelledby="item-heading" className="max-w-3xl mx-auto">
                 <header>
-                    <h1 role='item-heading' id="item-heading" className="text-2xl font-bold">{item.name}</h1>
+                    <h1 role='itemHeading' id="itemHeading" className="text-2xl font-bold">{item.name}</h1>
                 </header>
 
                 <figure className="my-4">

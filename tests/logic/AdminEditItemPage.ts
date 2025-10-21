@@ -12,7 +12,7 @@ export class AdminItemEditPage extends BasePage {
   readonly updateButton: Locator;
   readonly cancelButton: Locator;
   readonly alertMessage: Locator;
-  private itemId: string;
+  private itemId: number;
   enName: Locator;
   enDescritpion: Locator;
   arName: Locator;
@@ -23,7 +23,7 @@ export class AdminItemEditPage extends BasePage {
   quantity: Locator;
   photo: Locator;
 
-  constructor(page: Page, id: string) {
+  constructor(page: Page, id: number) {
     super(page, `/admin/items/${id}`);
     this.itemId = id
     this.updateButton = page.locator('button[type="submit"]');
@@ -40,7 +40,7 @@ export class AdminItemEditPage extends BasePage {
     this.photo = page.locator(`input[role='photo']`);
   }
 
-  itemField = (fieldName: string) => this.page.locator(`input[name="${fieldName}"], textarea[name="${fieldName}"]`);
+  //itemField = (fieldName: string) => this.page.locator(`input[name="${fieldName}"], textarea[name="${fieldName}"]`);
 
   async loadItemDetails() {
     await this.page.goto(`/admin/items/${this.itemId}`);
@@ -90,7 +90,8 @@ export class AdminItemEditPage extends BasePage {
   }
 
   async clickCancel() {
-    await this.cancelButton.click();
+    await this.cancelButton.waitFor({state: 'visible'})
+    await this.cancelButton.click()
   }
 
   async getAlertText() {
