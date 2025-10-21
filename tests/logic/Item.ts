@@ -12,7 +12,7 @@ const t = translations[currentLang]
 
 
 export class ItemPage extends BasePage {
-    item: TranslatedItem;
+    item: Item;
     readonly itemHeading: Locator
     readonly itemName: Locator
     readonly itemPhoto: Locator
@@ -28,8 +28,8 @@ export class ItemPage extends BasePage {
     readonly quantityIncrease: Locator
     readonly quantityDecrease: Locator
     readonly cartCount: Locator
-    constructor(page: Page, item: TranslatedItem) {
-        super(page, `${process.env.BASE_URL}/items/${item.item_id}`);
+    constructor(page: Page, item: Item) {
+        super(page, `${process.env.BASE_URL}/items/${item.id}`);
         this.item = item;
         this.itemHeading = this.page.locator('h1[role="itemHeading"]')
         this.itemName = this.page.locator('#item-name')
@@ -53,10 +53,6 @@ export class ItemPage extends BasePage {
     async waitForHeader(): Promise<void> {
         await this.itemHeading.waitFor({ state: 'visible' });  
     }
-
-    // async waitForItemsToLoad(): Promise<void> {
-    //     await this.itemName.waitFor({ state: 'visible' });
-    // }
 
     async getName() : Promise<Locator> {
         return this.itemName
@@ -104,7 +100,7 @@ export class ItemPage extends BasePage {
         return this.cartCount
     }
 
-    validateItem() : TranslatedItem{
+    validateItem() : Item{
         return this.item
     }
 }

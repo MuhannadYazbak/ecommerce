@@ -1,23 +1,15 @@
 import { test, expect } from '@playwright/test';
 import { AdminItemEditPage } from '../logic/AdminEditItemPage';
 import { annotateTest } from '../utils/annotate';
+import { TranslatedItem } from '@/types/translatedItem';
 
 test.use({ storageState: 'auth.admin.json' });
 
 test.describe('Admin Item Edit Page', () => {
     let adminEditItemPage: AdminItemEditPage;
-    const testItemId = '2';
-
-    test.beforeEach(async ({ page }) => {
-        await page.route(`**/api/items/${testItemId}`, async route => {
-            const method = route.request().method();
-
-            if (method === 'GET') {
-                await route.fulfill({
-                    status: 200,
-                    contentType: 'application/json',
-                    body: JSON.stringify({
-                        id: testItemId,
+    
+    const item : TranslatedItem = {
+                        item_id: 2,
                         name: 'Test Item',
                         description: 'Mocked item for testing',
                         price: 100,
@@ -27,7 +19,17 @@ test.describe('Admin Item Edit Page', () => {
                         arDescription: 'منتج مصتنع للتجربة',
                         heName: 'מוצר לבדיקה',
                         heDescription: 'מוצר מדומה לבדיקה'
-                    }),
+                    }
+
+    test.beforeEach(async ({ page }) => {
+        await page.route(`**/api/items/${item.item_id}`, async route => {
+            const method = route.request().method();
+
+            if (method === 'GET') {
+                await route.fulfill({
+                    status: 200,
+                    contentType: 'application/json',
+                    body: JSON.stringify(item),
                 });
             } else if (method === 'PUT') {
                 const body = await route.request().postDataJSON();
@@ -71,9 +73,9 @@ test.describe('Admin Item Edit Page', () => {
             }
         });
 
-        adminEditItemPage = new AdminItemEditPage(page, testItemId);
+        adminEditItemPage = new AdminItemEditPage(page, item.item_id);
         await adminEditItemPage.loadItemDetails();
-        await page.waitForLoadState('networkidle')
+        //await page.waitForLoadState('networkidle')
     });
 
     test('should load item details correctly', async ({ page }) => {
@@ -106,6 +108,6 @@ test.describe('Admin Item Edit Page', () => {
     test('should cancel and go back', async ({ page }) => {
         annotateTest({ feature: 'AdminEditItemPage' });
         await adminEditItemPage.clickCancel();
-        await expect(page).not.toHaveURL(`/admin/items/${testItemId}`);
+        await expect(page).not.toHaveURL(`/admin/items/${item.item_id}`);
     });
 });
