@@ -57,5 +57,5 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export default async function ItemPage({ params }: Params) {
-  return <ItemView itemId={(await params).item_id} />;
+  return <ItemView  />;
 }
