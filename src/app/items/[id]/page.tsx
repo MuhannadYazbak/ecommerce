@@ -5,7 +5,7 @@ import { getTranslationByLang } from '@/utils/i18nBackend';
 
 export const dynamic = 'force-dynamic';
 
-type Params = { params: Promise<{ item_id: string }> };
+type Params = { params: Promise<{ id: string }> };
 
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const acceptLang = requestHeaders.get('accept-language') || 'en';
   const lang = acceptLang.split(',')[0].split('-')[0];
   const t = getTranslationByLang(lang);
-  const id = (await params).item_id;
+  const id = (await params).id;
   const res = await fetch(`${process.env.BASE_URL}/api/items/${id}`, {
     headers: {
       'Accept-Language': lang
