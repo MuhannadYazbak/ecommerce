@@ -26,17 +26,11 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
     console.error('Metadata fetch error:', err);
     item = null;
   }
-  // const res = await fetch(`${process.env.BASE_URL}/api/items/${id}`, {
-  //   headers: {
-  //     'Accept-Language': lang
-  //   }
-  // })
-  // const item = await res.json();
 
   if (process.env.SKIP_DB === 'true') {
     const mockItem = {
       name: t.metadata.mockName,
-      description: t.metadata.mockDescription, // ✅ Translated mock description
+      description: t.metadata.mockDescription,
     };
 
     return {
