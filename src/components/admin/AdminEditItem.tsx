@@ -123,7 +123,7 @@ export default function AdminEditItem() {
         <div id='name'>
           <label className="block font-medium">{t('name')}</label>
           <input
-            name="name"
+            name="enName"
             data-testid="enName"
             value={form.enName}
             onChange={handleChange}
@@ -134,7 +134,7 @@ export default function AdminEditItem() {
         <div id='description'>
           <label className="block font-medium">{t('description')}</label>
           <textarea
-            name="description"
+            name="enDescription"
             data-testid="enDescription"
             value={form.enDescription}
             onChange={handleChange}
@@ -190,7 +190,7 @@ export default function AdminEditItem() {
             name="price"
             data-testid="price"
             type="number"
-            step="0.01"
+            step="1"
             value={form.price}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
@@ -232,7 +232,7 @@ export default function AdminEditItem() {
             type="button"
             onClick={() => router.back()}
             className="flex-1 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded"
-            role='cancel'
+            data-testid='cancel'
           >
             {t('cancel')}
           </button>

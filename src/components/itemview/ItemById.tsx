@@ -15,7 +15,7 @@ import { Trans, useTranslation } from 'react-i18next';
 
 
 export default function ItemView() {
-    const { item_id } = useParams();
+    const { id } = useParams();
     const { user, guest } = useAuth();
     const { t, i18n } = useTranslation();
     const [item, setItem] = useState<Item | null>(null);
@@ -84,7 +84,7 @@ export default function ItemView() {
 
     useEffect(() => {
         const fetchItem = async () => {
-            const res = await fetch(`/api/items/${item_id}`, {
+            const res = await fetch(`/api/items/${id}`, {
                 headers: {
                     'Accept-Language': i18n.language.split('-')[0] || 'en'
                 }
@@ -105,8 +105,8 @@ export default function ItemView() {
             }
         };
 
-        if (item_id) fetchItem();
-    }, [item_id]);
+        if (id) fetchItem();
+    }, [id]);
 
 
     if (!item) return <p role='loading'>{t('loading')}</p>;
