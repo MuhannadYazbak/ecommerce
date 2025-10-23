@@ -7,31 +7,43 @@ export const dynamic = 'force-dynamic';
 
 type Params = { params: Promise<{ id: string }> };
 
-export async function generateMetadata({params}: Params): Promise<Metadata> {
+export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const requestHeaders = await headers()
   const acceptLang = requestHeaders.get('accept-language') || 'en'
-  console.log('acceptLang: ', acceptLang); 
+  console.log('acceptLang: ', acceptLang);
   const lang = acceptLang.split(',')[0].split('-')[0];
   const t = getTranslationByLang(lang);
   const item_id = (await params).id
-  const res = await fetch(`${process.env.BASE_URL}/api/items/${item_id}`, {
-    headers: {
-      'Accept-Language': lang
-    }
-  })
-  const item = await res.json();
-  
+  let item;
+  try {
+    const res = await fetch(`${process.env.BASE_URL}/api/items/${item_id}`, {
+      headers: { 'Accept-Language': lang }
+    });
+
+    if (!res.ok) throw new Error(`Failed to fetch item: ${res.status}`);
+    item = await res.json();
+  } catch (err) {
+    console.error('Metadata fetch error:', err);
+    item = null;
+  }
+  // const res = await fetch(`${process.env.BASE_URL}/api/items/${item_id}`, {
+  //   headers: {
+  //     'Accept-Language': lang
+  //   }
+  // })
+  // const item = await res.json();
+
   return {
     title: `${t.metadata.editItemTitle} | ${item.name}`,
     description: t.metadata.editItemDescription,
     keywords: [
-      'TechMart', 'Admin Dashboard', 'manage products', 'ecommerce analytics','store management','تيك مارت', 'لوحة تحكم الادمين', 'التحكم بالمنتجات', 'تحليل بيانات التسوق الالكتروني', 'ادارة المتجر الالكتروني', 'טקמארט', 'דשבורד של האדמן', 'ניהול המוצרים', 'ניתוח נתוני קניות אונליין','ניהול חנות אלקטרונית'
+      'TechMart', 'Admin Dashboard', 'manage products', 'ecommerce analytics', 'store management', 'تيك مارت', 'لوحة تحكم الادمين', 'التحكم بالمنتجات', 'تحليل بيانات التسوق الالكتروني', 'ادارة المتجر الالكتروني', 'טקמארט', 'דשבורד של האדמן', 'ניהול המוצרים', 'ניתוח נתוני קניות אונליין', 'ניהול חנות אלקטרונית'
     ].join(', '),
     robots: {
       index: false,
       follow: false,
     },
-    openGraph : {
+    openGraph: {
       title: `${t.metadata.editItemTitle} ${item_id}`,
       description: t.metadata.editItemDescription,
       url: `https://techmart.com/admin/items/${item_id}`,
@@ -44,6 +56,6 @@ export async function generateMetadata({params}: Params): Promise<Metadata> {
   };
 }
 
-export default function AdminEditItemPage(){
+export default function AdminEditItemPage() {
   return <AdminEditItem />
 }

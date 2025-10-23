@@ -14,12 +14,24 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const lang = acceptLang.split(',')[0].split('-')[0];
   const t = getTranslationByLang(lang);
   const id = (await params).id;
-  const res = await fetch(`${process.env.BASE_URL}/api/items/${id}`, {
-    headers: {
-      'Accept-Language': lang
-    }
-  })
-  const item = await res.json();
+  let item;
+  try {
+    const res = await fetch(`${process.env.BASE_URL}/api/items/${id}`, {
+      headers: { 'Accept-Language': lang }
+    });
+
+    if (!res.ok) throw new Error(`Failed to fetch item: ${res.status}`);
+    item = await res.json();
+  } catch (err) {
+    console.error('Metadata fetch error:', err);
+    item = null;
+  }
+  // const res = await fetch(`${process.env.BASE_URL}/api/items/${id}`, {
+  //   headers: {
+  //     'Accept-Language': lang
+  //   }
+  // })
+  // const item = await res.json();
 
   if (process.env.SKIP_DB === 'true') {
     const mockItem = {
@@ -57,5 +69,5 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 }
 
 export default async function ItemPage({ params }: Params) {
-  return <ItemView  />;
+  return <ItemView />;
 }
