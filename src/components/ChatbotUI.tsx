@@ -1,10 +1,12 @@
 'use client'
 import { useState, useRef, useEffect } from "react"
 import { useTranslation } from "react-i18next"
+import { useAuth } from "@/context/AuthContext"
 
 export default function ChatbotUI() {
   const [messages, setMessages] = useState<string[]>([])
   const [newMessage, setNewMessage] = useState<string>('')
+  const { user } = useAuth()
   const chatbotRef = useRef<HTMLDivElement>(null)
   const [minimized, setMinimized] = useState(false);
   const isDragging = useRef(false)
@@ -63,17 +65,29 @@ export default function ChatbotUI() {
     };
   };
 
-  const sendMessage = async () => {
-    const response = await fetch(`${process.env.CHAT_URL}/chat`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: newMessage }),
-    })
-
-    const data = await response.json()
-    setMessages(prev => [...prev, `🧑 ${newMessage}`, `🤖 ${data.reply}`])
+  async function askAssistant() {
+    const response = await fetch("http://127.0.0.1:8000/ask", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query: newMessage, user_id: user?.id || 2 })
+    });
+    const data = await response.json();
+    setMessages(prev => [...prev, `🧑 ${newMessage}`, `🤖 ${data.response}`])
     setNewMessage('')
+    return data.response;
   }
+
+  // const sendMessage = async () => {
+  //   const response = await fetch(`${process.env.CHAT_URL}/chat`, {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ message: newMessage }),
+  //   })
+
+  //   const data = await response.json()
+  //   setMessages(prev => [...prev, `🧑 ${newMessage}`, `🤖 ${data.reply}`])
+  //   setNewMessage('')
+  // }
 
   return (
 
@@ -108,7 +122,7 @@ export default function ChatbotUI() {
             />
 
             <button
-              onClick={sendMessage}
+              onClick={askAssistant}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
             >
               {t('send')}

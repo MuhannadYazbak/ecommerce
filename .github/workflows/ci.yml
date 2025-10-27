@@ -65,12 +65,14 @@ jobs:
       - name: Init submodules
         run: git submodule update --init --recursive
 
-      - name: Start TechMart Chatbot
-        run: |
-          cd ./chatbot/server
-          npm install
-          npx ts-node index.ts &
-          sleep 5
+      - name: Start TechMart RAG Chatbot
+        run : uvicorn main:app --host 0.0.0.0 --port 8000 &
+
+        # run: |
+        #   cd ./chatbot/server
+        #   npm install
+        #   npx ts-node index.ts &
+        #   sleep 5
 
 
       - name: Clean previous build
