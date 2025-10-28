@@ -22,6 +22,7 @@ export default function AdminEditItem() {
     heName:       '',
     heDescription:'',
     price:      '',
+    category: '',
     photo:      '',
     quantity: ''
   })
@@ -54,7 +55,8 @@ export default function AdminEditItem() {
           heDescription: data.heDescription,
           price: data.price.toString(),
           photo: data.photo,
-          quantity: data.quantity.toString()
+          quantity: data.quantity.toString(),
+          category: data.category
         })
       } catch (err) {
         console.error(err)
@@ -85,6 +87,7 @@ export default function AdminEditItem() {
           heName: form.heName,
           heDescription: form.heDescription,
           price:       Number(form.price),
+          category: form.category,
           photo:       form.photo,
           quantity:    Number(form.quantity)
         }),
@@ -137,6 +140,15 @@ export default function AdminEditItem() {
             name="enDescription"
             data-testid="enDescription"
             value={form.enDescription}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+          />
+        </div>
+        <div id='category'>
+          <input
+            name="category"
+            data-testid="category"
+            value={form.category}
             onChange={handleChange}
             className="w-full border px-3 py-2 rounded"
           />

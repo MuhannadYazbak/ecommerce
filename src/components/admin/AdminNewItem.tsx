@@ -20,6 +20,7 @@ export default function AddItem() {
     heName: '',
     heDescription: '',
     price: '',
+    category: '',
     quantity: '',
     photo: '',
   });
@@ -40,6 +41,7 @@ export default function AddItem() {
       arDescription: form.arDescription,
       heName: form.heName,
       heDescription: form.heDescription,
+      categroty: form.category
     };
 
     try {
@@ -102,6 +104,7 @@ export default function AddItem() {
         </> */}
         <input role='enName' name="enName" placeholder={t('name')} value={form.enName} onChange={handleChange} className="mb-2 p-2 w-full border" required />
         <textarea role='enDescription' name="enDescription" placeholder={t('description')} value={form.enDescription} onChange={handleChange} className="mb-2 p-2 w-full border" />
+        <input role='category' name='category' placeholder={t('category')} value={form.category} onChange={handleChange} className='mb-2 p2- w-full border' />
         <input role='arName' name="arName" placeholder={t('name')} value={form.arName} onChange={handleChange} className="mb-2 p-2 w-full border" required />
         <textarea role='arDescription' name="arDescription" placeholder={t('description')} value={form.arDescription} onChange={handleChange} className="mb-2 p-2 w-full border" />
         <input role='heName' name="heName" placeholder={t('name')} value={form.heName} onChange={handleChange} className="mb-2 p-2 w-full border" required />

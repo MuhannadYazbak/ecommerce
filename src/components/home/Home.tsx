@@ -11,7 +11,7 @@ import WishIcon from '../ui/WishIcon';
 import DetailsIcon from '../ui/DetailsIcon';
 import SoldOut from '../ui/SoldOut';
 
-type SortOption = 'id' | 'price-low-high' | 'price-high-low' | 'name-a-z' | 'name-z-a';
+type SortOption = 'byItemID' | 'byPrice' | 'byPriceDesc' | 'byName' | 'byNameDesc';
 export default function LoggedInHome() {
     const router = useRouter();
     const { user, guest, ready } = useAuth();
@@ -19,7 +19,7 @@ export default function LoggedInHome() {
     const [items, setItems] = useState<Item[]>([]);
     const [quantity, setQuantity] = useState(1);
     const [wishedItems, setWishedItems] = useState<number[]>([]);
-    const [sortOption, setSortOption] = useState<SortOption>('id');
+    const [sortOption, setSortOption] = useState<SortOption>('byItemID');
     const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(6); // Adjust this number as needed
@@ -30,15 +30,15 @@ export default function LoggedInHome() {
         )
         .sort((a, b) => {
             switch (sortOption) {
-                case 'id':
+                case 'byItemID':
                     return a.id - b.id;
-                case 'price-low-high':
+                case 'byPrice':
                     return a.price - b.price;
-                case 'price-high-low':
+                case 'byPriceDesc':
                     return b.price - a.price;
-                case 'name-a-z':
+                case 'byName':
                     return a.name.localeCompare(b.name);
-                case 'name-z-a':
+                case 'byNameDesc':
                     return b.name.localeCompare(a.name);
                 default:
                     return 0;

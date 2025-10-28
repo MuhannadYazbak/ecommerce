@@ -7,6 +7,7 @@ export interface TranslatedItem {
   heName: string;
   heDescription: string;
   quantity: number;
+  category: string;
   price: number;
   photo: string;
 }

@@ -11,6 +11,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
     name: 'Samsung Galaxy S24 Ultra',
     price: 1100,
     description: 'Great High-end Android phone with 200MP camera and S Pen.',
+    category: 'Smartphone',
     // arName: '',
     // arDescription:'',
     // heName: '',
@@ -32,6 +33,7 @@ export async function GET(req: NextRequest, context: { params: Promise<{ id: str
          i.id,
          i.price,
          i.quantity,
+         i.category,
          i.photo,
          t.name,
          t.description
@@ -135,13 +137,14 @@ export async function PUT(
   }
 
   const body = await request.json()
-  const { name, description, price, photo, quantity } = body
+  const { name, description, category, price, photo, quantity } = body
 
   if (
     price <= 0 ||
     quantity < 0 ||
     typeof name !== 'string' ||
     typeof description !== 'string' ||
+    typeof category !== 'string' ||
     typeof price !== 'number' ||
     typeof photo !== 'string' ||
     typeof quantity !== 'number'
@@ -153,9 +156,9 @@ export async function PUT(
     const pool = getPool()
     const [result] = await pool.query(
       `UPDATE itemtable 
-         SET name = ?, description = ?, price = ?, photo = ?, quantity = ?
+         SET name = ?, description = ?, category = ?, price = ?, photo = ?, quantity = ?
        WHERE id = ?`,
-      [name, description, price, photo, quantity, itemId]
+      [name, description, category, price, photo, quantity, itemId]
     )
 
     if ((result as any).affectedRows === 0) {

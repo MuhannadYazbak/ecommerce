@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
          i.id,
          i.price,
          i.quantity,
+         i.category,
          i.photo,
          t.name,
          t.description
@@ -29,8 +30,8 @@ export async function GET(request: NextRequest) {
     if ((process.env.SKIP_DB === 'true' || process.env.NODE_ENV === 'test') && rows.length === 0) {
       console.warn('⚠️ Injecting mock items in test mode');
       const mockItems = [
-        { id: 1, name: 'iPhone 15 Pro', price: 1199.00, quantity: 1, photo: '/images/iphone15pro.jpg', description: '' },
-        { id: 4, name: 'MacBook Air M3', price: 1299.00, quantity: 2, photo: '/images/mackbook.jpg', description: '' }
+        { id: 1, name: 'iPhone 15 Pro', price: 1199.00, quantity: 1, photo: '/images/iphone15pro.jpg', description: '', category: 'Smartphone' },
+        { id: 4, name: 'MacBook Air M3', price: 1299.00, quantity: 2, photo: '/images/mackbook.jpg', description: '', category: 'Laptop' }
       ];
       return NextResponse.json(mockItems, { status: 200 });
     }
@@ -50,10 +51,10 @@ export async function POST(req: NextRequest) {
       enName, enDescription,
       arName, arDescription,
       heName, heDescription,
-      price, quantity, photo
+      price, quantity, photo, category
     } = body;
 
-    if (!enName || !enDescription || !price || !photo) {
+    if (!enName || !enDescription || !price || !photo || !category) {
       return NextResponse.json({ error: `${t.missingFields}` }, { status: 400 });
     }
 
@@ -65,8 +66,8 @@ export async function POST(req: NextRequest) {
 
       // Insert into itemtable using English version
       const [result] = await conn.execute(
-        `INSERT INTO itemtable (name, price, description, quantity, photo) VALUES (?, ?, ?, ?, ?)`,
-        [enName, price, enDescription, quantity, photo]
+        `INSERT INTO itemtable (name, price, description, category, quantity, photo) VALUES (?, ?, ?, ?, ?, ?)`,
+        [enName, price, enDescription, category, quantity, photo]
       );
       const itemId = (result as ResultSetHeader).insertId;
 
