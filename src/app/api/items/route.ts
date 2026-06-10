@@ -2,6 +2,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import { getPool } from '@/utils/db';
 import { getTranslation } from '@/utils/i18nBackend';
+export const runtime = "nodejs";
 
 export async function GET(request: NextRequest) {
   const t = getTranslation(request)
@@ -48,13 +49,14 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const {
-      enName, enDescription,
+      name, description,
       arName, arDescription,
       heName, heDescription,
       price, quantity, photo, category
     } = body;
 
-    if (!enName || !enDescription || !price || !photo || !category) {
+    if (!name || !description || !price || !photo || !category) {
+      console.log('missing !! ', body)
       return NextResponse.json({ error: `${t.missingFields}` }, { status: 400 });
     }
 
@@ -67,13 +69,13 @@ export async function POST(req: NextRequest) {
       // Insert into itemtable using English version
       const [result] = await conn.execute(
         `INSERT INTO itemtable (name, price, description, category, quantity, photo) VALUES (?, ?, ?, ?, ?, ?)`,
-        [enName, price, enDescription, category, quantity, photo]
+        [name, price, description, category, quantity, photo]
       );
       const itemId = (result as ResultSetHeader).insertId;
 
       // Insert translations
       const translations = [
-        { lang: 'en', name: enName, description: enDescription },
+        { lang: 'en', name: name, description: description },
         { lang: 'ar', name: arName, description: arDescription },
         { lang: 'he', name: heName, description: heDescription }
       ];

@@ -3,6 +3,8 @@ import { getPool } from '@/utils/db';
 import en from '@/locales/en/translation.json'
 import ar from '@/locales/ar/translation.json'
 import he from '@/locales/he/translation.json'
+export const runtime = "nodejs";
+
 const translations = { en, ar, he}
 type LangCode = keyof typeof translations;
 const currentLang: LangCode = 'en'; // or 'ar', 'he'

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
 import { getTranslation } from '@/utils/i18nBackend';
 import { Item } from '@/types/item';
+export const runtime = "nodejs";
 
 export async function GET(req: NextRequest, context: { params: Promise<{ id: string }> }) {
   const { id } = await context.params;

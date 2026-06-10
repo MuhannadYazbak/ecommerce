@@ -8,6 +8,7 @@ const translations = { en, ar, he}
 type LangCode = keyof typeof translations;
 const currentLang: LangCode = 'en'; // or 'ar', 'he'
 const t = translations[currentLang]
+export const runtime = "nodejs";
 
 export async function DELETE(
   request: NextRequest,

@@ -6,6 +6,7 @@ import { UpdateItem } from '@/types/item';
 import { NextResponse } from 'next/server';
 import { getTranslation } from '@/utils/i18nBackend';
 
+export const runtime = "nodejs";
 
 export async function PUT(req: NextRequest) {
   const t = getTranslation(req)

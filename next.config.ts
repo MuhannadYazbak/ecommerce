@@ -11,6 +11,13 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
+module.exports = {
+  experimental: {
+    runtime: 'nodejs'
+  }
+};
+
+
 // module.exports = {
 //   i18n: {
 //     locales: ['en', 'ar', 'he'],

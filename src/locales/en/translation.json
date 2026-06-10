@@ -197,5 +197,13 @@
     "resetPasswordTitle": "TechMart | Reset Password",
     "resetPasswordDescription": "TechMat Secured password reset"
            
-  }
+  },
+  "All": "All",
+  "Smartphone": "Smart Phone",
+  "Laptop":"Laptop",
+  "Gaming Console": "Gaming Console",
+  "Smart Watch": "Smart Watch",
+  "Tablet": "Tablet",
+  "Category": "Category"
+
 }

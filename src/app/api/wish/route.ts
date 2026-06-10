@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPool } from '@/utils/db'
 import { getTranslation } from '@/utils/i18nBackend';
+export const runtime = "nodejs";
 
 
 export async function POST(req: NextRequest) {

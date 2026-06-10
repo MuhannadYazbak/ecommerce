@@ -4,6 +4,7 @@ import { User } from '@/types/user';
 import crypto from 'crypto';
 import { sendPasswordResetEmail } from '@/utils/mail';
 import { getTranslation } from '@/utils/i18nBackend';
+export const runtime = "nodejs";
 
 export async function POST(req: Request) {
     const t = getTranslation(req)

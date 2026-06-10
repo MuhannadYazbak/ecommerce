@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 import { getPool } from '@/utils/db';
 import { RowDataPacket } from 'mysql2'
 import { getTranslation } from '@/utils/i18nBackend';
+export const runtime = "nodejs";
 
 export async function GET(request: Request) {
   const t = getTranslation(request)

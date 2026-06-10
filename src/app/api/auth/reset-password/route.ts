@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import { getPool } from '@/utils/db';
 import crypto from 'crypto'
 import { getTranslation } from '@/utils/i18nBackend';
+export const runtime = "nodejs";
 
 export async function PUT(req: Request) {
     const t = getTranslation(req)

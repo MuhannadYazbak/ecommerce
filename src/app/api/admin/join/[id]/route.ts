@@ -5,6 +5,7 @@ import { getPool } from '@/utils/db';
 import { RowDataPacket } from 'mysql2';
 import { Order } from '@/types/order';
 import { getTranslation } from '@/utils/i18nBackend';
+export const runtime = "nodejs";
 
 
 export async function GET(request: NextRequest, context: {params: Promise<{id: string}>}): Promise<NextResponse> {

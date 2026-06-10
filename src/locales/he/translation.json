@@ -197,5 +197,12 @@
     "resetPasswordTitle": "טקמארט | שחזור סיסמה",
     "resetPasswordDescription": "טקמארט, שחזור סיסמה בצורה מאובטחת"
            
-  }
+  },
+  "All": "הכל",
+  "Smartphone": "סמארטפון",
+  "Laptop":"מחשב נייד",
+  "Gaming Console": "קונסולת משחקים",
+  "Smart Watch": "שעון חכם",
+  "Tablet": "טאבלט",
+  "Category": "קטגוריה"
 }

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: techmart-frontend   # better to rename from "nginx"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: techmart-frontend
+  template:
+    metadata:
+      labels:
+        app: techmart-frontend
+    spec:
+      containers:
+      - name: techmart-frontend
+        image: yazbakm/techmart-frontend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000   # Next.js listens on 3000, not 80
+        env:
+        - name: DB_HOST
+          value: mysql
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_USER
+          value: techmart
+        - name: DB_PASSWORD
+          value: mypassword
+        - name: DB_NAME
+          value: ecommerce
+        - name: JWT_SECRET
+          value: nextjsecommerce

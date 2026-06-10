@@ -10,6 +10,7 @@ import BackButton from '../ui/BackButton';
 import WishIcon from '../ui/WishIcon';
 import DetailsIcon from '../ui/DetailsIcon';
 import SoldOut from '../ui/SoldOut';
+import { headers } from 'next/headers';
 
 type SortOption = 'byItemID' | 'byPrice' | 'byPriceDesc' | 'byName' | 'byNameDesc';
 export default function LoggedInHome() {
@@ -23,6 +24,8 @@ export default function LoggedInHome() {
     const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage] = useState(6); // Adjust this number as needed
+    const [categories, setCategories] = useState<string[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState('All');
     const filteredAndSortedItems = [...items]
         .filter(item =>
             item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -70,6 +73,30 @@ export default function LoggedInHome() {
         };
         fetchItems();
     }, [i18n.language, sortOption]);
+
+    useEffect(() => {
+        fetch('/api/categories')
+            .then(res => res.json())
+            .then(data => setCategories(['All', ...data.map((row: any) => row.category)]));
+    }, []);
+
+    const handleCategoryChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selected = e.target.value;
+        setSelectedCategory(selected);
+
+        const endpoint = selected === 'All'
+            ? `/api/items?page=${currentPage}&limit=${itemsPerPage}`
+            : `/api/categories/${selected}`;
+
+        const res = await fetch(endpoint, {
+            headers: {
+                'Accept-Language': i18n.language || 'en'
+            }
+        });
+
+        const data = await res.json();
+        setItems(data); // update your item list
+    };
 
     const changeLanguage = (lng: 'en' | 'ar' | 'he') => {
         i18n.changeLanguage(lng);
@@ -130,11 +157,19 @@ export default function LoggedInHome() {
                         <option role='byName' value="byName">{t('nameAZ')}</option>
                         <option role='byNameDesc' value="byNameDesc">{t('nameZA')}</option>
                     </select>
+
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                         <svg className="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                             <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                         </svg>
                     </div>
+                </div>
+                <div className='relative w-full sm:w-48'>
+                    <select onChange={handleCategoryChange} value={selectedCategory}>
+                        {categories.map(cat => (
+                            <option key={cat} value={cat}>{cat === 'All' ? t('All') : t(cat)}</option>
+                        ))}
+                    </select>
                 </div>
                 <nav aria-label="User actions" className="flex gap-4" role='cart&wish'>
                     <button aria-label='Orders History' className='bg-yellow-500 hover:bg-yellow-600 text-white rounded ml-4' role='orders' onClick={() => router.push('/orders')}>{t('ordersHistory')}</button>

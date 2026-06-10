@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { getPool } from '@/utils/db';
 import { getTranslation } from '@/utils/i18nBackend';
+export const runtime = "nodejs";
 
 export async function POST(req: Request) {
     const t = getTranslation(req)

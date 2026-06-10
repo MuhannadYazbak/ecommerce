@@ -197,6 +197,14 @@
     "resetPasswordTitle": "تيك مارت | استرجاع كلمة السر",
     "resetPasswordDescription": "تيك مارت استرجاع كلمة السر بشكل آمن"
            
-  }
+  },
+  "All": "الكل",
+  "Smartphone": "هاتف ذكي",
+  "Laptop":"حاسوب نقال",
+  "Gaming Console": "قنصل ألعاب",
+  "Smart Watch": "ساعة ذكية",
+  "Tablet": "جهاز لوحي",
+  "Category": "تصنيف"
+
 
 }

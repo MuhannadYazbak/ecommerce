@@ -6,15 +6,16 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
 import BackButton from '@/components/ui/BackButton';
 import CreateNewItemIcon from '@/components/ui/CreateNewIcon';
-import { Card, Carousel } from 'antd';
+import { Card, Carousel, Select } from 'antd';
+import { TranslatedItem } from '@/types/translatedItem';
 
 export default function AddItem() {
   const { user } = useAuth();
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const [form, setForm] = useState({
-    enName: '',
-    enDescription: '',
+    name: '',
+    description: '',
     arName: '',
     arDescription: '',
     heName: '',
@@ -32,16 +33,16 @@ export default function AddItem() {
 
   const handleSubmit = async () => {
     const payload = {
-      enName: form.enName,
-      price: parseFloat(form.price),
-      enDescription: form.enDescription,
+      name: form.name,
+      price: Number(form.price),
+      description: form.description,
       quantity: Number(form.quantity),
       photo: form.photo,
       arName: form.arName,
       arDescription: form.arDescription,
       heName: form.heName,
       heDescription: form.heDescription,
-      categroty: form.category
+      category: form.category
     };
 
     try {
@@ -79,36 +80,31 @@ export default function AddItem() {
       </header>
       <section className='form flex-col border-solid h-full'>
         <h2 className='text-1l font-semibold'>{t('itemDetails')}</h2>
-        {/* <>
-          <Carousel arrows infinite={true} className='text-white leading-4 text-center bg-indigo-500 mb-5'>
 
-            <div>English
-              <Card>
-                <input role='enName' name="enName" placeholder={t('name')} value={form.enName} onChange={handleChange} className="mb-2 p-2 w-full border" required />
-                <textarea role='enDescription' name="enDescription" placeholder={t('description')} value={form.enDescription} onChange={handleChange} className="mb-2 p-2 w-full border" />
-              </Card>
-            </div>
-            <div>Arabic
-              <Card>
-                <input role='arName' name="arName" placeholder={t('name')} value={form.arName} onChange={handleChange} className="mb-2 p-2 w-full border" required />
-                <textarea role='arDescription' name="arDescription" placeholder={t('description')} value={form.arDescription} onChange={handleChange} className="mb-2 p-2 w-full border" />
-              </Card>
-            </div>
-            <div>Hebrew
-              <Card>
-                <input role='heName' name="heName" placeholder={t('name')} value={form.heName} onChange={handleChange} className="mb-2 p-2 w-full border" required />
-                <textarea role='heDescription' name="heDescription" placeholder={t('description')} value={form.heDescription} onChange={handleChange} className="mb-2 p-2 w-full border" />
-              </Card>
-            </div>
-          </Carousel>
-        </> */}
-        <input role='enName' name="enName" placeholder={t('name')} value={form.enName} onChange={handleChange} className="mb-2 p-2 w-full border" required />
-        <textarea role='enDescription' name="enDescription" placeholder={t('description')} value={form.enDescription} onChange={handleChange} className="mb-2 p-2 w-full border" />
-        <input role='category' name='category' placeholder={t('category')} value={form.category} onChange={handleChange} className='mb-2 p2- w-full border' />
-        <input role='arName' name="arName" placeholder={t('name')} value={form.arName} onChange={handleChange} className="mb-2 p-2 w-full border" required />
-        <textarea role='arDescription' name="arDescription" placeholder={t('description')} value={form.arDescription} onChange={handleChange} className="mb-2 p-2 w-full border" />
-        <input role='heName' name="heName" placeholder={t('name')} value={form.heName} onChange={handleChange} className="mb-2 p-2 w-full border" required />
-        <textarea role='heDescription' name="heDescription" placeholder={t('description')} value={form.heDescription} onChange={handleChange} className="mb-2 p-2 w-full border" />
+        <Carousel arrows infinite className="text-white leading-4 text-center bg-indigo-500 mb-5">
+          <div className="carousel-slide">
+            <h3>🇺🇸 English</h3>
+            <Card>
+              <input name="name" placeholder={t('name')} value={form.name} onChange={handleChange} className="mb-2 p-2 w-full border" required />
+              <textarea name="description" placeholder={t('description')} value={form.description} onChange={handleChange} className="mb-2 p-2 w-full border" />
+            </Card>
+          </div>
+          <div className="carousel-slide">
+            <h3>🇸🇦 Arabic</h3>
+            <Card>
+              <input name="arName" placeholder={t('name')} value={form.arName} onChange={handleChange} className="mb-2 p-2 w-full border" required />
+              <textarea name="arDescription" placeholder={t('description')} value={form.arDescription} onChange={handleChange} className="mb-2 p-2 w-full border" />
+            </Card>
+          </div>
+          <div className="carousel-slide">
+            <h3>🇮🇱 Hebrew</h3>
+            <Card>
+              <input name="heName" placeholder={t('name')} value={form.heName} onChange={handleChange} className="mb-2 p-2 w-full border" required />
+              <textarea name="heDescription" placeholder={t('description')} value={form.heDescription} onChange={handleChange} className="mb-2 p-2 w-full border" />
+            </Card>
+          </div>
+        </Carousel>
+        <input role='category' name='category' placeholder={t('Category')} value={form.category} onChange={handleChange} type='text' className='mb-2 p-2 w-full border' required />
         <input role='price' name="price" placeholder={t('price')} value={form.price} onChange={handleChange} type="number" className="mb-2 p-2 w-full border" required />
         <input role='quantity' name="quantity" placeholder={t('quantity')} value={form.quantity} onChange={handleChange} className="mb-2 p-2 w-full border" required />
         <input role='photo' name="photo" placeholder={t('photoURL')} value={form.photo} onChange={handleChange} className="mb-2 p-2 w-full border" />
