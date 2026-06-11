@@ -13,7 +13,7 @@ export default nextConfig;
 
 module.exports = {
   experimental: {
-    runtime: 'nodejs'
+   
   }
 };
 
