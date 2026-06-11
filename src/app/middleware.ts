@@ -47,9 +47,17 @@ export function middleware(req: NextRequest) {
 }
 
 // 3. Ensure the middleware ignores static assets, images, and API routes
+// Ensure the middleware completely ignores static assets, frameworks, and chunks
 export const config = {
   matcher: [
-    // Skip all internal paths (_next), static files, and API endpoints
-    '/((?!api|_next/static|_next/image|favicon.ico|.*\\..*$).*)',
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - images (your custom public/images folder)
+     * - favicon.ico (favicon file)
+     */
+    '/((?!api|_next/static|_next/image|images|favicon.ico).*)',
   ],
 };
