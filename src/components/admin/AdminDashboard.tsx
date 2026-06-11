@@ -12,7 +12,7 @@ import DetailsIcon from '@/components/ui/DetailsIcon';
 import BackButton from '@/components/ui/BackButton';
 import SoldOut from '../ui/SoldOut';
 import { TranslatedItem } from '@/types/translatedItem';
-import { headers } from 'next/headers';
+//import { headers } from 'next/headers';
 
 export default function AdminDashboard() {
   const { user } = useAuth();

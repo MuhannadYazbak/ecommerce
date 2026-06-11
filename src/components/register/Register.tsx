@@ -4,10 +4,10 @@ import { Form, Input, Button } from 'antd';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { SlimUser, TranslatedUser } from '@/types/user';
+import { TranslatedUser } from '@/types/user';
 import BackButton from '../ui/BackButton';
 import { useTranslation } from 'react-i18next';
-import { headers } from 'next/headers';
+//import { headers } from 'next/headers';
 
 export default function Register() {
   const router = useRouter();

@@ -10,7 +10,7 @@ import BackButton from '../ui/BackButton';
 import WishIcon from '../ui/WishIcon';
 import DetailsIcon from '../ui/DetailsIcon';
 import SoldOut from '../ui/SoldOut';
-import { headers } from 'next/headers';
+//import { headers } from 'next/headers';
 
 type SortOption = 'byItemID' | 'byPrice' | 'byPriceDesc' | 'byName' | 'byNameDesc';
 export default function LoggedInHome() {
