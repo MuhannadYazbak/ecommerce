@@ -1,0 +1,18 @@
+# Ignore Automation Testing Frameworks
+tests/
+playwright.config.ts
+allure-report/
+allure-results/
+test-results/
+test-screenshots/
+coverage-report-*.json
+auth*.json
+
+# Ignore Local Dev Engines & Backups
+db/
+mockoon/
+mockoon.json
+ecommerce.sql
+Dockerfile
+docker-compose.yml
+*.yaml
