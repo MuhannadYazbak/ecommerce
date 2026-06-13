@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.54.1",
-    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/postcss": "^4.3.1",
     "@types/bcrypt": "^5.0.2",
     "@types/i18n": "^0.13.12",
     "@types/jsonwebtoken": "^9.0.9",

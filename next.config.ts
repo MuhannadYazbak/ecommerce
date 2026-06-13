@@ -13,7 +13,9 @@ export default nextConfig;
 
 module.exports = {
   experimental: {
-   
+   turbopack: {
+      root: __dirname, // This tells Next.js: "Stop looking up! This folder is the real root."
+    },
   }
 };
 

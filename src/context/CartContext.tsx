@@ -4,7 +4,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { CartItem } from '@/types/cartItem';
 import { CartContextType } from '@/types/cartContextType';
 import { useAuth } from '@/context/AuthContext';
-import { useParams } from 'next/navigation'; // 1. Import useParams
+import { useParams } from 'next/navigation';
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -15,59 +15,70 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const activeUser = user || guest;
   const [cartReady, setCartReady] = useState(false);
 
-  // 2. Extract the current active locale path parameters
   const params = useParams();
   const locale = (params?.locale as string) || 'en';
+
+  // Reset cartReady ONLY when changing authentication states, preventing flutter on language switch
+  useEffect(() => {
+    setCartReady(false);
+  }, [user, guest]);
 
   useEffect(() => {
     const hydrateCart = async () => {
       if (user) {
         try {
-          // 3. Pass the locale as a header so the backend API knows which translation to query
           const res = await fetch(`/api/cart/${activeUser?.id}`, {
-            headers: {
-              'Accept-Language': locale,
-            },
+            headers: { 'Accept-Language': locale },
           });
           const data = await res.json();
-          setCartItems(
-            data.map((item: { price: any }) => ({
-              ...item,
-              price: Number(item.price),
-            }))
-          );
-          console.log(`🛒 Hydrated cart (${locale}) from backend:`, data);
+
+          // 💡 Safety Guardrail: Confirm payload is an array before processing maps
+          if (res.ok && Array.isArray(data)) {
+            setCartItems(
+              data.map((item: any) => ({
+                ...item,
+                price: Number(item.price),
+              }))
+            );
+            console.log(`🛒 Hydrated cart (${locale}) from backend:`, data);
+          } else {
+            console.error('❌ Expected array payload from database backend, received:', data);
+          }
         } catch (err) {
           console.error('❌ Failed to fetch cart from backend:', err);
         } finally {
           setCartReady(true);
         }
       } else if (guest) {
-        // If it's a guest cart, we look up localStorage
         const stored = localStorage.getItem('guestCart');
         if (stored) {
           try {
-            const parsed = JSON.parse(stored);
-            setCartItems(parsed);
-            console.log('🛒 Hydrated cart from localStorage:', parsed);
+            setCartItems(JSON.parse(stored));
           } catch {
             console.error('❌ Failed to parse guestCart');
           }
+        } else {
+          setCartItems([]);
         }
+        setCartReady(true);
+      } else {
+        setCartItems([]);
         setCartReady(true);
       }
     };
 
     hydrateCart();
-    // 4. Added 'locale' here! Whenever the language changes, re-run this hydration.
-  }, [user, guest, locale]); 
+  }, [user, guest, locale, activeUser?.id]);
 
+  // Sync to local storage only after active hydration sequence resolves safely
   useEffect(() => {
+    if (!cartReady) return;
+
     localStorage.setItem('cart', JSON.stringify(cartItems));
     if (guest) {
       localStorage.setItem('guestCart', JSON.stringify(cartItems));
     }
-  }, [cartItems, guest]);
+  }, [cartItems, guest, cartReady]);
 
   const addToCart = (item: CartItem) => {
     setCartItems(prev => {

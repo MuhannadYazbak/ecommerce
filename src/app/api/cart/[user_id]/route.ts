@@ -41,13 +41,15 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ u
 }
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ user_id: string }> }) {
-  // 1. Get the raw header string
+  // 1. Read the raw header string safely
   const rawLangHeader = req.headers.get('Accept-Language') || 'en';
   
-  // 2. Clean it up! Split by commas/hyphens and isolate the primary code (e.g., "he-IL" -> "he")
-  const parsedLang = rawLangHeader.split(',')[0].split('-')[0].toLowerCase();
+  // 2. Safe parsing: extract just the first two characters if it contains commas/hyphens
+  let parsedLang = rawLangHeader.trim().toLowerCase();
+  if (parsedLang.includes(',')) parsedLang = parsedLang.split(',')[0];
+  if (parsedLang.includes('-')) parsedLang = parsedLang.split('-')[0];
   
-  // 3. Match against your valid application parameters
+  // 3. Fallback check
   const currentLang = (['en', 'ar', 'he'].includes(parsedLang) ? parsedLang : 'en') as LangCode;
   const t = translations[currentLang];
 
@@ -62,7 +64,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ user
     
     const query = `
       SELECT 
-        ci.id,
         ci.user_id,
         ci.item_id,
         ci.quantity,
@@ -73,11 +74,12 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ user
       WHERE ci.user_id = ? AND it.language_code = ?
     `;
 
-    // 4. Send the sanitized code ("he", "ar", or "en") down to MySQL
     const [rows] = await pool.query(query, [userId, currentLang]);
     return NextResponse.json(rows);
   } catch (err) {
     console.error('💥 Fetch cart error:', err);
-    return NextResponse.json({ error: `${t.failedToFetchCart}` }, { status: 500 });
+    // Use a safe fallback string just in case 't' is undefined due to a malformed header
+    const errorMessage = t?.failedToFetchCart || 'Failed to fetch cart';
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
