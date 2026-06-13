@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* If you have image domains or rewrites, they go here */
+  // Forces all compiled chunks and files to fetch cleanly from the root directory asset path
+  assetPrefix: process.env.NODE_ENV === 'production' ? 'https://ecommerce-t7tm.vercel.app' : '',
 };
 
 export default nextConfig;
