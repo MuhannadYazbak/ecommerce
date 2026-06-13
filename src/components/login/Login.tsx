@@ -1,7 +1,7 @@
 'use client';
 
 import { Form, Button, Input } from 'antd';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useState } from 'react';
 import { User } from '@/types/user';
 import { useAuth } from '@/context/AuthContext';
@@ -12,6 +12,8 @@ type LoginUser = Pick<User, 'email' | 'password'>;
 export default function Login() {
     const { login } = useAuth();
     const router = useRouter();
+    const params = useParams();
+    const locale = params?.locale || 'en';
     const { t, i18n } = useTranslation();
     const [user, setUser] = useState<LoginUser>({
         email: '',
@@ -20,7 +22,7 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
 
     function routeAfterLogin(role: string) {
-        return role === 'admin' ? '/admin/items' : '/home';
+        return role === 'admin' ? `/${locale}/admin/items` : `/${locale}/home`;
     }
 
 

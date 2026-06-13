@@ -13,6 +13,8 @@ export default function ResetPassword({ tokenId } : Props) {
         confirmPassword: '',
     })
     const router = useRouter()
+    const params = useParams();
+    const locale = params?.locale || 'en';
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
@@ -39,7 +41,7 @@ export default function ResetPassword({ tokenId } : Props) {
 
             if (res.ok) {
                 alert(data.message);
-                router.push('/login')
+                router.push(`/${locale}/login`)
             } else {
                 alert(data.error || 'Something went wrong');
             }

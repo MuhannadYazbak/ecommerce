@@ -1,7 +1,7 @@
 'use client';
 
 import { Form, Input, Button } from 'antd';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { TranslatedUser } from '@/types/user';
@@ -11,6 +11,8 @@ import { useTranslation } from 'react-i18next';
 
 export default function Register() {
   const router = useRouter();
+  const params = useParams();
+  const locale = params?.locale || 'en';
   const { login } = useAuth();
   const { t, i18n } = useTranslation()
   const [loading, setLoading] = useState(false);
@@ -39,7 +41,7 @@ export default function Register() {
     if (res.ok) {
       console.log('Registering with:', values);
       login({ id: data.id, fullname: data.name, role: data.role, dateOfBirth: data.dateOfBirth }, data.token);
-      router.push('/home');
+      router.push(`/${locale}/home`);
     } else {
       setErrorMsg(data.error || 'Something went wrong');
     }

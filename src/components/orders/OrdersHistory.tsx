@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { Order, OrderItem } from '@/types/order';
 import BackButton from '@/components/ui/BackButton';
@@ -10,6 +10,8 @@ import BackButton from '@/components/ui/BackButton';
 export default function OrderHistory() {
   const { user, ready } = useAuth();
   const router = useRouter();
+  const params = useParams();
+  const locale = params?.locale || 'en';
   const { t, i18n } = useTranslation();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,7 +55,7 @@ export default function OrderHistory() {
         </header>
         <button
           className="text-blue-500 hover:underline"
-          onClick={() => router.push('/login')}
+          onClick={() => router.push(`/${locale}/login`)}
           aria-label="Navigate to login"
         >
           {t('login')}

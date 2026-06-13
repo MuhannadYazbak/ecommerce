@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +13,8 @@ export default function Checkout() {
   const { clearCart, cartTotal, cartItems } = useCart();
   const { user } = useAuth();
   const router = useRouter();
+  const params = useParams();
+  const locale = params?.locale || 'en';
   const { t, i18n } = useTranslation();
   const token = process.env.NEXT_PUBLIC_LOCATIONIQ_KEY;
   //const searchParams = new URLSearchParams(window.location.search);
@@ -136,7 +138,7 @@ export default function Checkout() {
       // 5️⃣ Final success flow
       alert('Payment successful! 🎉');
       clearCart();
-      router.push('/home');
+      router.push(`/${locale}/home`);
     } catch (err) {
       console.error('❌ Checkout error:', err);
       alert('Something went wrong. Please try again.');

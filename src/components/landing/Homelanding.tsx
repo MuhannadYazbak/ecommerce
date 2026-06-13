@@ -2,19 +2,21 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { OrderItem } from "@/types/order";
 import { useAuth } from "@/context/AuthContext";
 import { SlimUser } from "@/types/user";
 import { useTranslation } from "react-i18next";
 import '../../i18n'
 import { Trans } from 'react-i18next';
-import Link from 'next/link';
+import Link from '@/components/ui/LocalizedLink';
 import { TranslatedItem } from "@/types/translatedItem";
 
 
 
 export default function HomeLanding() {
+  const params = useParams();
+  const locale = params?.locale || 'en';
   const router = useRouter();
   const { t, i18n } = useTranslation();
   const [top5, setTop5] = useState<TranslatedItem[]>([]);

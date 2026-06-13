@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
 import BackButton from '@/components/ui/BackButton';
@@ -12,6 +12,8 @@ import { TranslatedItem } from '@/types/translatedItem';
 export default function AddItem() {
   const { user } = useAuth();
   const router = useRouter();
+  const params = useParams();
+  const locale = params?.locale || 'en';
   const { t, i18n } = useTranslation();
   const [form, setForm] = useState({
     name: '',
@@ -55,7 +57,7 @@ export default function AddItem() {
       if (res.ok) {
         console.log('Form payload:', form);
         console.log('✅ Item added successfully');
-        router.push('/admin/items');
+        router.push(`/${locale}/admin/items`);
       } else {
         const err = await res.json();
         alert(`❌ Failed: ${err.error}`);

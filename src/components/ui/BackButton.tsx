@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next'
 
 type Props = {
@@ -10,6 +10,8 @@ type Props = {
 
 export default function BackButton({ label = "Back", className = "" }: Props) {
   const router = useRouter();
+  const params = useParams();
+  const locale = params?.locale || 'en';
   const { t, i18n } = useTranslation()
 
   return (

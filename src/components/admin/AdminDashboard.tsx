@@ -17,6 +17,8 @@ import { TranslatedItem } from '@/types/translatedItem';
 export default function AdminDashboard() {
   const { user } = useAuth();
   const router = useRouter();
+  const params = useParams();
+  const locale = params?.locale || 'en';
   const { t, i18n } = useTranslation()
   const [items, setItems] = useState<Item[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -57,7 +59,7 @@ export default function AdminDashboard() {
     await fetch(`/api/items/${id}`, { headers: {
       'Accept-Language': i18n.language.split('-')[0] || 'en'
     }})
-    router.push(`/admin/items/${id}`);
+    router.push(`/${locale}/admin/items/${id}`);
     }catch(err){
       console.error('failed to fetch item ', err)
     }
@@ -86,7 +88,7 @@ export default function AdminDashboard() {
   };
   const ItemUpdate = async (id: number) => {
     try {
-      await fetch(`/api/items/${id}`, {
+      await fetch(`/${locale}/api/items/${id}`, {
         method: 'PUT'
       });
       console.log('Updating item');
@@ -106,11 +108,11 @@ export default function AdminDashboard() {
         <h1 className="text-4xl font-bold text-indigo-500">{t('adminDashboard')}</h1>
       </header>
       <nav className='flex flex-row space-x-2'>
-        <button role='addNewItem' className='mb-4 ml-4 bg-green-600 hover:bg-green-800 text-white rounded' onClick={() => router.push('/admin/items/new')}>{t('addNewItem')}</button>
-        <button role='ordersList' className='mb-4 ml-4 bg-purple-300 hover:bg-purple-400 text-white rounded' onClick={() => router.push('/admin/orders-list')}>{t('ordersList')}</button>
-        <button role='barChart' className='mb-4 ml-4 bg-orange-400 hover:bg-orange-500 text-black rounded' onClick={() => router.push('/admin/chart')}>{t('barChart')}</button>
-        <button role='pieChart' className='mb-4 ml-4 bg-pink-400 hover:bg-pink-500 text-white rounded' onClick={() => router.push('/admin/pieChart')}>{t('pieChart')}</button>
-        <button role='byFullName' className='mb-4 ml-4 bg-indigo-400 hover:bg-indigo-500 text-white rounded' onClick={() => router.push('/admin/byFullname')}>{t('byFullName')}</button>
+        <button role='addNewItem' className='mb-4 ml-4 bg-green-600 hover:bg-green-800 text-white rounded' onClick={() => router.push(`/${locale}/admin/items/new`)}>{t('addNewItem')}</button>
+        <button role='ordersList' className='mb-4 ml-4 bg-purple-300 hover:bg-purple-400 text-white rounded' onClick={() => router.push(`/${locale}/admin/orders-list`)}>{t('ordersList')}</button>
+        <button role='barChart' className='mb-4 ml-4 bg-orange-400 hover:bg-orange-500 text-black rounded' onClick={() => router.push(`/${locale}/admin/chart`)}>{t('barChart')}</button>
+        <button role='pieChart' className='mb-4 ml-4 bg-pink-400 hover:bg-pink-500 text-white rounded' onClick={() => router.push(`/${locale}/admin/pieChart`)}>{t('pieChart')}</button>
+        <button role='byFullName' className='mb-4 ml-4 bg-indigo-400 hover:bg-indigo-500 text-white rounded' onClick={() => router.push(`/${locale}/admin/byFullname`)}>{t('byFullName')}</button>
       </nav>
       <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {currentItems.map((item, index) => (

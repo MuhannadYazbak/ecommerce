@@ -1,6 +1,6 @@
 'use client';
 import { SetStateAction, useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { Item } from '@/types/item';
@@ -15,6 +15,8 @@ import SoldOut from '../ui/SoldOut';
 type SortOption = 'byItemID' | 'byPrice' | 'byPriceDesc' | 'byName' | 'byNameDesc';
 export default function LoggedInHome() {
     const router = useRouter();
+    const params = useParams();
+    const locale = params?.locale || 'en';
     const { user, guest, ready } = useAuth();
     const { t, i18n } = useTranslation();
     const [items, setItems] = useState<Item[]>([]);
@@ -56,7 +58,7 @@ export default function LoggedInHome() {
 
     useEffect(() => {
         if (ready && !user && !guest) {
-            router.push('/');
+            router.push(`/${locale}/`);
         }
     }, [ready, user]);
 
@@ -104,7 +106,7 @@ export default function LoggedInHome() {
 
     if (!ready) return null; // Wait until auth check is ready
     const handleViewItem = (id: number) => {
-        router.push(`/items/${id}`);
+        router.push(`/${locale}/items/${id}`);
     };
     const addWish = async (item: any) => {
         try {
@@ -172,8 +174,8 @@ export default function LoggedInHome() {
                     </select>
                 </div>
                 <nav aria-label="User actions" className="flex gap-4" role='cart&wish'>
-                    <button aria-label='Orders History' className='bg-yellow-500 hover:bg-yellow-600 text-white rounded ml-4' role='orders' onClick={() => router.push('/orders')}>{t('ordersHistory')}</button>
-                    <button aria-label='WishList' className='bg-green-300 hover:bg-green-500 text-black rounded ml-4' role='wishlist' onClick={() => router.push('/wish')}>{t('wishlist')}</button>
+                    <button aria-label='Orders History' className='bg-yellow-500 hover:bg-yellow-600 text-white rounded ml-4' role='orders' onClick={() => router.push(`/${locale}/orders`)}>{t('ordersHistory')}</button>
+                    <button aria-label='WishList' className='bg-green-300 hover:bg-green-500 text-black rounded ml-4' role='wishlist' onClick={() => router.push(`/${locale}/wish`)}>{t('wishlist')}</button>
                 </nav>
             </section>
             {currentItems.length > 0 ? (

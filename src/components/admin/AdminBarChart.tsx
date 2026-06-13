@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import type { ChartData } from '@/components/BarChart'
 import { useAuth } from '@/context/AuthContext';
@@ -14,6 +14,8 @@ export default function AdminBarChart() {
   const [data, setData] = useState<ChartData[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const params = useParams();
+  const locale = params?.locale || 'en';
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
 

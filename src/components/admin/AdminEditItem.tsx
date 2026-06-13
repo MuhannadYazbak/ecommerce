@@ -10,6 +10,8 @@ import { TranslatedItem } from '@/types/translatedItem'
 export default function AdminEditItem() {
   const { user } = useAuth()
   const router = useRouter()
+  const params = useParams();
+  const locale = params?.locale || 'en';
   const { id } = useParams()
   const { t, i18n } = useTranslation()
   const [loading, setLoading] = useState(true)
@@ -98,7 +100,7 @@ export default function AdminEditItem() {
         throw new Error(body.error || 'Update failed')
         
       }
-      router.push('/admin/items')
+      router.push(`/${locale}/admin/items`)
     } catch (err: any) {
       console.error(err)
       alert(err.message)

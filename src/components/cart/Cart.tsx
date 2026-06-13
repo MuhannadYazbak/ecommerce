@@ -2,7 +2,7 @@
 
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import BackButton from '../ui/BackButton';
@@ -13,6 +13,8 @@ export default function Cart() {
     const { user, guest } = useAuth();
     const activeUser = user || guest
     const router = useRouter();
+    const params = useParams();
+    const locale = params?.locale || 'en';
     const { t, i18n } = useTranslation();
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
     const selectedCartItems = cartItems.filter(item => selectedItems.includes(item.item_id));
@@ -40,7 +42,7 @@ export default function Cart() {
                 return;
             }
 
-            router.push(`/checkout?selected=${selectedItems.join(',')}`);
+            router.push(`/${locale}/checkout?selected=${selectedItems.join(',')}`);
         } catch (error) {
             console.error('Checkout error:', error);
         }
