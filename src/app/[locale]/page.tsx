@@ -1,26 +1,17 @@
-// src/app/[locale]/page.tsx
 import HomeLanding from '@/components/landing/Homelanding';
-import { headers } from 'next/headers';
 import { getTranslationByLang } from '@/utils/i18nBackend';
 
-
+// 💡 Force the page to render dynamically on the server so it can fetch the fresh Aiven DB data
 export const dynamic = 'force-dynamic';
 
-// 1. Inform Next.js which paths are statically safe to generate
-export function generateStaticParams() {
-  return [
-    { locale: 'en' },
-    { locale: 'he' },
-    { locale: 'ar' }
-  ];
-}
+type Props = {
+  params: Promise<{ locale: string }>;
+};
 
-export async function generateMetadata() {
-  const requestHeaders = await headers();
-  const acceptLang = requestHeaders.get('accept-language') || 'en';
-  console.log('acceptLang: ', acceptLang); 
-  const lang = acceptLang.split(',')[0].split('-')[0];
-  const t = getTranslationByLang(lang);
+// 💡 Cleaned Metadata Engine: Read locale directly from params props instead of request headers!
+export async function generateMetadata({ params }: Props) {
+  const { locale } = await params;
+  const t = getTranslationByLang(locale);
   
   return {
     title: t.metadata?.landingTitle || "TechMart",
@@ -29,25 +20,20 @@ export async function generateMetadata() {
       'TechMart', 'ecommerce', 'personalized shopping', 'تيك مارت', 'تسوق الكتروني', 'تجربة تسوق ملائمة شخصيا', 'טקמארט', 'אתר קניות', 'חווית קניות מותאמת אישית'
     ].join(', '),
     robots: { index: true, follow: true },
-    openGraph : {
+    openGraph: {
       title: t.metadata?.landingTitle || "TechMart",
       description: t.metadata?.landingDescription || "Your one-stop shop for gadgets!",
-      url: "https://techmart.com/",
+      url: `https://ecommerce-t7tm.vercel.app/${locale}`,
       siteName: 'TechMart'
     },
-    alternates: { canonical: "https://techmart.com/" }
+    alternates: { canonical: `https://ecommerce-t7tm.vercel.app/${locale}` }
   };
 }
-
-// 2. Accept params as a Promise (Mandatory in Next.js 16)
-type Props = {
-  params: Promise<{ locale: string }>;
-};
 
 export default async function HomePage({ params }: Props) {
   // Unwrapping the locale parameter safely from the router promise
   const { locale } = await params;
-  console.log("Current routed locale target:", locale);
+  console.log("🚀 Server component successfully routed to locale target:", locale);
 
   return <HomeLanding />;
 }

@@ -23,7 +23,6 @@ export const metadata: Metadata = {
   description: "Your one-stop shop for gadgets!",
 };
 
-// Update the type signature to accept your dynamic params promise
 export default async function LocaleLayout({
   children,
   params,
@@ -36,20 +35,24 @@ export default async function LocaleLayout({
   const direction = locale === 'ar' || locale === 'he' ? 'rtl' : 'ltr';
 
   return (
-    <html lang={locale} dir={direction}>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <I18nWrapper>
-          <AuthProvider>
-            <CartProvider>
-              <Navbar />
-              {children}
-              <div className="fixed bottom-4 right-4 overflow-hidden z-50 shadow-lg bg-white border rounded-lg">
-                <ChatbotUI />
-              </div>
-            </CartProvider>
-          </AuthProvider>
-        </I18nWrapper>
-      </body>
-    </html>
+    // 💡 REMOVED <html> AND <body> TAGS. 
+    // Replaced with a clean semantic wrapper that carries your local settings, fonts, and dir direction.
+    <div 
+      lang={locale} 
+      dir={direction} 
+      className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen w-full`}
+    >
+      <I18nWrapper>
+        <AuthProvider>
+          <CartProvider>
+            <Navbar />
+            <main>{children}</main>
+            <div className="fixed bottom-4 right-4 overflow-hidden z-50 shadow-lg bg-white border rounded-lg">
+              <ChatbotUI />
+            </div>
+          </CartProvider>
+        </AuthProvider>
+      </I18nWrapper>
+    </div>
   );
 }
