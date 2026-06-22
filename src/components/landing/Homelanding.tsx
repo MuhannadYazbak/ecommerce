@@ -75,7 +75,7 @@ export default function HomeLanding() {
             <article
               key={`${item.item_id}-${index}`}
               className="border rounded-lg shadow-md p-4 bg-white hover:shadow-xl transition cursor-pointer"
-              onClick={() => router.push(`/product/${item.item_id}`)}
+              onClick={() => router.push(`/${locale}/product/${item.item_id}`)}
               role="button"
               tabIndex={0}
               aria-label={`View details for ${item.name}`}

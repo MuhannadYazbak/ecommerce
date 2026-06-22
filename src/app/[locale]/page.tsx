@@ -3,6 +3,7 @@ import HomeLanding from '@/components/landing/Homelanding';
 import { headers } from 'next/headers';
 import { getTranslationByLang } from '@/utils/i18nBackend';
 
+
 export const dynamic = 'force-dynamic';
 
 // 1. Inform Next.js which paths are statically safe to generate

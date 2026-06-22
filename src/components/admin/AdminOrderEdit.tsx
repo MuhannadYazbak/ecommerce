@@ -9,6 +9,8 @@ import { UpdateItem } from '@/types/item';
 
 export default function OrderEdit() {
     const router = useRouter();
+    const params = useParams();
+    const locale = params?.locale || 'en';
     const { t, i18n } = useTranslation();
     const [order, setOrder] = useState<Order>();
     const [loading, setLoading] = useState(true);

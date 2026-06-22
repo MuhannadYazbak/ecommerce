@@ -1,13 +1,25 @@
 import { ResetPasswordToken } from '@/types/resetPasswordToken';
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// 1. Remove the global instantiation and use a lazy getter function instead
+let resendInstance: Resend | null = null;
+
+const getResend = (): Resend => {
+  if (!resendInstance) {
+    // Provide a dummy key fallback strictly to appease the builder if the env var is blank during compilation
+    const apiKey = process.env.RESEND_API_KEY || "re_dummy_key_for_build_passing";
+    resendInstance = new Resend(apiKey);
+  }
+  return resendInstance;
+};
 
 export const sendCheckoutNotification = async (checkoutDetails: any) => {
   if (!Array.isArray(checkoutDetails.items_json)) {
     console.error("❌ items_json is not an array:", checkoutDetails.items_json);
     return;
   }
+
+  const resend = getResend(); // Initialize safely on runtime call
 
   const orderDate = new Date(checkoutDetails.created_at).toLocaleDateString('en-US', {
                         year: 'numeric',
@@ -34,6 +46,8 @@ export const sendCheckoutNotification = async (checkoutDetails: any) => {
 }
 
 export const sendOrderShippedtNotification = async (checkoutDetails: any) => {
+  const resend = getResend(); // Initialize safely on runtime call
+
   const orderDate = new Date(checkoutDetails.created_at).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'long',
@@ -67,6 +81,8 @@ export const sendOrderShippedtNotification = async (checkoutDetails: any) => {
 
 export async function sendPasswordResetEmail(email: string, name: string, link: string) {
   try {
+    const resend = getResend(); // Initialize safely on runtime call
+
     const response = await resend.emails.send({
       from: 'Tech-Mart <onboarding@resend.dev>',
       to: ['yazbakm@gmail.com'],
