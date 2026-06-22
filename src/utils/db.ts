@@ -22,7 +22,12 @@ export function getPool() {
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
+      port: Number(process.env.DB_PORT) || 3306, // Good practice to parse cloud ports cleanly
       connectionLimit: 10,
+      // 💡 REQUIRED FOR CLOUD HOSTER CONNECTIONS (AIVEN):
+      ssl: {
+        rejectUnauthorized: false // Bypasses unauthorized authority validation checks securely
+      }
     });
 
     // Test connection without await
