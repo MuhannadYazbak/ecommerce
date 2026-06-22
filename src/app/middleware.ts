@@ -6,10 +6,9 @@ const defaultLocale = 'en';
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // 💡 HARD GUARD: Force absolute bypass for any Next.js core framework files,
-  // chunks, static assets, or files with extensions before checking locales.
+  // 1. HARD BLOCKER: If it's a framework asset, api route, or static public file, skip IMMEDIATELY.
   if (
-    pathname.startsWith('/_next') || 
+    pathname.startsWith('/_next') ||
     pathname.startsWith('/api') ||
     pathname.startsWith('/_vercel') ||
     pathname.includes('.')
@@ -33,10 +32,12 @@ export function middleware(req: NextRequest) {
       }
     }
 
-    const url = req.nextUrl.clone();
-    url.pathname = `/${lang}${pathname === '/' ? '' : pathname}`;
+    // 💡 THE CRITICAL FIX: Use NextResponse.rewrite instead of NextResponse.redirect
+    // This tells Vercel's edge network to route the page internally to the local folder 
+    // without executing a hard browser-level URL redirect that breaks chunk paths.
+    const url = new URL(`/${lang}${pathname === '/' ? '' : pathname}`, req.url);
     
-    const response = NextResponse.redirect(url);
+    const response = NextResponse.rewrite(url);
     response.cookies.set('lang', lang);
     return response;
   }
@@ -44,6 +45,7 @@ export function middleware(req: NextRequest) {
   return NextResponse.next();
 }
 
+// 3. Strict Matcher to catch clean routes only
 export const config = {
   matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
 };
