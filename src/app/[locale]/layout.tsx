@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   description: "Your one-stop shop for gadgets!",
 };
 
+// Inside your src/app/[locale]/layout.tsx
 export default async function LocaleLayout({
   children,
   params,
@@ -30,19 +31,17 @@ export default async function LocaleLayout({
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
-  // Unpack the active language directly from the folder routing tree
   const { locale } = await params;
   const direction = locale === 'ar' || locale === 'he' ? 'rtl' : 'ltr';
 
   return (
-    // 💡 REMOVED <html> AND <body> TAGS. 
-    // Replaced with a clean semantic wrapper that carries your local settings, fonts, and dir direction.
     <div 
       lang={locale} 
       dir={direction} 
       className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen w-full`}
     >
-      <I18nWrapper>
+      {/* 💡 Pass the live locale into the wrapper directly here */}
+      <I18nWrapper locale={locale}>
         <AuthProvider>
           <CartProvider>
             <Navbar />

@@ -1,7 +1,8 @@
 // src/app/page.tsx
 import { redirect } from 'next/navigation';
 
+export const dynamic = 'force-dynamic'; // 💡 Prevents static pre-rendering glitches!
+
 export default function RootPageFallback() {
-  // Gracefully fall back to the default locale path
-  redirect('/en');
+  redirect('/en'); // Default landing locale
 }

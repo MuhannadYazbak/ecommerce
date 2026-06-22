@@ -1,9 +1,9 @@
 // src/app/layout.tsx
-import './globals.css'; // 🔥 Move your Tailwind global styles import here!
+import './globals.css';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html>
       <body>
         {children}
       </body>

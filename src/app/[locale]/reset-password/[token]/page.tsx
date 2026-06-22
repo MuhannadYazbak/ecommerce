@@ -5,6 +5,8 @@ import { getTranslationByLang } from '@/utils/i18nBackend';
 
 type Params = { params: Promise<{ tokenId: string }> };
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const requestHeaders = await headers()
     const acceptLang = requestHeaders.get('accept-language') || 'en'

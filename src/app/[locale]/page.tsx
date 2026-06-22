@@ -8,10 +8,10 @@ type Props = {
   params: Promise<{ locale: string }>;
 };
 
-// 💡 Cleaned Metadata Engine: Read locale directly from params props instead of request headers!
-export async function generateMetadata({ params }: Props) {
-  const { locale } = await params;
-  const t = getTranslationByLang(locale);
+// Replace your generateMetadata inside src/app/[locale]/page.tsx completely with this:
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params; // Read the actual route folder parameter cleanly!
+  const t = getTranslationByLang(locale || 'en');
   
   return {
     title: t.metadata?.landingTitle || "TechMart",
