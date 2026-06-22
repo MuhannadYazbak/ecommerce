@@ -1,8 +1,8 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  // Forces all compiled chunks and files to fetch cleanly from the root directory asset path
-  assetPrefix: process.env.NODE_ENV === 'production' ? 'https://ecommerce-t7tm.vercel.app' : '',
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  /* * 💡 Clean and lightweight. 
+   * Stripping assetPrefix allows Vercel to dynamically route chunks safely.
+   */
 };
 
 export default nextConfig;
