@@ -8,4 +8,4 @@ COPY mockoon.json /data/payment-mock.json
 EXPOSE 4000
 
 # Run the CLI, pointing to the file and forcing it to listen on all interfaces
-CMD ["start", "--data", "/data/mockoon.json", "--port", "4000", "--hostname", "0.0.0.0"]
+CMD ["--data", "/data/mockoon.json", "--port", "4000", "--hostname", "0.0.0.0"]
