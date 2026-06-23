@@ -1,14 +1,11 @@
 # Use the official lightweight Mockoon CLI image
 FROM mockoon/cli:latest
 
-# 💡 MATCH RENDER'S EXPECTED PORT
-ENV PORT=10000
-
 # Copy your configuration file
 COPY mockoon.json /data/mockoon.json
 
-# Expose port 10000 inside the container network
+# Let Render know the entrypoint will listen on port 10000
 EXPOSE 10000
 
-# Run the CLI, matching the data map and routing cleanly to all interfaces
-CMD ["--data", "/data/mockoon.json", "--port", "10000", "--hostname", "0.0.0.0"]
+# 💡 FORCE OVERRIDE: We bypass the default entrypoint to map the port forcefully
+ENTRYPOINT ["mockoon-cli", "start", "--hostname", "0.0.0.0", "--data", "/data/mockoon.json", "--port", "10000"]
