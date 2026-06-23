@@ -2,7 +2,7 @@
 FROM mockoon/cli:latest
 
 # Copy your exported mock configuration into the container
-COPY mockoon.json /data/payment-mock.json
+COPY mockoon.json /data/mockoon.json
 
 # Expose the internal port Mockoon runs on (e.g., 3001)
 EXPOSE 4000
