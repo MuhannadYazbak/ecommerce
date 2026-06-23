@@ -79,20 +79,22 @@ export default function Checkout() {
         body: JSON.stringify(addressForm),
       });
       const addressData = await addressRes.json();
-      const addressId =Number(addressData.id);
+      const addressId = Number(addressData.id);
 
-      // 2️⃣ Calculate total
-      const cartTotal = itemsToCheckout.reduce(
-        (sum, item) => sum + item.price * item.quantity,
+      // 2️⃣ Calculate total cleanly with an explicit distinct variable name
+      const calculatedTotal = itemsToCheckout.reduce(
+        (sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 1),
         0
       );
+
+      console.log("✈️ Sending Payload Verification:", { amount: calculatedTotal, itemsCount: itemsToCheckout.length });
 
       // 3️⃣ Send payment request
       const paymentRes = await fetch(`${process.env.NEXT_PUBLIC_MOCKOON_URL}/pay`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          amount: cartTotal,
+          amount: calculatedTotal, // 🔍 Look right here!
           items: itemsToCheckout,
         }),
       });
@@ -114,7 +116,7 @@ export default function Checkout() {
       }));
       const orderPayload = {
         user_id: Number(user.id),
-        total_amount: Number(cartTotal),
+        total_amount: Number(calculatedTotal),
         items_json: sanitizedItems,
         created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
         status: 'Processing',
@@ -127,7 +129,7 @@ export default function Checkout() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderPayload),
       });
-      console.log('orderRes at /place-order is ',orderRes)
+      console.log('orderRes at /place-order is ', orderRes)
       const orderResult = await orderRes.json();
 
       if (!orderRes.ok || orderResult.error) {
