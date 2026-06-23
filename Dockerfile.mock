@@ -1,10 +1,13 @@
 # Use the official lightweight Mockoon CLI image
 FROM mockoon/cli:latest
 
+# 💡 THE FREE-TIER LIFESAVER: Force the underlying OS layer to recognize port 4000 natively
+ENV PORT=4000
+
 # Copy your exported mock configuration into the container
 COPY mockoon.json /data/mockoon.json
 
-# Expose the internal port Mockoon runs on (e.g., 3001)
+# Expose the internal port Mockoon runs on
 EXPOSE 4000
 
 # Run the CLI, pointing to the file and forcing it to listen on all interfaces
