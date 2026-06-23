@@ -65,31 +65,35 @@ export default function ChatbotUI() {
     };
   };
 
-  async function askAssistant() {
-    const response = await fetch("http://localhost:3001/ask", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: newMessage, user_id: user?.id || 2 })
-    });
-    const data = await response.json();
-    setMessages(prev => [...prev, `🧑 ${newMessage}`, `🤖 ${data.response}`])
-    setNewMessage('')
-    return data.response;
-  }
-
-  // const sendMessage = async () => {
-  //   const response = await fetch(`${process.env.CHAT_URL}/chat`, {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({ message: newMessage }),
-  //   })
-
-  //   const data = await response.json()
-  //   setMessages(prev => [...prev, `🧑 ${newMessage}`, `🤖 ${data.reply}`])
+  // async function askAssistant() {
+  //   const response = await fetch("http://localhost:3001/ask", {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({ query: newMessage, user_id: user?.id || 2 })
+  //   });
+  //   const data = await response.json();
+  //   setMessages(prev => [...prev, `🧑 ${newMessage}`, `🤖 ${data.response}`])
   //   setNewMessage('')
+  //   return data.response;
   // }
 
-  return (
+  async function askAssistant() {
+  // Use your production variable environment token dynamically
+  const apiBaseUrl = process.env.NEXT_PUBLIC_RAG_API_URL || "http://localhost:3001";
+  
+  const response = await fetch(`${apiBaseUrl}/ask`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query: newMessage, user_id: user?.id || 2 })
+  });
+  
+  const data = await response.json();
+  setMessages(prev => [...prev, `🧑 ${newMessage}`, `🤖 ${data.response}`]);
+  setNewMessage('');
+  return data.response;
+}
+
+    return (
 
 
     <div>
