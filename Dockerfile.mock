@@ -1,0 +1,11 @@
+# Use the official lightweight Mockoon CLI image
+FROM mockoon/cli:latest
+
+# Copy your exported mock configuration into the container
+COPY mockoon.json /data/payment-mock.json
+
+# Expose the internal port Mockoon runs on (e.g., 3001)
+EXPOSE 4000
+
+# Run the CLI, pointing to the file and forcing it to listen on all interfaces
+CMD ["start", "--data", "/data/mockoon.json", "--port", "4000", "--hostname", "0.0.0.0"]
