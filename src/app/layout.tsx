@@ -1,13 +1,13 @@
 // src/app/layout.tsx
-import ClientAnalytics from '../components/clientAnalytics'
+import { Analytics } from '@vercel/analytics/react';
 import './globals.css';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="en">
       <body>
         {children}
-        <ClientAnalytics />
+        <Analytics />
       </body>
     </html>
   );
