@@ -1,4 +1,5 @@
 // src/app/layout.tsx
+import ClientAnalytics from '@/components/clientAnalytics';
 import './globals.css';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -6,6 +7,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html>
       <body>
         {children}
+        <ClientAnalytics />
       </body>
     </html>
   );
