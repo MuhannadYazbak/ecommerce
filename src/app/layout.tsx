@@ -1,5 +1,5 @@
 // src/app/layout.tsx
-import ClientAnalytics from '@/components/clientAnalytics';
+import ClientAnalytics from '../components/clientAnalytics'
 import './globals.css';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
