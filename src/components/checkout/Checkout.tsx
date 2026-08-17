@@ -6,8 +6,6 @@ import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import BackButton from '@/components/ui/BackButton';
-import { sendCheckoutNotification } from '@/utils/mail';
-import { NextResponse } from 'next/server';
 
 export default function Checkout() {
   const { clearCart, cartTotal, cartItems } = useCart();
@@ -17,52 +15,38 @@ export default function Checkout() {
   const locale = params?.locale || 'en';
   const { t, i18n } = useTranslation();
   const token = process.env.NEXT_PUBLIC_LOCATIONIQ_KEY;
-  //const searchParams = new URLSearchParams(window.location.search);
-  const [selectedIds, setSelectedIds] = useState<number[]>([])
+
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'cod'>('stripe');
 
   const itemsToCheckout = selectedIds.length > 0
     ? cartItems.filter(item => selectedIds.includes(item.item_id))
     : cartItems;
-  const [form, setForm] = useState({
-    cardNumber: '',
-    expiryMonth: '',
-    expiryYear: '',
-    cvv: '',
-    name: '',
-  });
+
   const [addressForm, setAddressForm] = useState({
     city: '',
     street: '',
     postalcode: ''
-  })
+  });
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const raw = searchParams.get('selected');
-    console.log("🔍 selected param raw:", raw);
-
     const ids = raw
       ?.split(',')
       .map(id => Number(id))
       .filter(id => !isNaN(id)) || [];
 
-    console.log("🧾 parsed selectedIds:", ids);
     setSelectedIds(ids);
   }, []);
 
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddressForm(prev => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -72,41 +56,22 @@ export default function Checkout() {
     }
 
     try {
-      // 1️⃣ Submit address
+      // 1. Submit address
       const addressRes = await fetch('/api/address', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(addressForm),
       });
       const addressData = await addressRes.json();
-      const addressId = Number(addressData.id);
+     // const addressId = Number(addressData.id);
+     const addressId = Number(addressData.id || addressData.address_id || addressData.insertId);
 
-      // 2️⃣ Calculate total cleanly with an explicit distinct variable name
+      // 2. Calculate total
       const calculatedTotal = itemsToCheckout.reduce(
         (sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 1),
         0
       );
 
-      console.log("✈️ Sending Payload Verification:", { amount: calculatedTotal, itemsCount: itemsToCheckout.length });
-
-      // 3️⃣ Send payment request
-      const paymentRes = await fetch(`${process.env.NEXT_PUBLIC_MOCKOON_URL}/pay`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          amount: calculatedTotal, // 🔍 Look right here!
-          items: itemsToCheckout,
-        }),
-      });
-      const paymentResult = await paymentRes.json();
-
-      if (!paymentRes.ok || !paymentResult.success) {
-        alert('Payment failed. Try again.');
-        return;
-      }
-
-      // 4️⃣ Place the order
-      console.log("🧮 cartTotal:", cartTotal, typeof cartTotal);
       const sanitizedItems = itemsToCheckout.map(item => ({
         id: Number(item.item_id),
         name: String(item.name),
@@ -114,12 +79,46 @@ export default function Checkout() {
         quantity: Number(item.quantity),
         photo: String(item.photo),
       }));
+
+      // 3A. CASH ON DELIVERY FLOW
+      if (paymentMethod === 'cod') {
+        const orderPayload = {
+          user_id: Number(user.id),
+          total_amount: Number(calculatedTotal),
+          items_json: JSON.stringify(sanitizedItems),
+          created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
+          status: 'Pending Delivery',
+          payment_method: 'COD',
+          address_id: Number(addressId),
+          name: user.fullname,
+        };
+
+        const orderRes = await fetch('/api/place-order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderPayload),
+        });
+
+        if (!orderRes.ok) {
+          alert('Order placement failed. Try again.');
+          return;
+        }
+
+        alert('Order placed successfully via Cash On Delivery! 🎉');
+        clearCart();
+        router.push(`/${locale}/home`);
+        return;
+      }
+
+      // 3B. STRIPE PAYMENT FLOW
+      // 1. Create a "Pending Payment" order in the database first
       const orderPayload = {
         user_id: Number(user.id),
         total_amount: Number(calculatedTotal),
         items_json: sanitizedItems,
         created_at: new Date().toISOString().slice(0, 19).replace('T', ' '),
-        status: 'Processing',
+        status: 'Pending Payment',
+        payment_method: 'Stripe',
         address_id: Number(addressId),
         name: user.fullname,
       };
@@ -129,23 +128,59 @@ export default function Checkout() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderPayload),
       });
-      console.log('orderRes at /place-order is ', orderRes)
-      const orderResult = await orderRes.json();
 
-      if (!orderRes.ok || orderResult.error) {
-        alert('Order placement failed. Try again.');
+      const orderData = await orderRes.json();
+      
+      // Catches id, order_id, or insertId depending on your SQL response format
+      const createdOrderId = orderData.id || orderData.order_id || orderData.insertId;
+
+      if (!orderRes.ok || !createdOrderId) {
+        console.error('❌ Place Order API Error:', orderData);
+        alert(`Database Error: ${orderData.error || orderData.message || 'Could not save order'}`);
         return;
       }
 
-      // 5️⃣ Final success flow
-      alert('Payment successful! 🎉');
+      // 2. Pass the extracted order ID to the payment microservice
+      const microserviceUrl = process.env.NEXT_PUBLIC_PAYMENTS_MICROSERVICE_URL || 'http://localhost:8001';
+
+      const stripeItems = sanitizedItems.map(item => ({
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+      }));
+
+      const checkoutRes = await fetch(`${microserviceUrl}/api/v1/subscriptions/create-cart-checkout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-tenant-id': String(user.id),
+        },
+        body: JSON.stringify({
+          order_id: Number(createdOrderId),
+          items: stripeItems,
+          currency: 'usd',
+          success_url: `${window.location.origin}/${locale}/home`,
+          cancel_url: `${window.location.origin}/${locale}/checkout`,
+        }),
+      });
+
+      const checkoutData = await checkoutRes.json();
+
+      if (!checkoutRes.ok || !checkoutData.checkout_url) {
+        alert('Could not initialize payment session. Try again.');
+        return;
+      }
+
+      // 3. Clear local cart and redirect to Stripe
       clearCart();
-      router.push(`/${locale}/home`);
+      window.location.href = checkoutData.checkout_url;
+
     } catch (err) {
       console.error('❌ Checkout error:', err);
       alert('Something went wrong. Please try again.');
     }
   };
+
   const handleLocateMe = async () => {
     if (!navigator.geolocation) {
       alert('Geolocation is not supported by your browser.');
@@ -154,11 +189,9 @@ export default function Checkout() {
 
     navigator.geolocation.getCurrentPosition(async (position) => {
       const { latitude, longitude } = position.coords;
-
       const res = await fetch(
         `https://us1.locationiq.com/v1/reverse?key=${token}&lat=${latitude}&lon=${longitude}&format=json`
       );
-
       const data = await res.json();
 
       if (data.address) {
@@ -179,115 +212,90 @@ export default function Checkout() {
   return (
     <main className="max-w-md mx-auto mt-10 p-6 border rounded shadow" dir={i18n.language === 'en' ? 'ltr' : 'rtl'}>
       <header className='flex w-full justify-center'>
-        <h1 className="text-3xl font-bold mb-4" aria-labelledby='checkout-heading'>{t('checkout')}</h1>
+        <h1 className="text-3xl font-bold mb-4">{t('checkout')}</h1>
       </header>
-      <section aria-labelledby="payment-form-heading" className='flex flex-col w-full justify-center border-dotted border-black'>
-        <h2 id="payment-form-heading" className="text-xl font-semibold mb-2">
-          {t('paymentInfo')}
-        </h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            placeholder={t('nameOnCard')}
-            required
-            className="w-full border px-3 py-2 rounded"
-          />
-          <input
-            type="text"
-            name="cardNumber"
-            value={form.cardNumber}
-            onChange={handleChange}
-            placeholder={t('cardNumber')}
-            required
-            className="w-full border px-3 py-2 rounded"
-          />
-          <div className="flex space-x-2">
-            <input
-              type="text"
-              name="expiryMonth"
-              value={form.expiryMonth}
-              onChange={handleChange}
-              placeholder={t('month')}
-              required
-              className="w-1/2 border px-3 py-2 rounded"
-            />
-            <input
-              type="text"
-              name="expiryYear"
-              value={form.expiryYear}
-              onChange={handleChange}
-              placeholder={t('year')}
-              required
-              className="w-1/2 border px-3 py-2 rounded"
-            />
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Payment Method Selector */}
+        <section className="border p-4 rounded bg-gray-50">
+          <h2 className="text-xl font-semibold mb-3">{t('paymentMethod') || 'Payment Method'}</h2>
+          <div className="flex gap-4">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="stripe"
+                checked={paymentMethod === 'stripe'}
+                onChange={() => setPaymentMethod('stripe')}
+              />
+              <span className="font-medium">Credit / Debit Card (Stripe)</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="cod"
+                checked={paymentMethod === 'cod'}
+                onChange={() => setPaymentMethod('cod')}
+              />
+              <span className="font-medium">Cash On Delivery (COD)</span>
+            </label>
           </div>
+        </section>
+
+        {/* Address Section */}
+        <section aria-labelledby="address-form-heading" className="space-y-4">
+          <h2 id="address-form-heading" className="text-xl font-semibold mb-2">
+            {t('addressInfo')}
+          </h2>
+          <button
+            type="button"
+            onClick={handleLocateMe}
+            className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700 w-full"
+          >
+            {t('useMyLocation')}
+          </button>
+
           <input
             type="text"
-            name="cvv"
-            value={form.cvv}
-            onChange={handleChange}
-            placeholder={t('cvv')}
+            name="city"
+            value={addressForm.city}
+            onChange={handleAddressChange}
+            placeholder={t('city')}
             required
             className="w-full border px-3 py-2 rounded"
           />
-          {/**new Address form */}
-          <section aria-labelledby="address-form-heading" className='flex flex-col w-full space-y-4 justify-center border-dotted border-black'>
-            <h2 id="address-form-heading" className="text-xl font-semibold mb-2">
-              {t('addressInfo')}
-            </h2>
-            <button
-              onClick={handleLocateMe}
-              className="bg-green-600 text-white py-2 px-4 rounded hover:bg-green-700"
-              role='useMyLocation'
-            >
-              {t('useMyLocation')}
-            </button>
+          <input
+            type="text"
+            name="street"
+            value={addressForm.street}
+            onChange={handleAddressChange}
+            placeholder={t('street')}
+            required
+            className="w-full border px-3 py-2 rounded"
+          />
+          <input
+            type="text"
+            name="postalcode"
+            value={addressForm.postalcode}
+            onChange={handleAddressChange}
+            placeholder={t('postalCode')}
+            required
+            className="w-full border px-3 py-2 rounded"
+          />
+        </section>
 
-            <input
-              type="text"
-              name="city"
-              value={addressForm.city}
-              onChange={handleAddressChange}
-              placeholder={t('city')}
-              required
-              className="w-full border px-3 py-2 rounded"
-            />
-            <input
-              type="text"
-              name="street"
-              value={addressForm.street}
-              onChange={handleAddressChange}
-              placeholder={t('street')}
-              required
-              className="w-full border px-3 py-2 rounded"
-            />
-            <input
-              type="text"
-              name="postalcode"
-              value={addressForm.postalcode}
-              onChange={handleAddressChange}
-              placeholder={t('postalCode')}
-              required
-              className="w-1/2 border px-3 py-2 rounded"
-            />
-          </section>
+        <button
+          type="submit"
+          className="w-full bg-blue-600 text-white py-3 rounded text-lg font-semibold hover:bg-blue-700 transition-colors"
+        >
+          {paymentMethod === 'stripe' ? 'Proceed to Stripe Payment' : 'Place Order (COD)'}
+        </button>
+      </form>
 
-          <button
-            type="submit"
-            id='pay-now'
-            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-          >
-            {t('payNow')}
-          </button>
-        </form>
-      </section>
-      <nav className='flex w-full justify-center' aria-label='Go Back' role='back'>
+      <nav className='flex w-full justify-center mt-4'>
         <BackButton />
       </nav>
-
     </main>
   );
 }
