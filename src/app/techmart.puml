@@ -1,0 +1,91 @@
+@startuml TechMart_Architecture
+
+!theme blueprint
+skinparam componentStyle rectangle
+skinparam linetype ortho
+
+title TechMart - Full-Stack Production Architecture
+
+' --- CLOUD TIERS & HOSTING BOUNDARIES ---
+
+frame "Vercel Deployment (Frontend / Client Logic)" {
+    node "Next.js App Router" as nextjs {
+        component [Internationalization (i18n)\n3 Languages / RTL & LTR] as i18n
+        component [Auth Guard\n(Login, Register, RBAC Admin Only)] as auth
+        component [Admin Dashboard Views\n(Recharts / Visuals)] as admin_dash
+        component [UI / User Storefront Component] as store_ui
+    }
+}
+
+frame "Render Cloud (Backend Tiers)" {
+    node "Node.js Platform (Express/Restful API)" as node_backend {
+        component [API Routers & Business Logic] as api_logic
+        component [Authentication Middleware] as auth_mid
+    }
+    
+    node "Python Vector Engine (FastAPI)" as python_rag {
+        component [RAG Microservice\n(Semantic Search & LLM Engine)] as rag_core
+    }
+}
+
+frame "Aiven Cloud (Managed Data Layers)" {
+    database "Managed MySQL" as mysql_db {
+        folder "E-Commerce Core Schemas" as schemas
+    }
+}
+
+' --- EXTERNAL ECOSYSTEM SERVICES ---
+cloud "Third-Party Microservices" {
+    [Resend API\n(Transactional Email)] as resend_api
+    [LocationIQ API\n(Forward/Reverse Geocoding)] as location_api
+}
+
+' --- DATA PIPELINE & MANAGEMENT ---
+frame "Data Analyst / Administrative Desktop" {
+    [DBeaver\n(SQL Query & Management)] as dbeaver
+    [Tableau\n(BI Dashboards & Analytics)] as tableau
+}
+
+' --- CI/CD & INTEGRATED QUALITY ASSURANCE ---
+frame "GitHub Ecosystem" {
+    node "GitHub Actions (CI/CD Engine)" as gh_actions {
+        component [Docker Container Build & Push] as docker_step
+        component [Playwright Automation Suite\n(Page Object Model - POM)] as playwright_suite
+        component [Allure HTML Test Reports Generator] as allure_gen
+    }
+}
+
+actor "QA Engineer / User" as QA_Actor
+note right of QA_Actor
+  Performs Manual Exploratory Tests
+  & manages bugs inside **Jira**
+end note
+
+' --- ARCHITECTURAL DATA FLOWS & RELATIONSHIPS ---
+
+' Client interactions
+store_ui --> api_logic : HTTPS Restful API requests
+admin_dash --> api_logic : Restricted Admin endpoints
+auth --> auth_mid : Token / Credentials verification
+
+' Component dependencies
+api_logic --> auth_mid
+api_logic --> schemas : Read/Write Transactions (Sequelize/SQL)
+api_logic --> resend_api : Dispatches Emails
+api_logic --> location_api : Resolves shipping coordinates
+
+' RAG Microservice connection
+store_ui --> rag_core : Semantic Chatbot / Context queries
+rag_core --> schemas : Vector/Product Context lookups
+
+' Data Pipeline
+dbeaver --> mysql_db : Direct Secure DB Access
+tableau --> mysql_db : Live Data Connect / BI pipeline
+
+' QA & Deploy pipeline
+QA_Actor --> store_ui : Manual Exploratory Runs
+playwright_suite --> store_ui : E2E Endpoints Test Target (Headless)
+playwright_suite --> allure_gen : Publishes Build Analytics
+gh_actions --> nextjs : Code Deployment Updates
+
+@enduml
